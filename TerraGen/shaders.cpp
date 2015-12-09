@@ -19,17 +19,20 @@ void Shaders::InitializeShaders()
 
 	// TODO Load all shaders here at once
 
-    QOpenGLShaderProgram* diffuse = new QOpenGLShaderProgram();
-    diffuse->addShaderFromSourceFile(QOpenGLShader::Vertex, "../Shader/diffuse.vert");
-    diffuse->addShaderFromSourceFile(QOpenGLShader::Fragment, "../Shader/diffuse.frag");
+    QOpenGLShaderProgram* tesselate = new QOpenGLShaderProgram();
+    tesselate->addShaderFromSourceFile(QOpenGLShader::Vertex, "../Shader/tesselate.vs.glsl");
+     tesselate->addShaderFromSourceFile(QOpenGLShader::TessellationControl, "../Shader/tesselate.cs.glsl");
+      tesselate->addShaderFromSourceFile(QOpenGLShader::TessellationEvaluation, "../Shader/tesselate.es.glsl");
+    tesselate->addShaderFromSourceFile(QOpenGLShader::Fragment, "../Shader/tesselate.fs.glsl");
 
-    if (diffuse->link())
+    if (tesselate->link())
 	{
-        Shaders::ShaderMap["diffuse"] = diffuse;
+
+        Shaders::ShaderMap["tesselate"] = tesselate;
 	}
     else
     {
-       qDebug("Failed to load Shader Diffuse");
+       qDebug("Failed to load Terrain Tesselation Shader");
        exit(-1);
     }
 }

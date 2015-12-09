@@ -2,7 +2,7 @@
 #define TERRAIN_H
 
 #include "sceneobject.h"
-#include <QOpenGLFunctions_3_3_Core>
+#include <QOpenGLFunctions_4_4_Core>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 
@@ -10,15 +10,15 @@
 class Terrain : public SceneObject
 {
 public:
-    Terrain(QOpenGLFunctions_3_3_Core* functions);
+	Terrain(QOpenGLFunctions_4_4_Core* functions);
     virtual ~Terrain();
 
     void draw();
 
 private:
-    QOpenGLFunctions_3_3_Core* functions;
+	QOpenGLFunctions_4_4_Core* functions;
 
-    void initVAO(QOpenGLFunctions_3_3_Core* functions);
+    void initVAO();
     GLuint terrainVAO;
     GLuint vertexBuffer;
     GLuint uvBuffer;

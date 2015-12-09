@@ -30,9 +30,12 @@ HEADERS  += window.h\
 
 FORMS    += window.ui
 
-DISTFILES += \
-    ../Shader/diffuse.frag \
-    ../Shader/diffuse.vert
+DISTFILES +=\
+    ../Shader/tesselate.vs.glsl \
+    ../Shader/tesselate.cs.glsl \
+    ../Shader/tesselate.es.glsl \
+    ../Shader/tesselate.fs.glsl
+
 
 
 INCLUDEPATH += $$PWD/../External/Include

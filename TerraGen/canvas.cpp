@@ -31,10 +31,11 @@ void Canvas::initializeGL()
 
 void Canvas::paintGL()
 {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    QOpenGLShaderProgram* shader = Shaders::Find("diffuse");
+    QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
 
     shader->bind();
     glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;

@@ -4,7 +4,7 @@
 #pragma once
 
 #include <QOpenGLWidget>
-#include <QOpenGLFunctions_3_3_Core>
+#include <QOpenGLFunctions_4_4_Core>
 #include <QOpenGLShaderProgram>
 #include "terrain.h"
 #include <map>
@@ -13,7 +13,7 @@
 #include "camera.h"
 
 
-class Canvas : public QOpenGLWidget, public QOpenGLFunctions_3_3_Core
+class Canvas : public QOpenGLWidget, public QOpenGLFunctions_4_4_Core
 {
 public:
     Canvas(QWidget* parent);
