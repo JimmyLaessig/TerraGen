@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     sceneobject.cpp \
     terrain.cpp \
     shaders.cpp \
-    camera.cpp
+    camera.cpp \
+    terraingenerator.cpp
 
 HEADERS  += window.h\
     canvas.h \
@@ -26,7 +27,8 @@ HEADERS  += window.h\
     sceneobject.h \
     terrain.h \
     shaders.h \
-    camera.h
+    camera.h \
+    terraingenerator.h
 
 FORMS    += window.ui
 

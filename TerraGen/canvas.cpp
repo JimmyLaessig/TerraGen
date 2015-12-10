@@ -4,6 +4,7 @@
 #include <QKeyEvent>
 #include "glm/gtc/type_ptr.hpp"
 #include <iostream>
+#include "terraingenerator.h"
 Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
 {
     bool leftMouseDown = false;
@@ -22,22 +23,24 @@ void Canvas::initializeGL()
 
     Shaders::InitializeShaders();
 
-    terrain = new Terrain(this);
+    terrain = TerrainGenerator::Generate(this);
     camera = new Camera();
     float ratio = (float)this->size().width()/ (float)this->size().height();
     camera->setProjectionMatrix(60.0f, ratio, 0.1f, 1000.0f);
-    camera->translate(glm::vec3(0, 0.5, 2));
+    camera->translate(glm::vec3(0, 2, 0));
+    camera->rotate(glm::vec3(1,0,0), 90.0);
 }
 
 void Canvas::paintGL()
 {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+    glViewport(0,0,size().width(), size().height());
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
 
     shader->bind();
+
     glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;
 
     GLuint location = glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
