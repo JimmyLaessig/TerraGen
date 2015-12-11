@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Window</string>
+   <string>TerraGen</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>

@@ -3,7 +3,7 @@
 
 SceneObject::SceneObject()
 {
-    modelMatrix = glm::mat4(1);
+    modelMatrix = glm::mat4(1.0f);
 }
 
 

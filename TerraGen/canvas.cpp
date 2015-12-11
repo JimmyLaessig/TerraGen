@@ -9,8 +9,6 @@
 
 Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
 {
-
-
     mouseLeftDown = false;
     mouseRightDown = false;
 
@@ -33,9 +31,9 @@ void Canvas::initializeGL()
     terrain = TerrainGenerator::Generate(this);
     camera = new Camera();
     float ratio = (float)this->size().width()/ (float)this->size().height();
-    camera->setProjectionMatrix(60.0f, ratio, 0.1f, 1000.0f);
+    camera->setProjectionMatrix(70.0f, ratio, 0.1f, 1000.0f);
     camera->translate(glm::vec3(0, 2, 0));
-    camera->rotate(glm::vec3(1,0,0), 90.0);
+    camera->rotate(glm::vec3(1,0,0), 90.0f);
 }
 
 void Canvas::paintGL()
@@ -48,7 +46,6 @@ void Canvas::paintGL()
     {
         QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
         shader->bind();
-
 
         GLuint location = glGetUniformLocation(shader->programId(), "modelMatrix");
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(terrain->modelMatrix));
