@@ -15,7 +15,7 @@ Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
     mouseRightDown = false;
 
     drawGrid = true;
-    drawTesselate = false;
+    drawTesselate = true;
 }
 
 Canvas::~Canvas()
@@ -49,9 +49,17 @@ void Canvas::paintGL()
         QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
         shader->bind();
 
-        glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;
-        GLuint location = glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
+
+        GLuint location = glGetUniformLocation(shader->programId(), "modelMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(terrain->modelMatrix));
+
+        glm::mat4 viewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() ;
+        location = glGetUniformLocation(shader->programId(), "viewProjectionMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix));
+
+        location = glGetUniformLocation(shader->programId(), "eyePosWorld");
+        glm::vec3 eyePosWorld = camera->getPosition();
+        glUniform3f(location, eyePosWorld.x, eyePosWorld.y, eyePosWorld.z);
 
         terrain->drawTesselate();
         shader->release();

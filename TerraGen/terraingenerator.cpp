@@ -67,9 +67,28 @@ Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
         }
     }
 
+    unsigned int* indices = new unsigned int[numVertices];
+    for(int i = 0; i < numVertices; i++)
+    {
+        indices[i] = i;
+
+    }
+
+    // Vertices, the order is not important.
+    float vertices2[] = {
+        -0.5f, 0.0f, 0.5f,    // Left top         ID: 0
+        -0.5f, 0.0f, -0.5f, // Left bottom      ID: 1
+        0.5f, 0.0f, -0.5f,   // Right bottom     ID: 2
+        0.5f, 0.0f, 0.5f   // Right left       ID: 3
+    };
+    unsigned int indices2[] ={
+        0, 1, 2, 3
+    };
+
 
     Terrain* terrain = new Terrain(functions);
-    terrain->setGeometry(&vertices[0].x, numVertices);
+   // terrain->setGeometry(vertices2, 4, indices2, 4);
+    terrain->setGeometry(&vertices[0].x, numVertices, indices, numVertices);
     terrain->createVAO();
 
     return terrain;

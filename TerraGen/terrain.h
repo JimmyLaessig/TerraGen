@@ -17,7 +17,7 @@ public:
 
     void drawGrid();
 
-    void setGeometry(float* vertices, int numVertices);
+    void setGeometry(float* vertices, int numVertices, unsigned int* indices, int numIndices);
     void createVAO();
 
 private:
@@ -25,9 +25,13 @@ private:
     float* vertices;
     int numVertices;
 
+    unsigned int* indices;
+    int numIndices;
+
     QOpenGLFunctions_4_4_Core* functions;
 
     GLuint terrainVAO;
+    GLuint indexBuffer;
     GLuint vertexBuffer;
     GLuint uvBuffer;
 };

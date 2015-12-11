@@ -2,7 +2,7 @@
 
 layout(triangles, equal_spacing, ccw) in;
 
-uniform mat4 modelViewProjectionMatrix;
+uniform mat4 viewProjectionMatrix;
 
 in vec3 position_ES[];
 in vec2 texcoords_ES[];
@@ -36,7 +36,7 @@ void main(void)
     // TODO: Displace the vertex along the normalize
 
     // transform to NDC
-    gl_Position = modelViewProjectionMatrix * vec4(position, 1);
+    gl_Position = viewProjectionMatrix * vec4(position, 1);
     texcoords_FS = texcoords;
 }
 
