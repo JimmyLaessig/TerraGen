@@ -40,7 +40,8 @@ private:
 
     bool mouseLeftDown;
     bool mouseRightDown;
-
+    bool drawGrid;
+    bool drawTesselate;
     Terrain* terrain;
     Camera* camera;
     void initializeShaders();

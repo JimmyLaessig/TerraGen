@@ -5,10 +5,17 @@
 #include "glm/gtc/type_ptr.hpp"
 #include <iostream>
 #include "terraingenerator.h"
+
+
 Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
 {
-    bool leftMouseDown = false;
-    bool rightMouseDown = false;
+
+
+    mouseLeftDown = false;
+    mouseRightDown = false;
+
+    drawGrid = true;
+    drawTesselate = false;
 }
 
 Canvas::~Canvas()
@@ -37,17 +44,36 @@ void Canvas::paintGL()
     glViewport(0,0,size().width(), size().height());
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
+    if(drawTesselate)
+    {
+        QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
+        shader->bind();
 
-    shader->bind();
+        glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;
+        GLuint location = glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
 
-    glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;
+        terrain->drawTesselate();
+        shader->release();
+    }
 
-    GLuint location = glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
-    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
+    if(drawGrid)
+    {
+        QOpenGLShaderProgram* shader = Shaders::Find("diffuse");
+        shader->bind();
 
-    terrain->draw();
-    shader->release();
+        glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;
+        GLuint location = glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
+
+        terrain->drawGrid();
+        shader->release();
+    }
+    GLenum error = glGetError();
+    if(error != GL_NO_ERROR)
+    {
+        qDebug()<< error;
+    }
 }
 
 void Canvas::resizeGL()

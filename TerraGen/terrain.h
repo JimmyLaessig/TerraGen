@@ -13,7 +13,10 @@ public:
     Terrain(QOpenGLFunctions_4_4_Core* functions);
     virtual ~Terrain();
 
-    void draw();
+    void drawTesselate();
+
+    void drawGrid();
+
     void setGeometry(float* vertices, int numVertices);
     void createVAO();
 

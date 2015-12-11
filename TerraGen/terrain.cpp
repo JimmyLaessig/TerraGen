@@ -11,7 +11,7 @@ Terrain::~Terrain()
 
 }
 
-void Terrain::draw()
+void Terrain::drawTesselate()
 {
     functions->glPatchParameteri(GL_PATCH_VERTICES, 3);
     functions->glBindVertexArray(terrainVAO);
@@ -19,6 +19,12 @@ void Terrain::draw()
     functions->glBindVertexArray(0);
 }
 
+void Terrain::drawGrid()
+{
+    functions->glBindVertexArray(terrainVAO);
+    functions->glDrawArrays(GL_TRIANGLES, 0, numVertices);
+    functions->glBindVertexArray(0);
+}
 
 void Terrain::setGeometry(float* vertices, int numVertices)
 {
@@ -58,12 +64,12 @@ void Terrain::createVAO()
     qDebug("Generate uvVBO");
     // Buffer for the uvs
 
-    functions->glGenBuffers(1, &uvBuffer);
-    functions->glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
-    functions->glBufferData(GL_ARRAY_BUFFER, numVertices * 2 * sizeof(float), uvs, GL_STATIC_DRAW);
+//    functions->glGenBuffers(1, &uvBuffer);
+//    functions->glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+//    functions->glBufferData(GL_ARRAY_BUFFER, numVertices * 2 * sizeof(float), uvs, GL_STATIC_DRAW);
 
-    functions->glEnableVertexAttribArray(1);
-    functions->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
+//    functions->glEnableVertexAttribArray(1);
+//    functions->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+functions->glBindVertexArray(0);
 }
 

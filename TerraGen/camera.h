@@ -102,6 +102,7 @@ private:
     glm::vec3 position;
     glm::vec3 rotation;
 
+
     /// <summary>
     /// Normalizes the angles of the rotation
     /// </summary>

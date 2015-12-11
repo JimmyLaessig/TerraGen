@@ -36,7 +36,9 @@ DISTFILES +=\
     ../Shader/tesselate.vs.glsl \
     ../Shader/tesselate.cs.glsl \
     ../Shader/tesselate.es.glsl \
-    ../Shader/tesselate.fs.glsl
+    ../Shader/tesselate.fs.glsl \
+    ../Shader/diffuse.vs.glsl \
+    ../Shader/diffuse.fs.glsl
 
 
 
