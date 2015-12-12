@@ -17,12 +17,14 @@ public:
 
     void drawGrid();
 
-    void setGeometry(float* vertices, int numVertices, unsigned int* indices, int numIndices);
+    void setGeometry(float* vertices, float *uvs, int numVertices, unsigned int* indices, int numIndices);
     void createVAO();
 
 private:
 
     float* vertices;
+    float* uvs;
+
     int numVertices;
 
     unsigned int* indices;

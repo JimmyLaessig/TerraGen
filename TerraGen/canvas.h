@@ -6,6 +6,8 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_4_4_Core>
 #include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
+
 #include "terrain.h"
 #include <map>
 #include <QKeyEvent>
@@ -46,6 +48,7 @@ private:
     Camera* camera;
     void initializeShaders();
 
+    QOpenGLTexture* texture;
     QOpenGLShaderProgram diffuseShader;
 };
 

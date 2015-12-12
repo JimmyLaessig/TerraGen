@@ -29,6 +29,12 @@ void Canvas::initializeGL()
     Shaders::InitializeShaders();
 
     terrain = TerrainGenerator::Generate(this);
+
+    texture = new QOpenGLTexture(QImage("../Assets/test2.png"));
+    qDebug(std::to_string(texture->height()).data());
+    qDebug(std::to_string(texture->width()).data());
+
+
     camera = new Camera();
     float ratio = (float)this->size().width()/ (float)this->size().height();
     camera->setProjectionMatrix(70.0f, ratio, 0.1f, 1000.0f);
@@ -38,12 +44,34 @@ void Canvas::initializeGL()
 
 void Canvas::paintGL()
 {
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     glViewport(0,0,size().width(), size().height());
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+    if(drawGrid)
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        QOpenGLShaderProgram* shader = Shaders::Find("diffuse");
+        shader->bind();
+
+        texture->textureId();
+
+        glUniform1i(glGetUniformLocation(shader->programId(), "colorTexture"), 1);
+        glActiveTexture(GL_TEXTURE0 + 1);
+        glBindTexture(GL_TEXTURE_2D, texture->textureId());
+
+        glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;
+        GLuint location = glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
+
+        terrain->drawGrid();
+        shader->release();
+    }
+
     if(drawTesselate)
     {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
         shader->bind();
 
@@ -62,18 +90,7 @@ void Canvas::paintGL()
         shader->release();
     }
 
-    if(drawGrid)
-    {
-        QOpenGLShaderProgram* shader = Shaders::Find("diffuse");
-        shader->bind();
 
-        glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;
-        GLuint location = glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
-
-        terrain->drawGrid();
-        shader->release();
-    }
     GLenum error = glGetError();
     if(error != GL_NO_ERROR)
     {
