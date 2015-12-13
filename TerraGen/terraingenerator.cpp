@@ -5,8 +5,6 @@
 
 int TerrainGenerator::dimX = 10;
 int TerrainGenerator::dimY = 10;
-int TerrainGenerator::textureRepeat = 1;
-
 
 Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
 {
@@ -31,12 +29,12 @@ Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
             vertices.push_back(vertex);
 
             glm::vec2 uv;
-            uv.x = i / (float)dimX;
-            uv.y = j / (float)dimY;
+            uv.x = i  / (float)dimX;
+            uv.y = j  / (float)dimY ;
             uvs.push_back(uv);
 
             int index = j * (dimX+1) + i;
-           // qDebug("Vertex %d: (%f, %f, %f), uvs (%f,%f)", index, vertex.x, vertex.y, vertex.z, uv.x, uv.y);
+            // qDebug("Vertex %d: (%f, %f, %f), uvs (%f,%f)", index, vertex.x, vertex.y, vertex.z, uv.x, uv.y);
         }
     }
 
@@ -59,7 +57,7 @@ Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
             indices.push_back(index1);
             indices.push_back(index2);
 
-          //  qDebug("Face: (%d, %d, %d)",index0, index1, index2 );
+            //  qDebug("Face: (%d, %d, %d)",index0, index1, index2 );
 
             // Upper Face
             int index3 = (j + 1) * numX + i;
@@ -70,12 +68,21 @@ Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
             indices.push_back(index4);
             indices.push_back(index5);
 
-          //  qDebug("Face: (%d, %d, %d)",index3, index4, index5 );
+            //  qDebug("Face: (%d, %d, %d)",index3, index4, index5 );
         }
     }
 
     Terrain* terrain = new Terrain(functions);
-    terrain->setGeometry(&vertices[0].x, &uvs[0].x , numVertices, &indices[0], numIndices);
+
+    Geometry geometry;
+    geometry.numIndices = numIndices;
+    geometry.numVertices = numVertices;
+
+    geometry.indices = &indices[0];
+    geometry.vertices = &vertices[0].x;
+    geometry.uvs = &uvs[0].x;
+
+    terrain->setGeometry(geometry);
 
     terrain->createVAO();
 

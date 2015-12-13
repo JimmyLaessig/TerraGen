@@ -1,38 +1,40 @@
 #include "terrain.h"
-
+#include <stdlib.h>
 
 Terrain::Terrain(QOpenGLFunctions_4_4_Core* functions): SceneObject()
 {
     this->functions = functions;
+    texture = new QOpenGLTexture(QImage("../Assets/test2.png"));
 }
 
 Terrain::~Terrain()
 {
-
+    texture->destroy();
+    delete texture;
+    functions->glDeleteBuffers(1, &indexBuffer);
+    functions->glDeleteBuffers(1, &vertexBuffer);
+    functions->glDeleteBuffers(1, &uvBuffer);
+    functions->glDeleteVertexArrays(1, &terrainVAO);
 }
 
 void Terrain::drawTesselate()
 {
     functions->glPatchParameteri(GL_PATCH_VERTICES, 3);
     functions->glBindVertexArray(terrainVAO);
-    functions->glDrawElements(GL_PATCHES, numIndices, GL_UNSIGNED_INT, 0);
+    functions->glDrawElements(GL_PATCHES, geometry.numIndices, GL_UNSIGNED_INT, 0);
     functions->glBindVertexArray(0);
 }
 
-void Terrain::drawGrid()
+void Terrain::drawSimple()
 {
     functions->glBindVertexArray(terrainVAO);
-    functions->glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+    functions->glDrawElements(GL_TRIANGLES, geometry.numIndices, GL_UNSIGNED_INT, 0);
     functions->glBindVertexArray(0);
 }
 
-void Terrain::setGeometry(float* vertices, float* uvs, int numVertices, unsigned int* indices, int numIndices)
+void Terrain::setGeometry(Geometry geometry)
 {
-    this->vertices = vertices;
-    this->uvs = uvs;
-    this->numVertices = numVertices;
-    this->indices = indices;
-    this->numIndices = numIndices;
+    this->geometry = geometry;
 }
 
 void Terrain::createVAO()
@@ -44,22 +46,20 @@ void Terrain::createVAO()
     // Buffer for the indices
     functions->glGenBuffers(1, &indexBuffer);
     functions->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    functions->glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(unsigned int), indices, GL_STATIC_DRAW);
-
+    functions->glBufferData(GL_ELEMENT_ARRAY_BUFFER, geometry.numIndices * sizeof(unsigned int), geometry.indices, GL_STATIC_DRAW);
 
     // Buffer for the vertices
     functions->glGenBuffers(1, &vertexBuffer);
     functions->glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    functions->glBufferData(GL_ARRAY_BUFFER, numVertices * 3 * sizeof(float), vertices, GL_STATIC_DRAW);
+    functions->glBufferData(GL_ARRAY_BUFFER, geometry.numVertices * 3 * sizeof(float), geometry.vertices, GL_STATIC_DRAW);
 
     functions->glEnableVertexAttribArray(0);
     functions->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-
     // Buffer for the uvs
     functions->glGenBuffers(1, &uvBuffer);
     functions->glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
-    functions->glBufferData(GL_ARRAY_BUFFER, numVertices * 2 * sizeof(float), uvs, GL_STATIC_DRAW);
+    functions->glBufferData(GL_ARRAY_BUFFER, geometry.numVertices * 2 * sizeof(float), geometry.uvs, GL_STATIC_DRAW);
 
     functions->glEnableVertexAttribArray(1);
     functions->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);

@@ -11,9 +11,6 @@ Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
 {
     mouseLeftDown = false;
     mouseRightDown = false;
-
-    drawGrid = true;
-    drawTesselate = true;
 }
 
 Canvas::~Canvas()
@@ -28,74 +25,46 @@ void Canvas::initializeGL()
 
     Shaders::InitializeShaders();
 
-    terrain = TerrainGenerator::Generate(this);
-
-    texture = new QOpenGLTexture(QImage("../Assets/test2.png"));
-    qDebug(std::to_string(texture->height()).data());
-    qDebug(std::to_string(texture->width()).data());
-
-
+    renderer = new Renderer(this, this->size().width(), this->size().height());
+    terrain = nullptr;
     camera = new Camera();
     float ratio = (float)this->size().width()/ (float)this->size().height();
     camera->setProjectionMatrix(70.0f, ratio, 0.1f, 1000.0f);
     camera->translate(glm::vec3(0, 2, 0));
     camera->rotate(glm::vec3(1,0,0), 90.0f);
+
+    renderer->camera = camera;
 }
 
 void Canvas::paintGL()
 {
+    if(generateTerrain)
+    {
+        // Delete old Terrain
+        if(terrain !=nullptr)
+            delete terrain;
+        // Generate new Terrain
+        terrain = TerrainGenerator::Generate(this);
+        generateTerrain = false;
+    }
+    if(generateNoise)
+    {
+        // TODO GENERATE NOISE HERE
+        generateNoise = false;
+    }
 
+    // Clear the Canvas
     glViewport(0,0,size().width(), size().height());
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-    if(drawGrid)
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        QOpenGLShaderProgram* shader = Shaders::Find("diffuse");
-        shader->bind();
+    // return if no terrain exists
+    if(terrain == nullptr)
+        return;
 
-        texture->textureId();
+    // Render terrain
+    renderer->paintGL(terrain);
 
-        glUniform1i(glGetUniformLocation(shader->programId(), "colorTexture"), 1);
-        glActiveTexture(GL_TEXTURE0 + 1);
-        glBindTexture(GL_TEXTURE_2D, texture->textureId());
-
-        glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;
-        GLuint location = glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
-
-        terrain->drawGrid();
-        shader->release();
-    }
-
-    if(drawTesselate)
-    {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
-        shader->bind();
-
-        GLuint location = glGetUniformLocation(shader->programId(), "modelMatrix");
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(terrain->modelMatrix));
-
-        glm::mat4 viewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() ;
-        location = glGetUniformLocation(shader->programId(), "viewProjectionMatrix");
-        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix));
-
-        location = glGetUniformLocation(shader->programId(), "eyePosWorld");
-        glm::vec3 eyePosWorld = camera->getPosition();
-        glUniform3f(location, eyePosWorld.x, eyePosWorld.y, eyePosWorld.z);
-
-        terrain->drawTesselate();
-        shader->release();
-    }
-
-
-    GLenum error = glGetError();
-    if(error != GL_NO_ERROR)
-    {
-        qDebug()<< error;
-    }
 }
 
 void Canvas::resizeGL()
@@ -151,6 +120,93 @@ void Canvas::mouseReleaseEvent(QMouseEvent * event)
 void Canvas::keyPressEvent(QKeyEvent* event)
 {
 
+}
+
+void Canvas::dimXValueChanged(int value)
+{
+    TerrainGenerator::dimX = value;
+}
+
+void Canvas::dimYValueChanged(int value)
+{
+    TerrainGenerator::dimY = value;
+}
+
+void Canvas::generateTerrainButtonClicked()
+{
+    generateTerrain = true;
+    update();
+}
+
+void Canvas::openNoiseTextureButtonClicked()
+{
+    update();
+}
+
+void Canvas::noiseTypeChanged(QString type)
+{
+    update();
+}
+
+void Canvas::generateNoiseTextureButtonClicked()
+{
+    generateNoise = true;
+    update();
+}
+
+void Canvas::heightValueChanged(double value)
+{
+    terrain->height = value;
+    update();
+}
+
+void Canvas::wireframeEnabled(bool enabled)
+{
+    renderer->wireframeEnabled = enabled;
+    update();
+}
+
+void Canvas::shadingEnabled(bool enabled)
+{
+    renderer->shadingEnabled = enabled;
+    update();
+}
+
+void Canvas::dynamicLoDEnabled(bool enabled)
+{
+    qDebug("bla");
+    renderer->dynamicLoDEnabled = enabled;
+    update();
+}
+
+void Canvas::textureRepeatValueChanged(double value)
+{
+    terrain->texcoordScale = (float) value;
+    update();
+}
+
+void Canvas::dynamicTexturingEnabled(bool enabled)
+{
+    renderer->dynamicTexturingEnabled = enabled;
+    update();
+}
+
+void Canvas::normalMappingEnabled(bool enabled)
+{
+    renderer->normalMappingEnabled = enabled;
+    update();
+}
+
+void Canvas::shadowsEnabled(bool enabled)
+{
+    renderer->shadowsEnabled = enabled;
+    update();
+}
+
+void Canvas::distanceFogEnabled(bool enabled)
+{
+    renderer->distanceFogEnabled = enabled;
+    update();
 }
 
 

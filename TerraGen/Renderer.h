@@ -1,68 +1,42 @@
-#pragma once
-
+#ifndef RENDERER_H
+#define RENDERER_H
+#include <QOpenGLFunctions_4_4_Core>
+#include <shaders.h>
+#include "terrain.h"
+#include "camera.h"
 
 class Renderer
 {
 public:
+    float texcoordScale = 1.0f;
 
-	static bool ShadowsEnabled;
-	static glm::vec3 BackgroundColor;
+    bool wireframeEnabled = true;
+    bool shadingEnabled = true;
+    bool dynamicLoDEnabled = true;
+    bool dynamicTexturingEnabled = true;
+    bool normalMappingEnabled = true;
+    bool shadowsEnabled = true;
+    bool distanceFogEnabled = true;
 
-	/// <summary>
-	/// Creates a new Renderer
-	/// </summary>
-	/// <param name="width">The width of the window</param>
-	/// <param name="height">The height of the window</param>
-	Renderer(int width, int height);
 
-	/// <summary>
-	/// Destroys the Renderer
-	/// </summary>
-	~Renderer();
+    Renderer(QOpenGLFunctions_4_4_Core* functions, int width, int height);
+    ~Renderer();
 
-	/// <summary>
-	/// Resizes the renderer to the given dimensions
-	/// </summary>
-	/// <param name="height"></param>
-	void resize(int width, int height);
+    void paintGL(Terrain* terrain);
 
-	/// <summary>
-	/// Returns the size of the renderer
-	/// </summary>
-	void getSize(int& width, int& height);
+    void resizeGL();
 
-	/// <summary>
-	/// Updates the Renderer to the current state.
-	/// </summary>
-	/// <param name="deltaT"></param>
-	void update(float deltaT);
+    Camera* camera;
 
-	/// <summary>
-	/// Draws the given scene to the screen
-	/// </summary>
-	/// <param name="scene"></param>
-	void render(SceneGraph* scene);
+    QOpenGLFunctions_4_4_Core* functions;
 
 private:
 
-	int width;
+    int width;
+    int height;
 
-	int height;
-
-	/// <summary>
-	/// Renders shadows into the framebuffer
-	/// </summary>
-	/// <param name="light">The light that casts shadows</param>
-	void renderShadowMap(DirectionalLight* light);
-
-	/// <summary>
-	/// A Framebuffer which stores the shadow map
-	/// </summary>
-    //Framebuffer shadowMapFBO;
-
-	/// <summary>
-	/// Screen Space quad for deferred rendering and post process
-	/// </summary>
-    //Quad* quad;
+    void drawSimple(Terrain* terrain);
+    void drawTesselate(Terrain* terrain);
 };
 
+#endif // RENDERER_H

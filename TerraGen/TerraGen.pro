@@ -19,7 +19,9 @@ SOURCES += main.cpp\
     terrain.cpp \
     shaders.cpp \
     camera.cpp \
-    terraingenerator.cpp
+    terraingenerator.cpp \
+    renderer.cpp \
+    noisetexturegenerator.cpp
 
 HEADERS  += window.h\
     canvas.h \
@@ -28,7 +30,8 @@ HEADERS  += window.h\
     terrain.h \
     shaders.h \
     camera.h \
-    terraingenerator.h
+    terraingenerator.h \
+    noisetexturegenerator.h
 
 FORMS    += window.ui
 

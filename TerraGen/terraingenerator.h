@@ -15,11 +15,4 @@ public:
 
 };
 
-struct Face
-{
-    glm::vec3 v0;
-    glm::vec3 v1;
-    glm::vec3 v2;
-};
-
 #endif // TERRAINGENERATOR_H
