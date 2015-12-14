@@ -16,28 +16,32 @@ Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
     int numVertices = dimX * dimY * 2 * 3;
 
     // Create Vertex Array
-    std::vector<glm::vec3> vertices = std::vector<glm::vec3>();
-    std::vector<glm::vec2> uvs = std::vector<glm::vec2>();
+    std::vector<float> vertices = std::vector<float>();
+    std::vector<float> uvs = std::vector<float>();
+
     for (int j = 0; j <= dimY; j++)
     {
         for(int i = 0; i <= dimX; i++)
         {
-            glm::vec3 vertex;
-            vertex.x = i + offsetX;
-            vertex.y = 0;
-            vertex.z = -j + offsetZ;
-            vertices.push_back(vertex);
+            float x = i + offsetX;
+            float y = 0;
+            float z = -j + offsetZ;
 
-            glm::vec2 uv;
-            uv.x = i  / (float)dimX;
-            uv.y = j  / (float)dimY ;
-            uvs.push_back(uv);
+            vertices.push_back(x);
+            vertices.push_back(y);
+            vertices.push_back(z);
+
+            float uv_x = i  / (float)dimX;
+            float uv_y = j  / (float)dimY ;
+
+            uvs.push_back(uv_x);
+            uvs.push_back(uv_y);
 
             int index = j * (dimX+1) + i;
             // qDebug("Vertex %d: (%f, %f, %f), uvs (%f,%f)", index, vertex.x, vertex.y, vertex.z, uv.x, uv.y);
         }
     }
-
+    qDebug("Created Vertices");
     // Create Index Array
     int numFaces = dimX * dimY * 2;
     int numIndices = numFaces * 3;
@@ -71,19 +75,18 @@ Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
             //  qDebug("Face: (%d, %d, %d)",index3, index4, index5 );
         }
     }
-
+    qDebug("Created Indices");
     Terrain* terrain = new Terrain(functions);
 
     Geometry geometry;
     geometry.numIndices = numIndices;
     geometry.numVertices = numVertices;
 
-    geometry.indices = &indices[0];
-    geometry.vertices = &vertices[0].x;
-    geometry.uvs = &uvs[0].x;
+    geometry.indices = indices.data();
+    geometry.vertices = vertices.data();
+    geometry.uvs = uvs.data();
 
     terrain->setGeometry(geometry);
-
     terrain->createVAO();
 
     return terrain;

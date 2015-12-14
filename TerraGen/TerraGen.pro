@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2015-12-07T18:54:05
+# Project created by QtCreator 2015-12-14T22:05:33
 #
 #-------------------------------------------------
 
@@ -13,27 +13,33 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-    window.cpp \
-    canvas.cpp \
-    sceneobject.cpp \
-    terrain.cpp \
-    shaders.cpp \
     camera.cpp \
-    terraingenerator.cpp \
+    canvas.cpp \
+    perlinnoisegenerator.cpp \
     renderer.cpp \
-    perlinnoisegenerator.cpp
+    sceneobject.cpp \
+    shaders.cpp \
+    simplexnoise.cpp \
+    simplexnoisegenerator.cpp \
+    terrain.cpp \
+    terraingenerator.cpp \
+    window.cpp
 
-HEADERS  += window.h\
-    canvas.h \
-    renderer.h \
-    sceneobject.h \
-    terrain.h \
-    shaders.h \
-    camera.h \
-    terraingenerator.h \
-    perlinnoisegenerator.h
 
 FORMS    += window.ui
+
+HEADERS += \
+    camera.h \
+    canvas.h \
+    perlinnoisegenerator.h \
+    renderer.h \
+    sceneobject.h \
+    shaders.h \
+    simplexnoise.h \
+    simplexnoisegenerator.h \
+    terrain.h \
+    terraingenerator.h \
+    window.h
 
 DISTFILES +=\
     ../Shader/tesselate.vs.glsl \

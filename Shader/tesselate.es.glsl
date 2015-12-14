@@ -4,11 +4,13 @@ layout(triangles, equal_spacing, ccw) in;
 
 uniform mat4 viewProjectionMatrix;
 
+uniform sampler2D heightmapTexture;
+uniform float heightScale = 1.0f;
+
 in vec3 position_ES[];
 in vec2 texcoords_ES[];
 
 out vec2 texcoords_FS;
-out vec3 tesscoords_FS;
 
 // Interpolate values v0-v2 based on the barycentric coordinates
 // of the current vertex within the triangle
@@ -32,13 +34,15 @@ void main(void)
 {
     vec3 position = interpolate3D(position_ES[0].xyz, position_ES[1].xyz, position_ES[2].xyz);
     vec2 texcoords = interpolate2D(texcoords_ES[0], texcoords_ES[1], texcoords_ES[2]);
-    // TODO: Displace the vertex along the normalize
+
+
+    // Displace Vertex
+    float displacement = texture2D(heightmapTexture, texcoords.xy).x;
+    position.y = displacement * heightScale;
 
     // transform to NDC
     gl_Position = viewProjectionMatrix * vec4(position, 1);
     texcoords_FS = texcoords;
 
-    //Barycentric Coordinates
-    tesscoords_FS = gl_TessCoord.xyz;
 }
 

@@ -45,13 +45,23 @@ void Renderer::drawTesselate(Terrain* terrain)
     QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
     shader->bind();
 
-    GLuint location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
+
+    GLuint location = functions->glGetUniformLocation(shader->programId(), "heightmapTexture");
     functions->glUniform1i(location, 1);
     functions->glActiveTexture(GL_TEXTURE0 + 1);
+    functions->glBindTexture(GL_TEXTURE_2D, terrain->heightmapTexture->textureId());
+
+    location = functions->glGetUniformLocation(shader->programId(), "heightScale");
+    functions->glUniform1f(location, terrain->heightScale);
+
+    location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
+    functions->glUniform1i(location, 2);
+    functions->glActiveTexture(GL_TEXTURE0 + 2);
     functions->glBindTexture(GL_TEXTURE_2D, terrain->texture->textureId());
 
     location = functions->glGetUniformLocation(shader->programId(), "texcoordScale");
     functions->glUniform1f(location, terrain->texcoordScale);
+
 
     location = functions->glGetUniformLocation(shader->programId(), "modelMatrix");
     functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(terrain->modelMatrix));
@@ -112,7 +122,6 @@ void Renderer::drawSimple(Terrain* terrain)
 
     if(wireframeEnabled)
     {
-
         location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
         functions->glUniform1i(location, true);
 

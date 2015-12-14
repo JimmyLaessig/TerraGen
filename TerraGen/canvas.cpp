@@ -7,6 +7,7 @@
 #include "terraingenerator.h"
 
 
+
 Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
 {
     this->window = static_cast<Window*>(parent);
@@ -36,7 +37,7 @@ void Canvas::initializeGL()
     float ratio = (float)this->size().width()/ (float)this->size().height();
     camera->setProjectionMatrix(70.0f, ratio, 0.1f, 1000.0f);
     camera->translate(glm::vec3(0, 2, 0));
-    camera->rotate(glm::vec3(1,0,0), 90.0f);
+    camera->rotate(glm::vec3(1,0,0), 45.0f);
 
     renderer->camera = camera;
 }
@@ -50,11 +51,11 @@ void Canvas::paintGL()
         if(noiseImage != nullptr)
             delete noiseImage;
         // Generate new NoiseImage
-        noiseImage = PerlinNoiseGenerator::Generate(this, 512, 512);
+        noiseImage = SimplexNoiseGenerator::Generate(512, 512);
 
         // Create Noise Texture if Terrain is available
         if(terrain!= nullptr)
-            terrain->setNoiseTexture(noiseImage);
+            terrain->setHeightmapTexture(noiseImage);
 
         // Update UI
         window->setNoiseImage(noiseImage);
@@ -72,7 +73,7 @@ void Canvas::paintGL()
         // Generate new Terrain
         terrain = TerrainGenerator::Generate(this);
         // Set the Noise Texture to the current NoiseImage
-        terrain->setNoiseTexture(noiseImage);
+        terrain->setHeightmapTexture(noiseImage);
 
         generateTerrain = false;
     }
@@ -181,7 +182,7 @@ void Canvas::generateNoiseTextureButtonClicked()
 
 void Canvas::heightValueChanged(double value)
 {
-    terrain->height = value;
+    terrain->heightScale = value;
     update();
 }
 
@@ -232,6 +233,21 @@ void Canvas::distanceFogEnabled(bool enabled)
 {
     renderer->distanceFogEnabled = enabled;
     update();
+}
+
+void Canvas::noiseOctavsChanged(double value)
+{
+    SimplexNoiseGenerator::Octavs = value;
+}
+
+void Canvas::noisePersistenceChanged(double value)
+{
+    SimplexNoiseGenerator::Persistence = value;
+}
+
+void Canvas::noiseScaleChanged(double value)
+{
+    SimplexNoiseGenerator::Scale = value;
 }
 
 

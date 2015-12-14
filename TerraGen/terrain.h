@@ -24,26 +24,25 @@ class Terrain : public SceneObject
 {
 public:
 
-    void setNoiseTexture(QImage* noiseImage);
-
-    float height;
-    float width;
-
-    float texcoordScale = 1.0f;
-
     Terrain(QOpenGLFunctions_4_4_Core* functions);
     virtual ~Terrain();
+
+    float heightScale = 1.0f;
+    float texcoordScale = 1.0f;
+
+    QOpenGLTexture* heightmapTexture;
+
+    QOpenGLTexture* texture;
+
 
     void drawTesselate();
 
     void drawSimple();
 
-
-    QOpenGLTexture* noiseTexture;
-
-    QOpenGLTexture* texture;
+    void setHeightmapTexture(QImage* heightmapImage);
 
     void setGeometry(Geometry geometry);
+
     void createVAO();
 
 private:

@@ -4,14 +4,16 @@
 Terrain::Terrain(QOpenGLFunctions_4_4_Core* functions): SceneObject()
 {
     this->functions = functions;
-    noiseTexture = nullptr;
+    heightmapTexture = nullptr;
+    heightScale = 1.0;
+
     texture = new QOpenGLTexture(QImage("../Assets/test2.png"));
 }
 
 Terrain::~Terrain()
 {
-    noiseTexture->destroy();
-    delete noiseTexture;
+    heightmapTexture->destroy();
+    delete heightmapTexture;
     texture->destroy();
     delete texture;
     functions->glDeleteBuffers(1, &indexBuffer);
@@ -37,16 +39,16 @@ void Terrain::drawSimple()
 }
 
 
-void Terrain::setNoiseTexture(QImage *noiseImage)
+void Terrain::setHeightmapTexture(QImage *heightmapImage)
 {
     // Destroy old Texture if available
-    if(this->noiseTexture != nullptr)
+    if(this->heightmapTexture != nullptr)
     {
-     noiseTexture->destroy();
-        delete this->noiseTexture;
+        heightmapTexture->destroy();
+        delete this->heightmapTexture;
     }
 
-    this->noiseTexture = new QOpenGLTexture(*noiseImage);
+    this->heightmapTexture = new QOpenGLTexture(*heightmapImage);
 }
 
 void Terrain::setGeometry(Geometry geometry)
@@ -64,7 +66,7 @@ void Terrain::createVAO()
     functions->glGenBuffers(1, &indexBuffer);
     functions->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     functions->glBufferData(GL_ELEMENT_ARRAY_BUFFER, geometry.numIndices * sizeof(unsigned int), geometry.indices, GL_STATIC_DRAW);
-
+    qDebug("Created IndexBuffer");
     // Buffer for the vertices
     functions->glGenBuffers(1, &vertexBuffer);
     functions->glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -72,7 +74,7 @@ void Terrain::createVAO()
 
     functions->glEnableVertexAttribArray(0);
     functions->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
+    qDebug("Created vertexbuffer");
     // Buffer for the uvs
     functions->glGenBuffers(1, &uvBuffer);
     functions->glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
@@ -80,7 +82,7 @@ void Terrain::createVAO()
 
     functions->glEnableVertexAttribArray(1);
     functions->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
+    qDebug("Created uvBuffer");
     // Release VAO
     functions->glBindVertexArray(0);
 }

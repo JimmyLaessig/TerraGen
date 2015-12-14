@@ -21,8 +21,9 @@ float getTessLevel(float distance0, float distance1)
         return 10.0;
     else if(avg <= 5.)
         return 7.0;
-    else
+    else if(avg <= 25)
         return 3.0;
+    return 1;
 }
 
 void main(void)

@@ -12,6 +12,7 @@
 #include "window.h"
 #include "renderer.h"
 #include "terrain.h"
+#include "simplexnoisegenerator.h"
 #include "perlinnoisegenerator.h"
 #include "camera.h"
 
@@ -70,6 +71,12 @@ public slots:
     void shadowsEnabled(bool enabled);
 
     void distanceFogEnabled(bool enabled);
+
+    void noiseOctavsChanged(double value);
+
+    void noisePersistenceChanged(double value);
+
+    void noiseScaleChanged(double value);
 
 private:
 

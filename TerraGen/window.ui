@@ -97,6 +97,9 @@
               <property name="minimum">
                <number>1</number>
               </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
               <property name="value">
                <number>10</number>
               </property>
@@ -106,6 +109,9 @@
              <widget class="QSpinBox" name="dimY">
               <property name="minimum">
                <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>100</number>
               </property>
               <property name="value">
                <number>10</number>
@@ -139,6 +145,9 @@
          </item>
          <item row="3" column="1">
           <widget class="QPushButton" name="generateTerrainButton">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>Generate</string>
            </property>
@@ -190,7 +199,7 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QLabel" name="spacerLabel">
+             <widget class="QLabel" name="spacer1">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -221,13 +230,13 @@
              <widget class="QPushButton" name="openTextureFileButton">
               <property name="minimumSize">
                <size>
-                <width>101</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>101</width>
+                <width>100</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -259,6 +268,12 @@
              <height>195</height>
             </size>
            </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -266,10 +281,7 @@
          </item>
          <item>
           <widget class="QWidget" name="widget_4" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <property name="spacing">
-             <number>5</number>
-            </property>
+           <layout class="QGridLayout" name="gridLayout_3">
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -282,7 +294,13 @@
             <property name="bottomMargin">
              <number>0</number>
             </property>
-            <item>
+            <property name="horizontalSpacing">
+             <number>0</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>5</number>
+            </property>
+            <item row="3" column="0">
              <widget class="QLabel" name="noiseTypeLabel">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -310,7 +328,7 @@
               </property>
              </widget>
             </item>
-            <item>
+            <item row="3" column="2">
              <widget class="QComboBox" name="noiseTypeComboBox">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -320,52 +338,35 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>100</width>
+                <width>99</width>
                 <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>100</width>
+                <width>99</width>
                 <height>16777215</height>
                </size>
               </property>
               <item>
                <property name="text">
-                <string>Perlin</string>
+                <string>Simplex</string>
                </property>
               </item>
              </widget>
             </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QWidget" name="widget_3" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="spacer">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Octaves</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
+             <widget class="QLabel" name="spacer2">
               <property name="minimumSize">
                <size>
                 <width>90</width>
@@ -386,7 +387,7 @@
               </property>
              </widget>
             </item>
-            <item>
+            <item row="7" column="2">
              <widget class="QPushButton" name="generateNoiseButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -396,18 +397,71 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>101</width>
+                <width>100</width>
                 <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>101</width>
+                <width>100</width>
                 <height>16777215</height>
                </size>
               </property>
               <property name="text">
                <string>Generate</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Persistence</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Scale</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="2">
+             <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+              <property name="decimals">
+               <number>3</number>
+              </property>
+              <property name="value">
+               <double>3.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="2">
+             <widget class="QDoubleSpinBox" name="doubleSpinBox_4">
+              <property name="decimals">
+               <number>3</number>
+              </property>
+              <property name="value">
+               <double>5.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="2">
+             <widget class="QDoubleSpinBox" name="doubleSpinBox_5">
+              <property name="decimals">
+               <number>3</number>
+              </property>
+              <property name="minimum">
+               <double>0.001000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.010000000000000</double>
               </property>
              </widget>
             </item>
@@ -438,13 +492,35 @@
          <property name="spacing">
           <number>5</number>
          </property>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_5">
+         <item row="7" column="0">
+          <widget class="QLabel" name="textureRepeatLabel">
+           <property name="minimumSize">
+            <size>
+             <width>90</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>90</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
-            <string>Wireframe</string>
+            <string>Texture Repeat</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="checkBox_6">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -460,16 +536,6 @@
          </item>
          <item row="4" column="1">
           <widget class="QCheckBox" name="checkBox_5">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QCheckBox" name="checkBox_6">
            <property name="text">
             <string/>
            </property>
@@ -506,22 +572,10 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="0">
-          <widget class="QLabel" name="textureRepeatLabel">
-           <property name="minimumSize">
-            <size>
-             <width>90</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>90</width>
-             <height>16777215</height>
-            </size>
-           </property>
+         <item row="15" column="0">
+          <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Texture Repeat</string>
+            <string>Distance Fog</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -541,28 +595,18 @@
            </property>
           </widget>
          </item>
-         <item row="7" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
-           <property name="minimum">
-            <double>1.000000000000000</double>
-           </property>
+         <item row="0" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox">
            <property name="value">
             <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="15" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Distance Fog</string>
+         <item row="7" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+           <property name="minimum">
+            <double>1.000000000000000</double>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox">
            <property name="value">
             <double>1.000000000000000</double>
            </property>
@@ -578,13 +622,13 @@
            </property>
           </widget>
          </item>
-         <item row="8" column="0">
-          <widget class="QLabel" name="label_2">
+         <item row="6" column="1">
+          <widget class="QCheckBox" name="checkBox_4">
            <property name="text">
-            <string>Dynamic Texturing</string>
+            <string/>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -618,13 +662,23 @@
            </property>
           </widget>
          </item>
-         <item row="6" column="1">
-          <widget class="QCheckBox" name="checkBox_4">
+         <item row="8" column="0">
+          <widget class="QLabel" name="label_2">
            <property name="text">
-            <string/>
+            <string>Dynamic Texturing</string>
            </property>
-           <property name="checked">
-            <bool>true</bool>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Wireframe</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -674,6 +728,9 @@
     <slot>dynamicTexturingEnabled(bool)</slot>
     <slot>shadowsEnabled(bool)</slot>
     <slot>distanceFogEnabled(bool)</slot>
+    <slot>noisePersistenceChanged(double)</slot>
+    <slot>noiseScaleChanged(double)</slot>
+    <slot>noiseOctavsChanged(double)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -766,8 +823,8 @@
    <slot>generateNoiseTextureButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>942</x>
-     <y>388</y>
+     <x>1000</x>
+     <y>474</y>
     </hint>
     <hint type="destinationlabel">
      <x>773</x>
@@ -782,8 +839,8 @@
    <slot>heightValueChanged(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>923</x>
-     <y>448</y>
+     <x>1002</x>
+     <y>534</y>
     </hint>
     <hint type="destinationlabel">
      <x>770</x>
@@ -799,7 +856,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1002</x>
-     <y>478</y>
+     <y>552</y>
     </hint>
     <hint type="destinationlabel">
      <x>771</x>
@@ -814,8 +871,8 @@
    <slot>shadingEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>908</x>
-     <y>488</y>
+     <x>1002</x>
+     <y>570</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
@@ -830,8 +887,8 @@
    <slot>dynamicLoDEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>907</x>
-     <y>509</y>
+     <x>1002</x>
+     <y>588</y>
     </hint>
     <hint type="destinationlabel">
      <x>763</x>
@@ -846,8 +903,8 @@
    <slot>textureRepeatValueChanged(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>931</x>
-     <y>529</y>
+     <x>1002</x>
+     <y>613</y>
     </hint>
     <hint type="destinationlabel">
      <x>773</x>
@@ -862,8 +919,8 @@
    <slot>dynamicTexturingEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>905</x>
-     <y>550</y>
+     <x>1002</x>
+     <y>631</y>
     </hint>
     <hint type="destinationlabel">
      <x>778</x>
@@ -878,8 +935,8 @@
    <slot>shadowsEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>909</x>
-     <y>565</y>
+     <x>1002</x>
+     <y>649</y>
     </hint>
     <hint type="destinationlabel">
      <x>778</x>
@@ -894,12 +951,60 @@
    <slot>distanceFogEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>904</x>
-     <y>586</y>
+     <x>1002</x>
+     <y>667</y>
     </hint>
     <hint type="destinationlabel">
      <x>737</x>
      <y>588</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleSpinBox_3</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>canvas</receiver>
+   <slot>noiseOctavsChanged(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>937</x>
+     <y>384</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>764</x>
+     <y>388</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleSpinBox_4</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>canvas</receiver>
+   <slot>noisePersistenceChanged(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>927</x>
+     <y>409</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>754</x>
+     <y>410</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleSpinBox_5</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>canvas</receiver>
+   <slot>noiseScaleChanged(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>927</x>
+     <y>437</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>772</x>
+     <y>437</y>
     </hint>
    </hints>
   </connection>
