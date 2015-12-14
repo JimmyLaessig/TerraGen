@@ -7,12 +7,12 @@
 #include <QOpenGLFunctions_4_4_Core>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
-#include "renderer.h"
-
-#include "terrain.h"
-#include <map>
 #include <QKeyEvent>
 #include "glm/vec2.hpp"
+#include "window.h"
+#include "renderer.h"
+#include "terrain.h"
+#include "perlinnoisegenerator.h"
 #include "camera.h"
 
 
@@ -73,6 +73,8 @@ public slots:
 
 private:
 
+    Window* window;
+
     Renderer* renderer;
 
     glm::vec2 lasMousePos;
@@ -80,6 +82,8 @@ private:
     bool generateNoise = false;
     bool mouseLeftDown;
     bool mouseRightDown;
+
+    QImage* noiseImage;
 
     Terrain* terrain;
     Camera* camera;

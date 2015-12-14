@@ -4,11 +4,14 @@
 Terrain::Terrain(QOpenGLFunctions_4_4_Core* functions): SceneObject()
 {
     this->functions = functions;
+    noiseTexture = nullptr;
     texture = new QOpenGLTexture(QImage("../Assets/test2.png"));
 }
 
 Terrain::~Terrain()
 {
+    noiseTexture->destroy();
+    delete noiseTexture;
     texture->destroy();
     delete texture;
     functions->glDeleteBuffers(1, &indexBuffer);
@@ -25,11 +28,25 @@ void Terrain::drawTesselate()
     functions->glBindVertexArray(0);
 }
 
+
 void Terrain::drawSimple()
 {
     functions->glBindVertexArray(terrainVAO);
     functions->glDrawElements(GL_TRIANGLES, geometry.numIndices, GL_UNSIGNED_INT, 0);
     functions->glBindVertexArray(0);
+}
+
+
+void Terrain::setNoiseTexture(QImage *noiseImage)
+{
+    // Destroy old Texture if available
+    if(this->noiseTexture != nullptr)
+    {
+     noiseTexture->destroy();
+        delete this->noiseTexture;
+    }
+
+    this->noiseTexture = new QOpenGLTexture(*noiseImage);
 }
 
 void Terrain::setGeometry(Geometry geometry)

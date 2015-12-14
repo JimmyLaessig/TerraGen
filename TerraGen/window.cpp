@@ -12,3 +12,10 @@ Window::~Window()
 {
     delete ui;
 }
+
+
+void Window::setNoiseImage(QImage* image)
+{
+    ui->noiseImageLabel->setPixmap(QPixmap::fromImage(*image));
+    ui->noiseImageLabel->show();
+}

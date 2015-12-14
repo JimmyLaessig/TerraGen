@@ -6,6 +6,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
+#include <QImage>
 
 struct Geometry
 {
@@ -22,6 +23,8 @@ struct Geometry
 class Terrain : public SceneObject
 {
 public:
+
+    void setNoiseTexture(QImage* noiseImage);
 
     float height;
     float width;

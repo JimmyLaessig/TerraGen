@@ -21,7 +21,7 @@ SOURCES += main.cpp\
     camera.cpp \
     terraingenerator.cpp \
     renderer.cpp \
-    noisetexturegenerator.cpp
+    perlinnoisegenerator.cpp
 
 HEADERS  += window.h\
     canvas.h \
@@ -31,7 +31,7 @@ HEADERS  += window.h\
     shaders.h \
     camera.h \
     terraingenerator.h \
-    noisetexturegenerator.h
+    perlinnoisegenerator.h
 
 FORMS    += window.ui
 

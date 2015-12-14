@@ -15,6 +15,8 @@ public:
     explicit Window(QWidget *parent = 0);
     ~Window();
 
+    void setNoiseImage(QImage* image);
+
 private:
     Ui::Window *ui;
 };

@@ -9,6 +9,7 @@
 
 Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
 {
+    this->window = static_cast<Window*>(parent);
     mouseLeftDown = false;
     mouseRightDown = false;
 }
@@ -25,6 +26,10 @@ void Canvas::initializeGL()
 
     Shaders::InitializeShaders();
 
+    noiseImage = new QImage(512, 512, QImage::Format_RGB16);
+    noiseImage->fill(qRgb(255, 255, 255));
+    window->setNoiseImage(noiseImage);
+
     renderer = new Renderer(this, this->size().width(), this->size().height());
     terrain = nullptr;
     camera = new Camera();
@@ -38,20 +43,40 @@ void Canvas::initializeGL()
 
 void Canvas::paintGL()
 {
+    // Generate Noise Texture
+    if(generateNoise)
+    {
+        // Delete old NoiseImage
+        if(noiseImage != nullptr)
+            delete noiseImage;
+        // Generate new NoiseImage
+        noiseImage = PerlinNoiseGenerator::Generate(this, 512, 512);
+
+        // Create Noise Texture if Terrain is available
+        if(terrain!= nullptr)
+            terrain->setNoiseTexture(noiseImage);
+
+        // Update UI
+        window->setNoiseImage(noiseImage);
+
+        generateNoise = false;
+    }
+
+    // Generate Terrain
     if(generateTerrain)
     {
         // Delete old Terrain
         if(terrain !=nullptr)
             delete terrain;
+
         // Generate new Terrain
         terrain = TerrainGenerator::Generate(this);
+        // Set the Noise Texture to the current NoiseImage
+        terrain->setNoiseTexture(noiseImage);
+
         generateTerrain = false;
     }
-    if(generateNoise)
-    {
-        // TODO GENERATE NOISE HERE
-        generateNoise = false;
-    }
+
 
     // Clear the Canvas
     glViewport(0,0,size().width(), size().height());
