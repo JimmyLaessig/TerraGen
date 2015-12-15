@@ -1,5 +1,5 @@
 #include "canvas.h"
-#include "QMatrix4x4"
+#include <QTime>
 #include "shaders.h"
 #include <QKeyEvent>
 #include "glm/gtc/type_ptr.hpp"
@@ -58,20 +58,25 @@ void Canvas::paintGL()
         // Create Noise Texture if Terrain is available
         terrain->setHeightmapTexture(noiseImage);
 
-        // Update UI
+        // update UI
         window->setNoiseImage(noiseImage);
 
         generateNoise = false;
     }
-
+    QTime time = QTime::currentTime();
 
     // Clear the Canvas
     glViewport(0,0,size().width(), size().height());
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
+
     // Render terrain
     renderer->paintGL(terrain);
+
+    // Display last frametime
+    double ms = (double)time.msecsTo(QTime::currentTime());
+    window->setFPSLabel(1000.0 / ms);
 
 }
 
