@@ -17,13 +17,13 @@ SOURCES += main.cpp\
     canvas.cpp \
     perlinnoisegenerator.cpp \
     renderer.cpp \
-    sceneobject.cpp \
     shaders.cpp \
     simplexnoise.cpp \
     simplexnoisegenerator.cpp \
     terrain.cpp \
-    terraingenerator.cpp \
-    window.cpp
+    window.cpp \
+    transform.cpp \
+    gridgenerator.cpp
 
 
 FORMS    += window.ui
@@ -33,13 +33,13 @@ HEADERS += \
     canvas.h \
     perlinnoisegenerator.h \
     renderer.h \
-    sceneobject.h \
     shaders.h \
     simplexnoise.h \
     simplexnoisegenerator.h \
     terrain.h \
-    terraingenerator.h \
-    window.h
+    window.h \
+    transform.h \
+    gridgenerator.h
 
 DISTFILES +=\
     ../Shader/tesselate.vs.glsl \

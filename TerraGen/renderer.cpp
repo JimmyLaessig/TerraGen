@@ -52,7 +52,7 @@ void Renderer::drawTesselate(Terrain* terrain)
     functions->glBindTexture(GL_TEXTURE_2D, terrain->heightmapTexture->textureId());
 
     location = functions->glGetUniformLocation(shader->programId(), "heightScale");
-    functions->glUniform1f(location, terrain->heightScale);
+    functions->glUniform1f(location, terrain->maxHeight);
 
     location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
     functions->glUniform1i(location, 2);
@@ -62,10 +62,6 @@ void Renderer::drawTesselate(Terrain* terrain)
     location = functions->glGetUniformLocation(shader->programId(), "texcoordScale");
     functions->glUniform1f(location, terrain->texcoordScale);
 
-
-    location = functions->glGetUniformLocation(shader->programId(), "modelMatrix");
-    functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(terrain->modelMatrix));
-
     glm::mat4 viewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() ;
     location = functions->glGetUniformLocation(shader->programId(), "viewProjectionMatrix");
     functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix));
@@ -74,23 +70,31 @@ void Renderer::drawTesselate(Terrain* terrain)
     glm::vec3 eyePosWorld = camera->getPosition();
     functions->glUniform3f(location, eyePosWorld.x, eyePosWorld.y, eyePosWorld.z);
 
-    if(shadingEnabled)
+
+
+
+    for(int i = 0; i < terrain->transforms.size(); i++)
     {
-        location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
-        functions->glUniform1i(location, false);
-        functions->glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        terrain->drawTesselate();
+        location = functions->glGetUniformLocation(shader->programId(), "modelMatrix");
+        functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(terrain->transforms.at(i).modelMatrix));
+
+        if(shadingEnabled)
+        {
+            location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
+            functions->glUniform1i(location, false);
+            functions->glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            terrain->drawTesselate();
+        }
+
+        if(wireframeEnabled)
+        {
+            location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
+            functions->glUniform1i(location, true);
+
+            functions->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            terrain->drawTesselate();
+        }
     }
-
-    if(wireframeEnabled)
-    {
-        location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
-        functions->glUniform1i(location, true);
-
-        functions->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        terrain->drawTesselate();
-    }
-
     shader->release();
 }
 
@@ -100,36 +104,39 @@ void Renderer::drawSimple(Terrain* terrain)
     QOpenGLShaderProgram* shader = Shaders::Find("diffuse");
     shader->bind();
 
-    glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->modelMatrix;
-    GLuint location = functions->glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
-    functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
-
-    if(shadingEnabled)
+    for(int i = 0; i < terrain->transforms.size(); i++)
     {
-        location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
-        functions->glUniform1i(location, 1);
-        functions->glActiveTexture(GL_TEXTURE0 + 1);
-        functions->glBindTexture(GL_TEXTURE_2D, terrain->texture->textureId());
 
-        location = functions->glGetUniformLocation(shader->programId(), "texcoordScale");
-        functions->glUniform1f(location, terrain->texcoordScale);
+        glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->transforms.at(i).modelMatrix;
+        GLuint location = functions->glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
+        functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
 
-        location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
-        functions->glUniform1i(location, false);
-        functions->glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        terrain->drawSimple();
+        if(shadingEnabled)
+        {
+            location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
+            functions->glUniform1i(location, 1);
+            functions->glActiveTexture(GL_TEXTURE0 + 1);
+            functions->glBindTexture(GL_TEXTURE_2D, terrain->texture->textureId());
+
+            location = functions->glGetUniformLocation(shader->programId(), "texcoordScale");
+            functions->glUniform1f(location, terrain->texcoordScale);
+
+            location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
+            functions->glUniform1i(location, false);
+            functions->glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            terrain->drawSimple();
+        }
+
+        if(wireframeEnabled)
+        {
+            location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
+            functions->glUniform1i(location, true);
+
+            functions->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            terrain->drawSimple();
+        }
+
     }
-
-    if(wireframeEnabled)
-    {
-        location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
-        functions->glUniform1i(location, true);
-
-        functions->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        terrain->drawSimple();
-    }
-
-
     shader->release();
 }
 

@@ -42,9 +42,9 @@ public:
 
 public slots:
 
-    void dimXValueChanged(int value);
+    void gridRepetitionXChanged(int value);
 
-    void dimYValueChanged(int value);
+    void gridRepetitionYChanged(int value);
 
     void generateTerrainButtonClicked();
 

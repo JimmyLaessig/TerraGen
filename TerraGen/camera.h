@@ -1,5 +1,5 @@
 #pragma once
-#include "SceneObject.h"
+#include "Transform.h"
 
 class Camera
 {

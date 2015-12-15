@@ -1,15 +1,16 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
-#include "sceneobject.h"
+#include "transform.h"
 #include <QOpenGLFunctions_4_4_Core>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLTexture>
 #include <QImage>
 
-struct Geometry
+struct Grid
 {
+    int gridSize;
     float* vertices;
     float* uvs;
 
@@ -17,23 +18,23 @@ struct Geometry
 
     unsigned int numVertices;
     unsigned int numIndices;
-
 };
 
-class Terrain : public SceneObject
+class Terrain
 {
 public:
 
     Terrain(QOpenGLFunctions_4_4_Core* functions);
     virtual ~Terrain();
 
-    float heightScale = 1.0f;
+    float maxHeight = 1.0f;
     float texcoordScale = 1.0f;
 
     QOpenGLTexture* heightmapTexture;
 
     QOpenGLTexture* texture;
 
+    std::vector<Transform> transforms;
 
     void drawTesselate();
 
@@ -41,12 +42,24 @@ public:
 
     void setHeightmapTexture(QImage* heightmapImage);
 
-    void setGeometry(Geometry geometry);
+    void setGrid(Grid grid);
 
-    void createVAO();
+    void destroyGrid();
+
+    void setGridRepetitionX(int value);
+
+    void setGridRepetitionY(int value);
 
 private:
-    Geometry geometry;
+
+    Grid grid;
+
+    void setGridRepetitions(int x, int y);
+
+    int gridRepetitionX = 1;
+    int gridRepetitionY = 1;
+
+    void createVAO();
 
     QOpenGLFunctions_4_4_Core* functions;
 

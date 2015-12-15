@@ -54,109 +54,6 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QGroupBox" name="TerrainGenerator">
-        <property name="title">
-         <string>Terrain</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <property name="leftMargin">
-          <number>10</number>
-         </property>
-         <property name="topMargin">
-          <number>10</number>
-         </property>
-         <property name="rightMargin">
-          <number>10</number>
-         </property>
-         <property name="bottomMargin">
-          <number>10</number>
-         </property>
-         <property name="spacing">
-          <number>5</number>
-         </property>
-         <item row="2" column="1">
-          <widget class="QWidget" name="widget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <property name="spacing">
-             <number>5</number>
-            </property>
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QSpinBox" name="dimX">
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QSpinBox" name="dimY">
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>100</number>
-              </property>
-              <property name="value">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="dimensionsLabel">
-           <property name="minimumSize">
-            <size>
-             <width>90</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>90</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Dimensions</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QPushButton" name="generateTerrainButton">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>Generate</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
        <widget class="QGroupBox" name="noiseGenerator">
         <property name="maximumSize">
          <size>
@@ -472,11 +369,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="TerrainParameter">
+       <widget class="QGroupBox" name="TerrainGenerator">
         <property name="title">
-         <string>Rendering</string>
+         <string>Terrain</string>
         </property>
-        <layout class="QGridLayout" name="gridLayout">
+        <layout class="QGridLayout" name="gridLayout_2">
          <property name="leftMargin">
           <number>10</number>
          </property>
@@ -492,7 +389,111 @@
          <property name="spacing">
           <number>5</number>
          </property>
-         <item row="7" column="0">
+         <item row="3" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox">
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="heightLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>90</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>90</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Height</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QWidget" name="widget" native="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>5</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QSpinBox" name="gridRepetitionX">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="value">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="gridRepetitionY">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="value">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="dimensionsLabel">
+           <property name="minimumSize">
+            <size>
+             <width>90</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>90</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Dimensions</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
           <widget class="QLabel" name="textureRepeatLabel">
            <property name="minimumSize">
             <size>
@@ -514,6 +515,40 @@
            </property>
           </widget>
          </item>
+         <item row="4" column="1">
+          <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+           <property name="minimum">
+            <double>1.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="TerrainParameter">
+        <property name="title">
+         <string>Rendering</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="leftMargin">
+          <number>10</number>
+         </property>
+         <property name="topMargin">
+          <number>10</number>
+         </property>
+         <property name="rightMargin">
+          <number>10</number>
+         </property>
+         <property name="bottomMargin">
+          <number>10</number>
+         </property>
+         <property name="spacing">
+          <number>5</number>
+         </property>
          <item row="2" column="1">
           <widget class="QCheckBox" name="checkBox_6">
            <property name="text">
@@ -544,34 +579,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="heightLabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>90</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>90</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Height</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
          <item row="15" column="0">
           <widget class="QLabel" name="label_3">
            <property name="text">
@@ -592,23 +599,6 @@
            </property>
            <property name="tristate">
             <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox">
-           <property name="value">
-            <double>1.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="7" column="1">
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
-           <property name="minimum">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -714,8 +704,8 @@
     <slot>setRed(int)</slot>
     <slot>setBlue(int)</slot>
     <slot>setGreen(int)</slot>
-    <slot>dimXValueChanged(int)</slot>
-    <slot>dimYValueChanged(int)</slot>
+    <slot>gridRepetitionXChanged(int)</slot>
+    <slot>gridRepetitionYChanged(int)</slot>
     <slot>generateTerrainButtonClicked()</slot>
     <slot>openNoiseTextureButtonClicked()</slot>
     <slot>noiseTypeChanged(QString)</slot>
@@ -737,62 +727,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>dimX</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>canvas</receiver>
-   <slot>dimXValueChanged(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>905</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>596</x>
-     <y>134</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dimY</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>canvas</receiver>
-   <slot>dimYValueChanged(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>978</x>
-     <y>42</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>706</x>
-     <y>67</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>generateTerrainButton</sender>
-   <signal>clicked()</signal>
-   <receiver>canvas</receiver>
-   <slot>generateTerrainButtonClicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>964</x>
-     <y>74</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>729</x>
-     <y>88</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>openTextureFileButton</sender>
    <signal>clicked()</signal>
    <receiver>canvas</receiver>
    <slot>openNoiseTextureButtonClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>944</x>
-     <y>132</y>
+     <x>1001</x>
+     <y>56</y>
     </hint>
     <hint type="destinationlabel">
      <x>734</x>
@@ -807,8 +749,8 @@
    <slot>noiseTypeChanged(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>948</x>
-     <y>364</y>
+     <x>999</x>
+     <y>283</y>
     </hint>
     <hint type="destinationlabel">
      <x>739</x>
@@ -824,7 +766,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1000</x>
-     <y>474</y>
+     <y>386</y>
     </hint>
     <hint type="destinationlabel">
      <x>773</x>
@@ -840,7 +782,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1002</x>
-     <y>534</y>
+     <y>471</y>
     </hint>
     <hint type="destinationlabel">
      <x>770</x>
@@ -856,7 +798,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1002</x>
-     <y>552</y>
+     <y>549</y>
     </hint>
     <hint type="destinationlabel">
      <x>771</x>
@@ -872,7 +814,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1002</x>
-     <y>570</y>
+     <y>567</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
@@ -888,7 +830,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1002</x>
-     <y>588</y>
+     <y>585</y>
     </hint>
     <hint type="destinationlabel">
      <x>763</x>
@@ -904,7 +846,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1002</x>
-     <y>613</y>
+     <y>496</y>
     </hint>
     <hint type="destinationlabel">
      <x>773</x>
@@ -920,7 +862,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1002</x>
-     <y>631</y>
+     <y>603</y>
     </hint>
     <hint type="destinationlabel">
      <x>778</x>
@@ -936,7 +878,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1002</x>
-     <y>649</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
      <x>778</x>
@@ -952,7 +894,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1002</x>
-     <y>667</y>
+     <y>639</y>
     </hint>
     <hint type="destinationlabel">
      <x>737</x>
@@ -967,8 +909,8 @@
    <slot>noiseOctavsChanged(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>937</x>
-     <y>384</y>
+     <x>1000</x>
+     <y>308</y>
     </hint>
     <hint type="destinationlabel">
      <x>764</x>
@@ -983,8 +925,8 @@
    <slot>noisePersistenceChanged(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
-     <y>409</y>
+     <x>1000</x>
+     <y>333</y>
     </hint>
     <hint type="destinationlabel">
      <x>754</x>
@@ -999,12 +941,44 @@
    <slot>noiseScaleChanged(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
-     <y>437</y>
+     <x>1000</x>
+     <y>358</y>
     </hint>
     <hint type="destinationlabel">
      <x>772</x>
      <y>437</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gridRepetitionX</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>canvas</receiver>
+   <slot>gridRepetitionXChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>919</x>
+     <y>431</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>731</x>
+     <y>431</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gridRepetitionY</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>canvas</receiver>
+   <slot>gridRepetitionYChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>965</x>
+     <y>438</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>735</x>
+     <y>444</y>
     </hint>
    </hints>
   </connection>

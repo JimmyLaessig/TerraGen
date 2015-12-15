@@ -6,12 +6,12 @@
 #include "glm\glm.hpp"
 
 
-class SceneObject
+class Transform
 {
 public:
-    SceneObject();
+    Transform();
 
-    ~SceneObject();
+    ~Transform();
 
     void update(float deltaT);
 

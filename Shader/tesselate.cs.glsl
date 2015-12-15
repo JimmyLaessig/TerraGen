@@ -7,7 +7,7 @@ in vec3 position_CS[];
 in vec2 texcoords_CS[];
 
 
-uniform mat4 modelMatrix;
+
 uniform vec3 eyePosWorld;
 
 out vec3 position_ES[];

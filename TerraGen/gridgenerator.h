@@ -1,13 +1,16 @@
-#ifndef TERRAINGENERATOR_H
-#define TERRAINGENERATOR_H
+#ifndef GRIDGENERATOR_H
+#define GRIDGENERATOR_H
+
+#include "gridgenerator.h"
 #include "terrain.h"
 #include "glm/vec3.hpp"
-class TerrainGenerator
+
+class GridGenerator
 {
 public:
     // Dimensions of the terrain
-    static int dimX;
-    static int dimY;
+    static int gridSize;
+
     // Number of times the textures are repeated
     static int textureRepeat;
     // Generates a new Terrain
@@ -15,4 +18,4 @@ public:
 
 };
 
-#endif // TERRAINGENERATOR_H
+#endif // GRIDGENERATOR_H

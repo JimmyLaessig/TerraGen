@@ -4,7 +4,7 @@
 #include <QKeyEvent>
 #include "glm/gtc/type_ptr.hpp"
 #include <iostream>
-#include "terraingenerator.h"
+#include "gridgenerator.h"
 
 
 
@@ -32,7 +32,9 @@ void Canvas::initializeGL()
     window->setNoiseImage(noiseImage);
 
     renderer = new Renderer(this, this->size().width(), this->size().height());
-    terrain = nullptr;
+
+    terrain = GridGenerator::Generate(this);
+    terrain->setHeightmapTexture(noiseImage);
     camera = new Camera();
     float ratio = (float)this->size().width()/ (float)this->size().height();
     camera->setProjectionMatrix(70.0f, ratio, 0.1f, 1000.0f);
@@ -54,8 +56,7 @@ void Canvas::paintGL()
         noiseImage = SimplexNoiseGenerator::Generate(512, 512);
 
         // Create Noise Texture if Terrain is available
-        if(terrain!= nullptr)
-            terrain->setHeightmapTexture(noiseImage);
+        terrain->setHeightmapTexture(noiseImage);
 
         // Update UI
         window->setNoiseImage(noiseImage);
@@ -63,30 +64,11 @@ void Canvas::paintGL()
         generateNoise = false;
     }
 
-    // Generate Terrain
-    if(generateTerrain)
-    {
-        // Delete old Terrain
-        if(terrain !=nullptr)
-            delete terrain;
-
-        // Generate new Terrain
-        terrain = TerrainGenerator::Generate(this);
-        // Set the Noise Texture to the current NoiseImage
-        terrain->setHeightmapTexture(noiseImage);
-
-        generateTerrain = false;
-    }
-
 
     // Clear the Canvas
     glViewport(0,0,size().width(), size().height());
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-
-    // return if no terrain exists
-    if(terrain == nullptr)
-        return;
 
     // Render terrain
     renderer->paintGL(terrain);
@@ -148,15 +130,18 @@ void Canvas::keyPressEvent(QKeyEvent* event)
 
 }
 
-void Canvas::dimXValueChanged(int value)
+void Canvas::gridRepetitionXChanged(int value)
 {
-    TerrainGenerator::dimX = value;
+    terrain->setGridRepetitionX(value);
+    update();
 }
 
-void Canvas::dimYValueChanged(int value)
+void Canvas::gridRepetitionYChanged(int value)
 {
-    TerrainGenerator::dimY = value;
+    terrain->setGridRepetitionY(value);
+    update();
 }
+
 
 void Canvas::generateTerrainButtonClicked()
 {
@@ -182,7 +167,7 @@ void Canvas::generateNoiseTextureButtonClicked()
 
 void Canvas::heightValueChanged(double value)
 {
-    terrain->heightScale = value;
+    terrain->maxHeight = value;
     update();
 }
 

@@ -1,27 +1,26 @@
-#include "terraingenerator.h"
+#include "gridgenerator.h"
 #include <string>
 #include <vector>
 #include <cmath>
 
-int TerrainGenerator::dimX = 10;
-int TerrainGenerator::dimY = 10;
+int GridGenerator::gridSize = 10;
 
-Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
+Terrain* GridGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
 {
     // Offset each triangle such that the whole Terrain will be centered to the origin
-    float offsetX = -(float)dimX / 2.0f;
-    float offsetZ = (float)dimY / 2.0f;
+    float offsetX = -(float)gridSize / 2.0f;
+    float offsetZ = (float)gridSize / 2.0f;
 
     // Number of vertices
-    int numVertices = dimX * dimY * 2 * 3;
+    int numVertices = gridSize * gridSize * 2 * 3;
 
     // Create Vertex Array
     std::vector<float> vertices = std::vector<float>();
     std::vector<float> uvs = std::vector<float>();
 
-    for (int j = 0; j <= dimY; j++)
+    for (int j = 0; j <= gridSize; j++)
     {
-        for(int i = 0; i <= dimX; i++)
+        for(int i = 0; i <= gridSize; i++)
         {
             float x = i + offsetX;
             float y = 0;
@@ -31,26 +30,26 @@ Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
             vertices.push_back(y);
             vertices.push_back(z);
 
-            float uv_x = i  / (float)dimX;
-            float uv_y = j  / (float)dimY ;
+            float uv_x = i  / (float)gridSize;
+            float uv_y = j  / (float)gridSize ;
 
             uvs.push_back(uv_x);
             uvs.push_back(uv_y);
 
-            int index = j * (dimX+1) + i;
+            int index = j * (gridSize+1) + i;
             // qDebug("Vertex %d: (%f, %f, %f), uvs (%f,%f)", index, vertex.x, vertex.y, vertex.z, uv.x, uv.y);
         }
     }
     qDebug("Created Vertices");
     // Create Index Array
-    int numFaces = dimX * dimY * 2;
+    int numFaces = gridSize * gridSize * 2;
     int numIndices = numFaces * 3;
     std::vector<unsigned int> indices = std::vector<unsigned int>();
 
-    int numX = dimX+1;
-    for(int j = 0; j < dimY; j++)
+    int numX = gridSize + 1;
+    for(int j = 0; j < gridSize; j++)
     {
-        for(int i = 0; i< dimX; i++ )
+        for(int i = 0; i< gridSize; i++ )
         {
             // Lower Face
             int index0 = j * numX + i;
@@ -78,16 +77,16 @@ Terrain* TerrainGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
     qDebug("Created Indices");
     Terrain* terrain = new Terrain(functions);
 
-    Geometry geometry;
-    geometry.numIndices = numIndices;
-    geometry.numVertices = numVertices;
+    Grid grid;
+    grid.gridSize = gridSize;
+    grid.numIndices = numIndices;
+    grid.numVertices = numVertices;
 
-    geometry.indices = indices.data();
-    geometry.vertices = vertices.data();
-    geometry.uvs = uvs.data();
+    grid.indices = indices.data();
+    grid.vertices = vertices.data();
+    grid.uvs = uvs.data();
 
-    terrain->setGeometry(geometry);
-    terrain->createVAO();
+    terrain->setGrid(grid);
 
     return terrain;
 }
