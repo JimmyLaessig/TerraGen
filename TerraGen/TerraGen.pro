@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     terrain.cpp \
     window.cpp \
     transform.cpp \
-    gridgenerator.cpp
+    gridgenerator.cpp \
+    keyevent.cpp
 
 
 FORMS    += window.ui
@@ -39,7 +40,8 @@ HEADERS += \
     terrain.h \
     window.h \
     transform.h \
-    gridgenerator.h
+    gridgenerator.h \
+    keyevent.h
 
 DISTFILES +=\
     ../Shader/tesselate.vs.glsl \

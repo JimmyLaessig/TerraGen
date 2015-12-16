@@ -84,7 +84,7 @@ private:
 
     Renderer* renderer;
 
-    glm::vec2 lasMousePos;
+    QPoint lastMousePos;
     bool generateTerrain = false;
     bool generateNoise = false;
     bool mouseLeftDown;
@@ -94,6 +94,8 @@ private:
 
     Terrain* terrain;
     Camera* camera;
+
+    float mouseSensitivity;
 
 };
 

@@ -13,6 +13,7 @@ Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
     this->window = static_cast<Window*>(parent);
     mouseLeftDown = false;
     mouseRightDown = false;
+    mouseSensitivity = 0.09f;
 }
 
 Canvas::~Canvas()
@@ -24,6 +25,8 @@ Canvas::~Canvas()
 void Canvas::initializeGL()
 {
     initializeOpenGLFunctions();
+
+    lastMousePos = QCursor::pos();
 
     Shaders::InitializeShaders();
 
@@ -86,17 +89,15 @@ void Canvas::resizeGL()
 
 void Canvas::mouseMoveEvent(QMouseEvent * event)
 {
-    // Rotation
-    if(mouseLeftDown)
+    if(event->buttons() == Qt::RightButton)
     {
-        return;
+        QPoint diff = QCursor::pos() - lastMousePos;
+        camera->rotate(glm::vec3(0,1,0), (float)diff.x() * mouseSensitivity);
+        camera->rotate(glm::vec3(1,0,0), (float)diff.y() * mouseSensitivity);
+        update();
     }
+    lastMousePos = QCursor::pos();
 
-    // Translation
-    if(mouseRightDown)
-    {
-        return;
-    }
 }
 
 void Canvas::wheelEvent(QWheelEvent * event)
@@ -133,7 +134,22 @@ void Canvas::mouseReleaseEvent(QMouseEvent * event)
 void Canvas::keyPressEvent(QKeyEvent* event)
 {
 
+    if(event->key() == Qt::Key_W)
+    {
+        qDebug("forward");
+        camera->translate(glm::vec3(0, 0, -0.01));
+    }
+    if(event->key() == Qt::Key_S)
+    {
+        qDebug("backwards");
+        camera->translate(glm::vec3(0, 0, 0.01));
+    }
+
+    // update();
 }
+
+
+
 
 void Canvas::gridRepetitionXChanged(int value)
 {
