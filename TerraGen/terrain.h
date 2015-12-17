@@ -35,7 +35,7 @@ public:
     QOpenGLTexture* texture;
 
     std::vector<Transform> transforms;
-
+    std::vector<glm::vec2> gridCoords;
     void drawTesselate();
 
     void drawSimple();
@@ -45,6 +45,10 @@ public:
     void setGrid(Grid grid);
 
     void destroyGrid();
+
+    int getGridRepetitionX();
+
+    int getGridRepetitionY();
 
     void setGridRepetitionX(int value);
 

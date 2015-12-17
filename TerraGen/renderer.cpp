@@ -11,7 +11,7 @@ Renderer::Renderer(QOpenGLFunctions_4_4_Core* functions, int width, int height)
 }
 Renderer::~Renderer()
 {
-    // TODO Destroy framebuffer here
+    functions->glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::paintGL(Terrain* terrain)
@@ -45,6 +45,8 @@ void Renderer::drawTesselate(Terrain* terrain)
     QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
     shader->bind();
 
+    int gridRepetitionsX = terrain->getGridRepetitionX();
+    int gridRepetitionsY = terrain->getGridRepetitionY();
 
     GLuint location = functions->glGetUniformLocation(shader->programId(), "heightmapTexture");
     functions->glUniform1i(location, 1);
@@ -57,7 +59,7 @@ void Renderer::drawTesselate(Terrain* terrain)
     location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
     functions->glUniform1i(location, 2);
     functions->glActiveTexture(GL_TEXTURE0 + 2);
-    functions->glBindTexture(GL_TEXTURE_2D, terrain->texture->textureId());
+    functions->glBindTexture(GL_TEXTURE_2D, terrain->heightmapTexture->textureId());
 
     location = functions->glGetUniformLocation(shader->programId(), "texcoordScale");
     functions->glUniform1f(location, terrain->texcoordScale);
@@ -70,11 +72,15 @@ void Renderer::drawTesselate(Terrain* terrain)
     glm::vec3 eyePosWorld = camera->getPosition();
     functions->glUniform3f(location, eyePosWorld.x, eyePosWorld.y, eyePosWorld.z);
 
+    location = functions->glGetUniformLocation(shader->programId(), "gridDimensions");
+    functions->glUniform2f(location, gridRepetitionsX, gridRepetitionsY);
 
-
-
-    for(int i = 0; i < terrain->transforms.size(); i++)
+    for (int i = 0; i < terrain->transforms.size(); i++)
     {
+        glm::vec2 gridCoords = terrain->gridCoords.at(i);
+        location = functions->glGetUniformLocation(shader->programId(), "gridCoords");
+        functions->glUniform2f(location, gridCoords.x, gridCoords.y);
+
         location = functions->glGetUniformLocation(shader->programId(), "modelMatrix");
         functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(terrain->transforms.at(i).modelMatrix));
 
@@ -94,6 +100,7 @@ void Renderer::drawTesselate(Terrain* terrain)
             functions->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             terrain->drawTesselate();
         }
+
     }
     shader->release();
 }

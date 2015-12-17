@@ -20,6 +20,7 @@ Window::~Window()
 void Window::setNoiseImage(QImage* image)
 {
     ui->noiseImageLabel->setPixmap(QPixmap::fromImage(*image));
+    ui->noiseImageLabel->setScaledContents(true);
     ui->noiseImageLabel->show();
 }
 

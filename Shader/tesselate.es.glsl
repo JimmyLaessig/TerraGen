@@ -7,6 +7,9 @@ uniform mat4 viewProjectionMatrix;
 uniform sampler2D heightmapTexture;
 uniform float heightScale = 1.0f;
 
+uniform vec2 gridDimensions = vec2(1);
+uniform vec2 gridCoords = vec2(1);
+
 uniform mat3 normalMatrix;
 
 in vec3 position_ES[];
@@ -14,6 +17,15 @@ in vec2 texcoords_ES[];
 
 out vec2 texcoords_FS;
 out vec3 viewNormal_FS;
+
+// Scales the given texcoords (in domain [0,1]) to the dimensions of the grid at the given coordinates
+vec2 scaleCoordinates(vec2 coordinates, vec2 gridDimensions, vec2 gridCoords)
+{
+  //  texcoords.y = 1- texcoords.y;
+    vec2 min = gridCoords / gridDimensions;
+    vec2 max = (gridCoords +1)/ gridDimensions;
+    return (max - min) * coordinates + min;
+}
 
 // Interpolate values v0-v2 based on the barycentric coordinates
 // of the current vertex within the triangle
@@ -57,7 +69,8 @@ void main(void)
 
 
     // Displace Vertex in model world space
-    float displacement = texture2D(heightmapTexture, texcoords.xy).x;
+    vec2 heightmapCoords = scaleCoordinates(texcoords, gridDimensions, gridCoords);
+    float displacement = 1.0 - texture2D(heightmapTexture , heightmapCoords).x;
     position.y = displacement * heightScale;
 
     // transform to NDC

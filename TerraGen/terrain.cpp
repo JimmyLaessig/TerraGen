@@ -8,9 +8,9 @@ Terrain::Terrain(QOpenGLFunctions_4_4_Core* functions)
     heightmapTexture = nullptr;
     maxHeight = 1.0;
 
-    texture = new QOpenGLTexture(QImage("../Assets/test_white.png"));
+    texture = new QOpenGLTexture(QImage("../Assets/test.png"));
 
-    transforms.push_back(Transform());
+    setGridRepetitions(gridRepetitionX, gridRepetitionY);
 }
 
 Terrain::~Terrain()
@@ -65,6 +65,16 @@ void Terrain::setGridRepetitionY(int value)
     setGridRepetitions(gridRepetitionX, value);
 }
 
+int Terrain::getGridRepetitionX()
+{
+    return gridRepetitionX;
+}
+
+int Terrain::getGridRepetitionY()
+{
+    return gridRepetitionY;
+}
+
 void Terrain::setGridRepetitions(int x, int y)
 {
     gridRepetitionX = x;
@@ -76,6 +86,7 @@ void Terrain::setGridRepetitions(int x, int y)
     qDebug("Grid Repetitions: %d, %d", gridRepetitionX, gridRepetitionY);
     qDebug("OffsetX: %f", offsetX);
     transforms.clear();
+    gridCoords.clear();
 
     for(int i = 0; i < gridRepetitionX; i++)
     {
@@ -87,6 +98,7 @@ void Terrain::setGridRepetitions(int x, int y)
             Transform t;
             t.translate(glm::vec3(translateX, 0, translateZ));
             transforms.push_back(t);
+            gridCoords.push_back(glm::vec2(i, j));
         }
     }
 }
@@ -126,6 +138,7 @@ void Terrain::createVAO()
     functions->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     functions->glBufferData(GL_ELEMENT_ARRAY_BUFFER, grid.numIndices * sizeof(unsigned int), grid.indices, GL_STATIC_DRAW);
     qDebug("Created IndexBuffer");
+
     // Buffer for the vertices
     functions->glGenBuffers(1, &vertexBuffer);
     functions->glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -134,6 +147,7 @@ void Terrain::createVAO()
     functions->glEnableVertexAttribArray(0);
     functions->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     qDebug("Created vertexbuffer");
+
     // Buffer for the uvs
     functions->glGenBuffers(1, &uvBuffer);
     functions->glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
@@ -142,6 +156,7 @@ void Terrain::createVAO()
     functions->glEnableVertexAttribArray(1);
     functions->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
     qDebug("Created uvBuffer");
+
     // Release VAO
     functions->glBindVertexArray(0);
 }

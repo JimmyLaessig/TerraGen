@@ -15,6 +15,7 @@
 #include "simplexnoisegenerator.h"
 #include "perlinnoisegenerator.h"
 #include "camera.h"
+#include "cameracontroller.h"
 
 
 class Canvas : public QOpenGLWidget, public QOpenGLFunctions_4_4_Core
@@ -32,13 +33,11 @@ public:
 
     virtual void mouseMoveEvent(QMouseEvent * event);
 
-    virtual void mousePressEvent(QMouseEvent * event);
-
-    virtual void mouseReleaseEvent(QMouseEvent * event);
-
     virtual void wheelEvent(QWheelEvent * event);
 
     virtual void keyPressEvent(QKeyEvent * event);
+
+    virtual void keyReleaseEvent(QKeyEvent * event);
 
 public slots:
 
@@ -80,6 +79,8 @@ public slots:
 
 private:
 
+    QTime time;
+
     Window* window;
 
     Renderer* renderer;
@@ -94,8 +95,7 @@ private:
 
     Terrain* terrain;
     Camera* camera;
-
-    float mouseSensitivity;
+    CameraController* cameraController;
 
 };
 

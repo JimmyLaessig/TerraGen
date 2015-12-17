@@ -11,9 +11,6 @@
 Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
 {
     this->window = static_cast<Window*>(parent);
-    mouseLeftDown = false;
-    mouseRightDown = false;
-    mouseSensitivity = 0.09f;
 }
 
 Canvas::~Canvas()
@@ -34,17 +31,20 @@ void Canvas::initializeGL()
     noiseImage->fill(qRgb(255, 255, 255));
     window->setNoiseImage(noiseImage);
 
-    renderer = new Renderer(this, this->size().width(), this->size().height());
-
     terrain = GridGenerator::Generate(this);
     terrain->setHeightmapTexture(noiseImage);
-    camera = new Camera();
-    float ratio = (float)this->size().width()/ (float)this->size().height();
-    camera->setProjectionMatrix(70.0f, ratio, 0.1f, 1000.0f);
-    camera->translate(glm::vec3(0, 2, 0));
-    camera->rotate(glm::vec3(1,0,0), 45.0f);
 
+    camera = new Camera();
+    float ratio = (float)size().width( )/ (float)size().height();
+    camera->setProjectionMatrix(70.0f, ratio, 0.1f, 1000.0f);
+
+    renderer = new Renderer(this, this->size().width(), this->size().height());
     renderer->camera = camera;
+
+    cameraController = new CameraController();
+    cameraController->setCamera(camera);
+
+
 }
 
 void Canvas::paintGL()
@@ -92,8 +92,8 @@ void Canvas::mouseMoveEvent(QMouseEvent * event)
     if(event->buttons() == Qt::RightButton)
     {
         QPoint diff = QCursor::pos() - lastMousePos;
-        camera->rotate(glm::vec3(0,1,0), (float)diff.x() * mouseSensitivity);
-        camera->rotate(glm::vec3(1,0,0), (float)diff.y() * mouseSensitivity);
+        camera->rotate(glm::vec3(0,1,0), (float)diff.x() * 0.09);
+        camera->rotate(glm::vec3(1,0,0), (float)diff.y() * 0.09);
         update();
     }
     lastMousePos = QCursor::pos();
@@ -107,49 +107,21 @@ void Canvas::wheelEvent(QWheelEvent * event)
     update();
 }
 
-void Canvas::mousePressEvent(QMouseEvent * event)
-{
-    if(event->button() == Qt::RightButton)
-    {
-        mouseRightDown = true;
-    }
-    if(event->button() == Qt::LeftButton)
-    {
-        mouseLeftDown = true;
-    }
-}
-void Canvas::mouseReleaseEvent(QMouseEvent * event)
-{
-    if(event->button() == Qt::RightButton)
-    {
-        mouseRightDown = false;
-    }
-    if(event->button() == Qt::LeftButton)
-    {
-        mouseLeftDown = false;
-    }
-}
-
-
 void Canvas::keyPressEvent(QKeyEvent* event)
 {
-
-    if(event->key() == Qt::Key_W)
-    {
-        qDebug("forward");
-        camera->translate(glm::vec3(0, 0, -0.01));
-    }
-    if(event->key() == Qt::Key_S)
-    {
-        qDebug("backwards");
-        camera->translate(glm::vec3(0, 0, 0.01));
-    }
-
-    // update();
+    cameraController->keyPressed(event->key());
+    update();
 }
 
+void Canvas::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->isAutoRepeat())
+    return;
 
+    cameraController->keyReleased(event->key());
+    update();
 
+}
 
 void Canvas::gridRepetitionXChanged(int value)
 {

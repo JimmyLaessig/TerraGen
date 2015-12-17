@@ -24,7 +24,7 @@ SOURCES += main.cpp\
     window.cpp \
     transform.cpp \
     gridgenerator.cpp \
-    keyevent.cpp
+    cameracontroller.cpp
 
 
 FORMS    += window.ui
@@ -41,7 +41,7 @@ HEADERS += \
     window.h \
     transform.h \
     gridgenerator.h \
-    keyevent.h
+    cameracontroller.h
 
 DISTFILES +=\
     ../Shader/tesselate.vs.glsl \
