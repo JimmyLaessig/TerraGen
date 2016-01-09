@@ -1,8 +1,8 @@
-#ifndef SIMPLEXNOISEGENERATOR_H
-#define SIMPLEXNOISEGENERATOR_H
+#ifndef HEIGHTMAPGENERATOR_H
+#define HEIGHTMAPGENERATOR_H
 #include <QImage>
 
-class SimplexNoiseGenerator
+class HeightmapGenerator
 {
 public:
 
@@ -10,7 +10,7 @@ public:
     static double Persistence;
     static double Scale;
 
-    SimplexNoiseGenerator();
+    HeightmapGenerator();
 
     static QImage* Generate(int width, int height);
 };

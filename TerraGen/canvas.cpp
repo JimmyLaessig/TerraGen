@@ -56,7 +56,7 @@ void Canvas::paintGL()
         if(noiseImage != nullptr)
             delete noiseImage;
         // Generate new NoiseImage
-        noiseImage = SimplexNoiseGenerator::Generate(512, 512);
+        noiseImage = HeightmapGenerator::Generate(512, 512);
 
         // Create Noise Texture if Terrain is available
         terrain->setHeightmapTexture(noiseImage);
@@ -216,17 +216,17 @@ void Canvas::distanceFogEnabled(bool enabled)
 
 void Canvas::noiseOctavsChanged(double value)
 {
-    SimplexNoiseGenerator::Octavs = value;
+    //SimplexNoiseGenerator::Octavs = value;
 }
 
 void Canvas::noisePersistenceChanged(double value)
 {
-    SimplexNoiseGenerator::Persistence = value;
+    //SimplexNoiseGenerator::Persistence = value;
 }
 
 void Canvas::noiseScaleChanged(double value)
 {
-    SimplexNoiseGenerator::Scale = value;
+   // SimplexNoiseGenerator::Scale = value;
 }
 
 

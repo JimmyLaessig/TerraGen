@@ -15,16 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
     camera.cpp \
     canvas.cpp \
-    perlinnoisegenerator.cpp \
     renderer.cpp \
     shaders.cpp \
-    simplexnoise.cpp \
-    simplexnoisegenerator.cpp \
     terrain.cpp \
     window.cpp \
     transform.cpp \
     gridgenerator.cpp \
-    cameracontroller.cpp
+    cameracontroller.cpp \
+    noiseutils.cpp \
+    heightmapgenerator.cpp
 
 
 FORMS    += window.ui
@@ -32,16 +31,15 @@ FORMS    += window.ui
 HEADERS += \
     camera.h \
     canvas.h \
-    perlinnoisegenerator.h \
     renderer.h \
     shaders.h \
-    simplexnoise.h \
-    simplexnoisegenerator.h \
     terrain.h \
     window.h \
     transform.h \
     gridgenerator.h \
-    cameracontroller.h
+    cameracontroller.h \
+    noiseutils.h \
+    heightmapgenerator.h
 
 DISTFILES +=\
     ../Shader/tesselate.vs.glsl \
@@ -54,3 +52,8 @@ DISTFILES +=\
 
 
 INCLUDEPATH += $$PWD/../External/Include
+
+win32: LIBS += -L$$PWD/../External/Lib/ -llibnoise
+
+INCLUDEPATH += $$PWD/../External/Include
+DEPENDPATH += $$PWD/../External/Include

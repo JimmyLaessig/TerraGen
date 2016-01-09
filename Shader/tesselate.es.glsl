@@ -67,10 +67,9 @@ void main(void)
     vec3 position = interpolate3D(position_ES[0].xyz, position_ES[1].xyz, position_ES[2].xyz);
     vec2 texcoords = interpolate2D(texcoords_ES[0], texcoords_ES[1], texcoords_ES[2]);
 
-
     // Displace Vertex in model world space
     vec2 heightmapCoords = scaleCoordinates(texcoords, gridDimensions, gridCoords);
-    float displacement = 1.0 - texture2D(heightmapTexture , heightmapCoords).x;
+    float displacement = texture2D(heightmapTexture , heightmapCoords).x;
     position.y = displacement * heightScale;
 
     // transform to NDC

@@ -8,7 +8,7 @@ Terrain::Terrain(QOpenGLFunctions_4_4_Core* functions)
     heightmapTexture = nullptr;
     maxHeight = 1.0;
 
-    colorTexture = new QOpenGLTexture(QImage("../Assets/test2.png"));
+    colorTexture = new QOpenGLTexture(QImage("Assets/test2.png"));
 
     setGridRepetitions(gridRepetitionX, gridRepetitionY);
 }

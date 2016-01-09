@@ -12,8 +12,7 @@
 #include "window.h"
 #include "renderer.h"
 #include "terrain.h"
-#include "simplexnoisegenerator.h"
-#include "perlinnoisegenerator.h"
+#include "heightmapgenerator.h"
 #include "camera.h"
 #include "cameracontroller.h"
 

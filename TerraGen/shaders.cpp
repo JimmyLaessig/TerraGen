@@ -20,10 +20,10 @@ void Shaders::InitializeShaders()
     // TODO Load all shaders here at once
 
     QOpenGLShaderProgram* tesselate = new QOpenGLShaderProgram();
-    tesselate->addShaderFromSourceFile(QOpenGLShader::Vertex, "../Shader/tesselate.vs.glsl");
-    tesselate->addShaderFromSourceFile(QOpenGLShader::TessellationControl, "../Shader/tesselate.cs.glsl");
-    tesselate->addShaderFromSourceFile(QOpenGLShader::TessellationEvaluation, "../Shader/tesselate.es.glsl");
-    tesselate->addShaderFromSourceFile(QOpenGLShader::Fragment, "../Shader/tesselate.fs.glsl");
+    tesselate->addShaderFromSourceFile(QOpenGLShader::Vertex, "Shader/tesselate.vs.glsl");
+    tesselate->addShaderFromSourceFile(QOpenGLShader::TessellationControl, "Shader/tesselate.cs.glsl");
+    tesselate->addShaderFromSourceFile(QOpenGLShader::TessellationEvaluation, "Shader/tesselate.es.glsl");
+    tesselate->addShaderFromSourceFile(QOpenGLShader::Fragment, "Shader/tesselate.fs.glsl");
 
     if (tesselate->link())
     {
@@ -36,8 +36,8 @@ void Shaders::InitializeShaders()
     }
 
     QOpenGLShaderProgram* diffuse = new QOpenGLShaderProgram();
-    diffuse->addShaderFromSourceFile(QOpenGLShader::Vertex, "../Shader/diffuse.vs.glsl");
-    diffuse->addShaderFromSourceFile(QOpenGLShader::Fragment, "../Shader/diffuse.fs.glsl");
+    diffuse->addShaderFromSourceFile(QOpenGLShader::Vertex, "Shader/diffuse.vs.glsl");
+    diffuse->addShaderFromSourceFile(QOpenGLShader::Fragment, "Shader/diffuse.fs.glsl");
 
     if (diffuse->link())
     {
