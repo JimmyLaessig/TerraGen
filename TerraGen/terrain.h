@@ -31,8 +31,7 @@ public:
     float texcoordScale = 1.0f;
 
     QOpenGLTexture* heightmapTexture;
-
-    QOpenGLTexture* texture;
+    QOpenGLTexture* colorTexture;
 
     std::vector<Transform> transforms;
     std::vector<glm::vec2> gridCoords;
@@ -41,6 +40,8 @@ public:
     void drawSimple();
 
     void setHeightmapTexture(QImage* heightmapImage);
+
+    void setColorTexture(QImage* image);
 
     void setGrid(Grid grid);
 

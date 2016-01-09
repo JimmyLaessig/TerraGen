@@ -44,11 +44,11 @@ void Canvas::initializeGL()
     cameraController = new CameraController();
     cameraController->setCamera(camera);
 
-
 }
 
 void Canvas::paintGL()
 {
+
     // Generate Noise Texture
     if(generateNoise)
     {
@@ -70,8 +70,9 @@ void Canvas::paintGL()
 
     // Clear the Canvas
     glViewport(0,0,size().width(), size().height());
+    glDepthMask(GL_TRUE);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 
     // Render terrain

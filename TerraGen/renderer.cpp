@@ -7,11 +7,16 @@ Renderer::Renderer(QOpenGLFunctions_4_4_Core* functions, int width, int height)
     this->width = width;
     this->height = height;
 
+    functions->glEnable(GL_DEPTH_TEST);
+    functions->glEnable(GL_CULL_FACE);
+    functions->glCullFace(GL_BACK);
+    functions->glDepthMask(GL_TRUE);
+
     // TODO Initialize framebuffer here
 }
 Renderer::~Renderer()
 {
-    functions->glEnable(GL_DEPTH_TEST);
+
 }
 
 void Renderer::paintGL(Terrain* terrain)
@@ -59,14 +64,13 @@ void Renderer::drawTesselate(Terrain* terrain)
     location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
     functions->glUniform1i(location, 2);
     functions->glActiveTexture(GL_TEXTURE0 + 2);
-    functions->glBindTexture(GL_TEXTURE_2D, terrain->heightmapTexture->textureId());
+    functions->glBindTexture(GL_TEXTURE_2D, terrain->colorTexture->textureId());
 
     location = functions->glGetUniformLocation(shader->programId(), "texcoordScale");
     functions->glUniform1f(location, terrain->texcoordScale);
 
-    glm::mat4 viewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() ;
-    location = functions->glGetUniformLocation(shader->programId(), "viewProjectionMatrix");
-    functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix));
+    glm::mat4 viewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix();
+
 
     location = functions->glGetUniformLocation(shader->programId(), "eyePosWorld");
     glm::vec3 eyePosWorld = camera->getPosition();
@@ -75,20 +79,20 @@ void Renderer::drawTesselate(Terrain* terrain)
     location = functions->glGetUniformLocation(shader->programId(), "gridDimensions");
     functions->glUniform2f(location, gridRepetitionsX, gridRepetitionsY);
 
-    for (int i = 0; i < terrain->transforms.size(); i++)
+    for (unsigned int i = 0; i < terrain->transforms.size(); i++)
     {
         glm::vec2 gridCoords = terrain->gridCoords.at(i);
         location = functions->glGetUniformLocation(shader->programId(), "gridCoords");
         functions->glUniform2f(location, gridCoords.x, gridCoords.y);
 
-        location = functions->glGetUniformLocation(shader->programId(), "modelMatrix");
-        functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(terrain->transforms.at(i).modelMatrix));
+        location = functions->glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
+        functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix * terrain->transforms.at(i).modelMatrix));
 
         if(shadingEnabled)
         {
             location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
             functions->glUniform1i(location, false);
-            functions->glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            functions->glPolygonMode(GL_FRONT, GL_FILL);
             terrain->drawTesselate();
         }
 
@@ -97,7 +101,7 @@ void Renderer::drawTesselate(Terrain* terrain)
             location = functions->glGetUniformLocation(shader->programId(), "wireframeEnabled");
             functions->glUniform1i(location, true);
 
-            functions->glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            functions->glPolygonMode(GL_FRONT, GL_LINE);
             terrain->drawTesselate();
         }
 
@@ -111,7 +115,7 @@ void Renderer::drawSimple(Terrain* terrain)
     QOpenGLShaderProgram* shader = Shaders::Find("diffuse");
     shader->bind();
 
-    for(int i = 0; i < terrain->transforms.size(); i++)
+    for(unsigned int i = 0; i < terrain->transforms.size(); i++)
     {
 
         glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->transforms.at(i).modelMatrix;
@@ -123,7 +127,7 @@ void Renderer::drawSimple(Terrain* terrain)
             location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
             functions->glUniform1i(location, 1);
             functions->glActiveTexture(GL_TEXTURE0 + 1);
-            functions->glBindTexture(GL_TEXTURE_2D, terrain->texture->textureId());
+            functions->glBindTexture(GL_TEXTURE_2D, terrain->colorTexture->textureId());
 
             location = functions->glGetUniformLocation(shader->programId(), "texcoordScale");
             functions->glUniform1f(location, terrain->texcoordScale);

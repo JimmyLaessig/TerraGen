@@ -1,7 +1,7 @@
 #include "simplexnoisegenerator.h"
 #include <cmath>
 #include "simplexnoise.h"
-
+#include "OpenSimplexNoise/OpenSimplexNoise.hh"
 double SimplexNoiseGenerator::Octavs = 3;
 double SimplexNoiseGenerator::Persistence = 0.5;
 double SimplexNoiseGenerator::Scale = 0.01;

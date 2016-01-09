@@ -2,7 +2,8 @@
 
 layout(triangles, equal_spacing, ccw) in;
 
-uniform mat4 viewProjectionMatrix;
+uniform mat4 modelViewProjectionMatrix;
+uniform mat3 normalMatrix;
 
 uniform sampler2D heightmapTexture;
 uniform float heightScale = 1.0f;
@@ -10,7 +11,6 @@ uniform float heightScale = 1.0f;
 uniform vec2 gridDimensions = vec2(1);
 uniform vec2 gridCoords = vec2(1);
 
-uniform mat3 normalMatrix;
 
 in vec3 position_ES[];
 in vec2 texcoords_ES[];
@@ -74,7 +74,7 @@ void main(void)
     position.y = displacement * heightScale;
 
     // transform to NDC
-    gl_Position = viewProjectionMatrix * vec4(position, 1);
+    gl_Position = modelViewProjectionMatrix * vec4(position, 1);
     texcoords_FS = texcoords;
 
 }

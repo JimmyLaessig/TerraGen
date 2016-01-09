@@ -53,8 +53,9 @@ Terrain* GridGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
         {
             // Lower Face
             int index0 = j * numX + i;
-            int index1 = (j + 1) * numX + i;
-            int index2 = j * numX + (i + 1);
+            int index1 = j * numX + (i + 1);
+            int index2 = (j + 1) * numX + i;
+
 
             indices.push_back(index0);
             indices.push_back(index1);
