@@ -7,9 +7,6 @@ int GridGenerator::gridSize = 10;
 
 Terrain* GridGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
 {
-    // Offset each triangle such that the whole Terrain will be centered to the origin
-    float offsetX = -(float)gridSize / 2.0f;
-    float offsetZ = (float)gridSize / 2.0f;
 
     // Number of vertices
     int numVertices = gridSize * gridSize * 2 * 3;
@@ -22,9 +19,9 @@ Terrain* GridGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
     {
         for(int i = 0; i <= gridSize; i++)
         {
-            float x = i + offsetX;
+            float x = i;
             float y = 0;
-            float z = -j + offsetZ;
+            float z = -j;
 
             vertices.push_back(x);
             vertices.push_back(y);
@@ -36,8 +33,9 @@ Terrain* GridGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
             uvs.push_back(uv_x);
             uvs.push_back(uv_y);
 
+
             int index = j * (gridSize+1) + i;
-            // qDebug("Vertex %d: (%f, %f, %f), uvs (%f,%f)", index, vertex.x, vertex.y, vertex.z, uv.x, uv.y);
+            // qDebug("Vertex %d: (%f, %f, %f), uvs (%f,%f)", index, x, y, z, uv_x, uv_y);
         }
     }
     qDebug("Created Vertices");
@@ -47,14 +45,15 @@ Terrain* GridGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
     std::vector<unsigned int> indices = std::vector<unsigned int>();
 
     int numX = gridSize + 1;
-    for(int j = 0; j < gridSize; j++)
+    for(int y = 0; y < gridSize; y++)
     {
-        for(int i = 0; i< gridSize; i++ )
+        for(int x = 0; x< gridSize; x++ )
         {
             // Lower Face
-            int index0 = j * numX + i;
-            int index1 = j * numX + (i + 1);
-            int index2 = (j + 1) * numX + i;
+            int index0 = y * numX + x;
+
+            int index1 = y * numX + (x + 1);
+            int index2 = (y + 1) * numX + x;
 
 
             indices.push_back(index0);
@@ -64,9 +63,10 @@ Terrain* GridGenerator::Generate(QOpenGLFunctions_4_4_Core *functions)
             //  qDebug("Face: (%d, %d, %d)",index0, index1, index2 );
 
             // Upper Face
-            int index3 = (j + 1) * numX + i;
-            int index4 = j * numX + (i + 1);
-            int index5 = (j + 1) * numX + (i + 1);
+            int index3 = (y + 1) * numX + x;
+
+            int index4 = y * numX + (x + 1);
+            int index5 = (y + 1) * numX + (x + 1);
 
             indices.push_back(index3);
             indices.push_back(index4);

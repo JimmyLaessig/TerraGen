@@ -50,15 +50,12 @@ void Renderer::drawTesselate(Terrain* terrain)
     QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
     shader->bind();
 
-    int gridRepetitionsX = terrain->getGridRepetitionX();
-    int gridRepetitionsY = terrain->getGridRepetitionY();
-
     GLuint location = functions->glGetUniformLocation(shader->programId(), "heightmapTexture");
     functions->glUniform1i(location, 1);
     functions->glActiveTexture(GL_TEXTURE0 + 1);
     functions->glBindTexture(GL_TEXTURE_2D, terrain->heightmapTexture->textureId());
 
-    location = functions->glGetUniformLocation(shader->programId(), "heightScale");
+    location = functions->glGetUniformLocation(shader->programId(), "maxHeight");
     functions->glUniform1f(location, terrain->maxHeight);
 
     location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
@@ -76,17 +73,26 @@ void Renderer::drawTesselate(Terrain* terrain)
     glm::vec3 eyePosWorld = camera->getPosition();
     functions->glUniform3f(location, eyePosWorld.x, eyePosWorld.y, eyePosWorld.z);
 
-    location = functions->glGetUniformLocation(shader->programId(), "gridDimensions");
-    functions->glUniform2f(location, gridRepetitionsX, gridRepetitionsY);
 
-    for (unsigned int i = 0; i < terrain->transforms.size(); i++)
+    location = functions->glGetUniformLocation(shader->programId(), "numTiles");
+    glm::vec2 numTiles = glm::vec2(terrain->getGridRepetitionX(), terrain->getGridRepetitionY());
+    functions->glUniform2fv(location, 1, glm::value_ptr(numTiles));
+
+    for (unsigned int i = 0; i < terrain->tiles.size(); i++)
     {
-        glm::vec2 gridCoords = terrain->gridCoords.at(i);
-        location = functions->glGetUniformLocation(shader->programId(), "gridCoords");
-        functions->glUniform2f(location, gridCoords.x, gridCoords.y);
+        Transform tile = terrain->tiles.at(i);
+        glm::vec2 tileIndex = terrain->tileCoordinates.at(i);
+        location = functions->glGetUniformLocation(shader->programId(), "tileIndex");
+        functions->glUniform2fv(location,1, glm::value_ptr(tileIndex));
 
         location = functions->glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
-        functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix * terrain->transforms.at(i).modelMatrix));
+        functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix * tile.modelMatrix));
+
+        location = functions->glGetUniformLocation(shader->programId(), "modelMatrix");
+        functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(tile.modelMatrix));
+
+        location = functions->glGetUniformLocation(shader->programId(), "normalMatrix");
+        functions->glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(tile.getNormalMatrix()));
 
         if(shadingEnabled)
         {
@@ -115,10 +121,10 @@ void Renderer::drawSimple(Terrain* terrain)
     QOpenGLShaderProgram* shader = Shaders::Find("diffuse");
     shader->bind();
 
-    for(unsigned int i = 0; i < terrain->transforms.size(); i++)
+    for(unsigned int i = 0; i < terrain->tiles.size(); i++)
     {
 
-        glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->transforms.at(i).modelMatrix;
+        glm::mat4 modelViewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix() *terrain->tiles.at(i).modelMatrix;
         GLuint location = functions->glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
         functions->glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
 

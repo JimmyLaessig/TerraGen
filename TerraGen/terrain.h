@@ -18,6 +18,12 @@ struct Grid
 
     unsigned int numVertices;
     unsigned int numIndices;
+
+    GLuint terrainVAO;
+    GLuint indexBuffer;
+    GLuint vertexBuffer;
+    GLuint barycentricCoordinatesBuffer;
+    GLuint uvBuffer;
 };
 
 class Terrain
@@ -33,8 +39,8 @@ public:
     QOpenGLTexture* heightmapTexture;
     QOpenGLTexture* colorTexture;
 
-    std::vector<Transform> transforms;
-    std::vector<glm::vec2> gridCoords;
+    std::vector<Transform> tiles;
+    std::vector<glm::vec2> tileCoordinates;
     void drawTesselate();
 
     void drawSimple();
@@ -67,12 +73,6 @@ private:
     void createVAO();
 
     QOpenGLFunctions_4_4_Core* functions;
-
-    GLuint terrainVAO;
-    GLuint indexBuffer;
-    GLuint vertexBuffer;
-    GLuint barycentricCoordinatesBuffer;
-    GLuint uvBuffer;
 };
 
 

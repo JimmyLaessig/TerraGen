@@ -6,8 +6,7 @@ layout(vertices = 3) out;
 in vec3 position_CS[];
 in vec2 texcoords_CS[];
 
-
-
+uniform mat4 modelMatrix;
 uniform vec3 eyePosWorld;
 
 out vec3 position_ES[];
@@ -32,9 +31,9 @@ void main(void)
     position_ES[gl_InvocationID] = position_CS[gl_InvocationID];
     texcoords_ES[gl_InvocationID] = texcoords_CS[gl_InvocationID];
 
-    float distance0 = distance(eyePosWorld , position_CS[0]);
-    float distance1 = distance(eyePosWorld , position_CS[1]);
-    float distance2 = distance(eyePosWorld , position_CS[2]);
+    float distance0 = distance(eyePosWorld , (modelMatrix * vec4(position_CS[0], 1)).xyz);
+    float distance1 = distance(eyePosWorld , (modelMatrix * vec4(position_CS[1], 1)).xyz);
+    float distance2 = distance(eyePosWorld , (modelMatrix * vec4(position_CS[2], 1)).xyz);
 
     gl_TessLevelOuter[0] = getTessLevel(distance1, distance2);
     gl_TessLevelOuter[1] = getTessLevel(distance2, distance0);

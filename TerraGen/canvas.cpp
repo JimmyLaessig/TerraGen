@@ -37,6 +37,9 @@ void Canvas::initializeGL()
     camera = new Camera();
     float ratio = (float)size().width( )/ (float)size().height();
     camera->setProjectionMatrix(70.0f, ratio, 0.1f, 1000.0f);
+    camera->setPosition(glm::vec3(0, 5, 0));
+    camera->rotate(glm::vec3(0, 1, 0), 45);
+     camera->rotate(glm::vec3(1, 0, 0), 45);
 
     renderer = new Renderer(this, this->size().width(), this->size().height());
     renderer->camera = camera;
@@ -81,7 +84,7 @@ void Canvas::paintGL()
     // Display last frametime
     double ms = (double)time.msecsTo(QTime::currentTime());
     window->setFPSLabel(1000.0 / ms);
-
+   // qDebug("Camera Forward: %f, %f, %f", camera->forward().x, camera->forward().y, camera->forward().z);
 }
 
 void Canvas::resizeGL()

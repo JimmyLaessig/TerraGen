@@ -28,7 +28,7 @@ Terrain::~Terrain()
 void Terrain::drawTesselate()
 {
     functions->glPatchParameteri(GL_PATCH_VERTICES, 3);
-    functions->glBindVertexArray(terrainVAO);
+    functions->glBindVertexArray(grid.terrainVAO);
     functions->glDrawElements(GL_PATCHES, grid.numIndices, GL_UNSIGNED_INT, 0);
     functions->glBindVertexArray(0);
 }
@@ -36,7 +36,7 @@ void Terrain::drawTesselate()
 
 void Terrain::drawSimple()
 {
-    functions->glBindVertexArray(terrainVAO);
+    functions->glBindVertexArray(grid.terrainVAO);
     functions->glDrawElements(GL_TRIANGLES, grid.numIndices, GL_UNSIGNED_INT, 0);
     functions->glBindVertexArray(0);
 }
@@ -52,6 +52,7 @@ void Terrain::setHeightmapTexture(QImage *heightmapImage)
     }
 
     heightmapTexture = new QOpenGLTexture(*heightmapImage);
+
 }
 
 void Terrain::setColorTexture(QImage *colorImage)
@@ -92,25 +93,21 @@ void Terrain::setGridRepetitions(int x, int y)
     gridRepetitionX = x;
     gridRepetitionY = y;
 
-    float offsetX = -(float)((grid.gridSize) * (x-1)) / 2.0f;
-    float offsetZ = (float)((grid.gridSize) * (y-1)) / 2.0f;
-
-    qDebug("Grid Repetitions: %d, %d", gridRepetitionX, gridRepetitionY);
-    qDebug("OffsetX: %f", offsetX);
-    transforms.clear();
-    gridCoords.clear();
+    tiles.clear();
+    tileCoordinates.clear();
 
     for(int i = 0; i < gridRepetitionX; i++)
     {
         for(int j = 0; j < gridRepetitionY; j++)
         {
-            int translateX = grid.gridSize *  i + offsetX;
-            int translateZ = -grid.gridSize *  j + offsetZ;
+            float translateX = grid.gridSize * i;
+            float translateZ =-grid.gridSize * j;
 
             Transform t;
             t.translate(glm::vec3(translateX, 0, translateZ));
-            transforms.push_back(t);
-            gridCoords.push_back(glm::vec2(i, j));
+            tiles.push_back(t);
+            glm::vec2 tileCoords = glm::vec2(i,j);
+            tileCoordinates.push_back(tileCoords);
         }
     }
 }
@@ -131,10 +128,10 @@ void Terrain::destroyGrid()
 {
     if(functions)
     {
-        if (indexBuffer)  functions->glDeleteBuffers(1, &indexBuffer);
-        if (vertexBuffer) functions->glDeleteBuffers(1, &vertexBuffer);
-        if (uvBuffer)     functions->glDeleteBuffers(1, &uvBuffer);
-        if (terrainVAO)   functions->glDeleteVertexArrays(1, &terrainVAO);
+        if (grid.indexBuffer)  functions->glDeleteBuffers(1, &grid.indexBuffer);
+        if (grid.vertexBuffer) functions->glDeleteBuffers(1, &grid.vertexBuffer);
+        if (grid.uvBuffer)     functions->glDeleteBuffers(1, &grid.uvBuffer);
+        if (grid.terrainVAO)   functions->glDeleteVertexArrays(1, &grid.terrainVAO);
     }
 }
 
@@ -142,18 +139,18 @@ void Terrain::destroyGrid()
 void Terrain::createVAO()
 {
     // Bind VAO
-    functions->glGenVertexArrays(1, &terrainVAO);
-    functions->glBindVertexArray(terrainVAO);
+    functions->glGenVertexArrays(1, &grid.terrainVAO);
+    functions->glBindVertexArray(grid.terrainVAO);
 
     // Buffer for the indices
-    functions->glGenBuffers(1, &indexBuffer);
-    functions->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    functions->glGenBuffers(1, &grid.indexBuffer);
+    functions->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, grid.indexBuffer);
     functions->glBufferData(GL_ELEMENT_ARRAY_BUFFER, grid.numIndices * sizeof(unsigned int), grid.indices, GL_STATIC_DRAW);
     qDebug("Created IndexBuffer");
 
     // Buffer for the vertices
-    functions->glGenBuffers(1, &vertexBuffer);
-    functions->glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    functions->glGenBuffers(1, &grid.vertexBuffer);
+    functions->glBindBuffer(GL_ARRAY_BUFFER, grid.vertexBuffer);
     functions->glBufferData(GL_ARRAY_BUFFER, grid.numVertices * 3 * sizeof(float), grid.vertices, GL_STATIC_DRAW);
 
     functions->glEnableVertexAttribArray(0);
@@ -161,8 +158,8 @@ void Terrain::createVAO()
     qDebug("Created vertexbuffer");
 
     // Buffer for the uvs
-    functions->glGenBuffers(1, &uvBuffer);
-    functions->glBindBuffer(GL_ARRAY_BUFFER, uvBuffer);
+    functions->glGenBuffers(1, &grid.uvBuffer);
+    functions->glBindBuffer(GL_ARRAY_BUFFER, grid.uvBuffer);
     functions->glBufferData(GL_ARRAY_BUFFER, grid.numVertices * 2 * sizeof(float), grid.uvs, GL_STATIC_DRAW);
 
     functions->glEnableVertexAttribArray(1);
