@@ -37,7 +37,8 @@ public:
     float texcoordScale = 1.0f;
 
     QOpenGLTexture* heightmapTexture;
-    QOpenGLTexture* colorTexture;
+    QOpenGLTexture* grassTexture;
+    QOpenGLTexture* rockTexture;
 
     std::vector<Transform> tiles;
     std::vector<glm::vec2> tileCoordinates;
@@ -46,8 +47,6 @@ public:
     void drawSimple();
 
     void setHeightmapTexture(QImage* heightmapImage);
-
-    void setColorTexture(QImage* image);
 
     void setGrid(Grid grid);
 

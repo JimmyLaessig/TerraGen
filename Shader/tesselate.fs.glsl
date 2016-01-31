@@ -13,9 +13,8 @@ uniform float maxHeight;
 uniform bool wireframeEnabled = false;
 
 uniform float texcoordScale = 1;
-uniform sampler2D colorTexture;
-uniform sampler2D colorTexture2;
-uniform sampler2D colorTexture3;
+uniform sampler2D grasTexture;
+uniform sampler2D rockTexture;
 
 uniform vec3 lightDirection_World = vec3(-1, -1, 0);
 
@@ -49,7 +48,7 @@ void main()
         fragColor = vec4(0,0,0,1);
         return;
     }
-    vec4 diffuseColor = texture2D(colorTexture,color_texcoords_FS);
+    vec4 diffuseColor = texture2D(rockTexture,color_texcoords_FS);
     float gradient = dot(worldNormal_FS, vec3(0.0, 1.0, 0.0));
 
     diffuseColor.xyz  *= diffuseComponent(-lightDirection_World, normalize(worldNormal_FS));

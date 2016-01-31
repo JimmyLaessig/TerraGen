@@ -9,8 +9,8 @@ using namespace noise;
 HeightmapGenerator::HeightmapGenerator(){}
 
 double HeightmapGenerator::Frequency1 = 2.0;
-double HeightmapGenerator::Scale = -0.75;
-double HeightmapGenerator::Bias = 0.125;
+double HeightmapGenerator::Scale = 0.125;
+double HeightmapGenerator::Bias = -0.75;
 
 double HeightmapGenerator::Frequency2 = 0.5;
 double HeightmapGenerator::Persistence = 0.25;

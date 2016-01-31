@@ -46,7 +46,6 @@ void Renderer::paintGL(Terrain* terrain)
 
 void Renderer::drawTesselate(Terrain* terrain)
 {
-
     QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
     shader->bind();
 
@@ -58,10 +57,15 @@ void Renderer::drawTesselate(Terrain* terrain)
     location = functions->glGetUniformLocation(shader->programId(), "maxHeight");
     functions->glUniform1f(location, terrain->maxHeight);
 
-    location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
+    location = functions->glGetUniformLocation(shader->programId(), "grasTexture");
     functions->glUniform1i(location, 2);
     functions->glActiveTexture(GL_TEXTURE0 + 2);
-    functions->glBindTexture(GL_TEXTURE_2D, terrain->colorTexture->textureId());
+    functions->glBindTexture(GL_TEXTURE_2D, terrain->grassTexture->textureId());
+
+    location = functions->glGetUniformLocation(shader->programId(), "rockTexture");
+    functions->glUniform1i(location, 3);
+    functions->glActiveTexture(GL_TEXTURE0 + 3);
+    functions->glBindTexture(GL_TEXTURE_2D, terrain->rockTexture->textureId());
 
     location = functions->glGetUniformLocation(shader->programId(), "texcoordScale");
     functions->glUniform1f(location, terrain->texcoordScale);
@@ -133,7 +137,7 @@ void Renderer::drawSimple(Terrain* terrain)
             location = functions->glGetUniformLocation(shader->programId(), "colorTexture");
             functions->glUniform1i(location, 1);
             functions->glActiveTexture(GL_TEXTURE0 + 1);
-            functions->glBindTexture(GL_TEXTURE_2D, terrain->colorTexture->textureId());
+            functions->glBindTexture(GL_TEXTURE_2D, terrain->grassTexture->textureId());
 
             location = functions->glGetUniformLocation(shader->programId(), "texcoordScale");
             functions->glUniform1f(location, terrain->texcoordScale);

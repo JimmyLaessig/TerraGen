@@ -8,7 +8,8 @@ Terrain::Terrain(QOpenGLFunctions_4_4_Core* functions)
     heightmapTexture = nullptr;
     maxHeight = 1.0;
 
-    colorTexture = new QOpenGLTexture(QImage("Assets/GrassGreenTexture0003.jpg"));
+    grassTexture = new QOpenGLTexture(QImage("Assets/GrassGreenTexture0003.jpg"));
+    rockTexture = new QOpenGLTexture(QImage("Assets/rock.jpg"));
 
     setGridRepetitions(gridRepetitionX, gridRepetitionY);
 }
@@ -18,8 +19,8 @@ Terrain::~Terrain()
     heightmapTexture->destroy();
     delete heightmapTexture;
 
-    colorTexture->destroy();
-    delete colorTexture;
+    grassTexture->destroy();
+    delete grassTexture;
 
     destroyGrid();
 }
@@ -54,19 +55,6 @@ void Terrain::setHeightmapTexture(QImage *heightmapImage)
     heightmapTexture = new QOpenGLTexture(*heightmapImage);
 
 }
-
-void Terrain::setColorTexture(QImage *colorImage)
-{
-    // Destroy old Texture if available
-    if(colorTexture != nullptr)
-    {
-        colorTexture->destroy();
-        delete this->colorTexture;
-    }
-
-    colorTexture = new QOpenGLTexture(*colorImage);
-}
-
 
 void Terrain::setGridRepetitionX(int value)
 {

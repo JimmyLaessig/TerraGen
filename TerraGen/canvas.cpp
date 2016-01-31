@@ -227,31 +227,26 @@ void Canvas::distanceFogEnabled(bool enabled)
 void Canvas::noiseFrequency1Changed(double value)
 {
     HeightmapGenerator::Frequency1 = value;
-    qDebug("Value %f", value);
 }
 
 void Canvas::noiseFrequency2Changed(double value)
 {
     HeightmapGenerator::Frequency2 = value;
-    qDebug("Value %f", value);
 }
 
 void Canvas::noisePersistenceChanged(double value)
 {
     HeightmapGenerator::Persistence = value;
-    qDebug("Value %f", value);
 }
 
 void Canvas::noiseBiasChanged(double value)
 {
     HeightmapGenerator::Bias = value;
-    qDebug("Value %f", value);
 }
 
 void Canvas::noiseScaleChanged(double value)
 {
     HeightmapGenerator::Scale = value;
-    qDebug("Value %f", value);
 }
 
 
