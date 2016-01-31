@@ -5,8 +5,9 @@
 class HeightmapGenerator
 {
 public:
-
-    static double Octavs;
+    static double Frequency1;
+    static double Frequency2;
+    static double Bias;
     static double Persistence;
     static double Scale;
 

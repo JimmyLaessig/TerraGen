@@ -70,9 +70,13 @@ public slots:
 
     void distanceFogEnabled(bool enabled);
 
-    void noiseOctavsChanged(double value);
+    void noiseFrequency1Changed(double value);
+
+    void noiseFrequency2Changed(double value);
 
     void noisePersistenceChanged(double value);
+
+    void noiseBiasChanged(double value);
 
     void noiseScaleChanged(double value);
 

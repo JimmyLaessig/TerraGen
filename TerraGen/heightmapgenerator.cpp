@@ -8,21 +8,27 @@ using namespace noise;
 
 HeightmapGenerator::HeightmapGenerator(){}
 
+double HeightmapGenerator::Frequency1 = 2.0;
+double HeightmapGenerator::Scale = -0.75;
+double HeightmapGenerator::Bias = 0.125;
+
+double HeightmapGenerator::Frequency2 = 0.5;
+double HeightmapGenerator::Persistence = 0.25;
 
 QImage* HeightmapGenerator::Generate(int width, int height)
 {
     module::RidgedMulti mountainTerrain;
     module::Billow baseFlatTerrain;
-    baseFlatTerrain.SetFrequency(2.0);
+    baseFlatTerrain.SetFrequency(Frequency1);
 
     module::ScaleBias flatTerrain;
     flatTerrain.SetSourceModule(0, baseFlatTerrain);
-    flatTerrain.SetScale(0.125);
-    flatTerrain.SetBias(-0.75);
+    flatTerrain.SetScale(Scale);
+    flatTerrain.SetBias(Bias);
 
     module::Perlin terrainType;
-    terrainType.SetFrequency(0.5);
-    terrainType.SetPersistence(0.25);
+    terrainType.SetFrequency(Frequency2);
+    terrainType.SetPersistence(Persistence);
 
     module::Select finalTerrain;
     finalTerrain.SetSourceModule(0, flatTerrain);
@@ -47,7 +53,6 @@ QImage* HeightmapGenerator::Generate(int width, int height)
 
     QImage* heightMapImage = new QImage(width, height, QImage::Format_RGB888);
 
-
     for(int i = 0; i < width;i++)
     {
         for (int j = 0; j < height; j++)
@@ -57,22 +62,23 @@ QImage* HeightmapGenerator::Generate(int width, int height)
         }
     }
 
-    QImage* normalMapImage = new QImage(width, height, QImage::Format_RGB888);
+//    QImage* normalMapImage = new QImage(width, height, QImage::Format_RGB888);
 
-    utils::RendererNormalMap normalMapRenderer;
-    normalMapRenderer.SetSourceNoiseMap(heightMap);
-    normalMapRenderer.SetDestImage(image);
-    normalMapRenderer.SetBumpHeight(10.0);
-    normalMapRenderer.Render();
+//    utils::RendererNormalMap normalMapRenderer;
+//    normalMapRenderer.SetSourceNoiseMap(heightMap);
+//    normalMapRenderer.SetDestImage(image);
+//    normalMapRenderer.SetBumpHeight(10.0);
+//    normalMapRenderer.Render();
 
-    for(int i = 0; i < width;i++)
-    {
-        for (int j = 0; j < height; j++)
-        {
-            auto c =  image.GetValue(i,j);
-            normalMapImage->setPixel(i, j, qRgb(c.red, c.green, c.blue));
-        }
-    }
+
+//    for(int i = 0; i < width;i++)
+//    {
+//        for (int j = 0; j < height; j++)
+//        {
+//            auto c =  image.GetValue(i,j);
+//            normalMapImage->setPixel(i, j, qRgb(c.red, c.blue, c.green));
+//        }
+//    }
 
     return heightMapImage;
 }

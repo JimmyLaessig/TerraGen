@@ -57,9 +57,9 @@ QOpenGLShaderProgram* Shaders::Find(std::string name)
 
 void Shaders::DeleteAll()
 {
-    //	for (auto &it : Shader::Shaders)
-    //	{
-    //		delete it.second;
-    //	}
-    //	Shader::Shaders.clear();
+        for (auto &it : ShaderMap)
+        {
+            delete it.second;
+        }
+        ShaderMap.clear();
 }

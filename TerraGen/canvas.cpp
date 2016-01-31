@@ -17,6 +17,7 @@ Canvas::~Canvas()
 {
     delete terrain;
     delete camera;
+    Shaders::DeleteAll();
 }
 
 void Canvas::initializeGL()
@@ -39,7 +40,7 @@ void Canvas::initializeGL()
     camera->setProjectionMatrix(70.0f, ratio, 0.1f, 1000.0f);
     camera->setPosition(glm::vec3(0, 5, 0));
     camera->rotate(glm::vec3(0, 1, 0), 45);
-     camera->rotate(glm::vec3(1, 0, 0), 45);
+    camera->rotate(glm::vec3(1, 0, 0), 45);
 
     renderer = new Renderer(this, this->size().width(), this->size().height());
     renderer->camera = camera;
@@ -84,7 +85,7 @@ void Canvas::paintGL()
     // Display last frametime
     double ms = (double)time.msecsTo(QTime::currentTime());
     window->setFPSLabel(1000.0 / ms);
-   // qDebug("Camera Forward: %f, %f, %f", camera->forward().x, camera->forward().y, camera->forward().z);
+    // qDebug("Camera Forward: %f, %f, %f", camera->forward().x, camera->forward().y, camera->forward().z);
 }
 
 void Canvas::resizeGL()
@@ -120,9 +121,15 @@ void Canvas::keyPressEvent(QKeyEvent* event)
 void Canvas::keyReleaseEvent(QKeyEvent *event)
 {
     if(event->isAutoRepeat())
-    return;
+        return;
 
     cameraController->keyReleased(event->key());
+
+    if(event->key() == Qt::Key_F1)
+    {
+        Shaders::DeleteAll();
+        Shaders::InitializeShaders();
+    }
     update();
 
 }
@@ -217,20 +224,34 @@ void Canvas::distanceFogEnabled(bool enabled)
     update();
 }
 
-void Canvas::noiseOctavsChanged(double value)
+void Canvas::noiseFrequency1Changed(double value)
 {
-    //SimplexNoiseGenerator::Octavs = value;
+    HeightmapGenerator::Frequency1 = value;
+    qDebug("Value %f", value);
+}
+
+void Canvas::noiseFrequency2Changed(double value)
+{
+    HeightmapGenerator::Frequency2 = value;
+    qDebug("Value %f", value);
 }
 
 void Canvas::noisePersistenceChanged(double value)
 {
-    //SimplexNoiseGenerator::Persistence = value;
+    HeightmapGenerator::Persistence = value;
+    qDebug("Value %f", value);
+}
+
+void Canvas::noiseBiasChanged(double value)
+{
+    HeightmapGenerator::Bias = value;
+    qDebug("Value %f", value);
 }
 
 void Canvas::noiseScaleChanged(double value)
 {
-   // SimplexNoiseGenerator::Scale = value;
+    HeightmapGenerator::Scale = value;
+    qDebug("Value %f", value);
 }
-
 
 

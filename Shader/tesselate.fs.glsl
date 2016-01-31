@@ -1,8 +1,11 @@
 #version 440 core
 
 
-in vec2 texcoords_FS;
+in vec2 heightmap_texcoords_FS;
+in vec2 color_texcoords_FS;
+
 in vec3 worldNormal_FS;
+in float gradient_FS;
 
 uniform sampler2D heightmapTexture;
 uniform float maxHeight;
@@ -11,25 +14,31 @@ uniform bool wireframeEnabled = false;
 
 uniform float texcoordScale = 1;
 uniform sampler2D colorTexture;
+uniform sampler2D colorTexture2;
+uniform sampler2D colorTexture3;
+
+uniform vec3 lightDirection_World = vec3(-1, -1, 0);
 
 layout(location = 0) out vec4 fragColor;
 
-
-vec3 calculateNormal(vec2 texcoords)
+vec3 ambientComponent()
 {
-    vec2 texelSize = 1.0 / textureSize(heightmapTexture, 0);
+    return vec3(0.3f);
+}
 
-    float nc = texture2D(heightmapTexture, texcoords).x * maxHeight;
-    float nr = texture2D(heightmapTexture, texcoords + texelSize * vec2(1, 0)).x * maxHeight;
-    float nu = texture2D(heightmapTexture, texcoords + texelSize * vec2(0, 1)).x * maxHeight;
 
-    vec3 normal;
-    normal.x = nc - nr;
-    normal.y = 1.0;
-    normal.z = nc - nu;
+float diffuseComponent(vec3 L, vec3 N)
+{
+    return clamp(dot(L, N), 0.0, 1.0);
+}
 
-    normal = normal * 0.5 + 0.5;
-    return normalize(normal);
+
+float specularComponent(vec3 lightDirection, vec3 viewDirection, vec3 normal, float shininess)
+{
+    if(dot(normal, lightDirection) < 0.0)
+        return 0.0;
+
+    return pow(max(0.0, dot(reflect(-lightDirection, normal), viewDirection)), shininess);
 }
 
 void main()
@@ -40,8 +49,15 @@ void main()
         fragColor = vec4(0,0,0,1);
         return;
     }
+    vec4 diffuseColor = texture2D(colorTexture,color_texcoords_FS);
+    float gradient = dot(worldNormal_FS, vec3(0.0, 1.0, 0.0));
 
-    // TODO Lighting
-    vec3 normal = calculateNormal(texcoords_FS);
-    fragColor = vec4(normal, 1);
+    diffuseColor.xyz  *= diffuseComponent(-lightDirection_World, normalize(worldNormal_FS));
+    diffuseColor.a = 1.0;
+
+    fragColor = diffuseColor;
+    //fragColor = vec4(color_texcoords_FS, 0, 1);
+    //vec4 fragColor = diffuseColor;
+    //fragColor = vec4(normalize(worldNormal_FS), 1);
+    //fragColor = vec4(gradient_FS, gradient_FS, gradient_FS, 1);
 }

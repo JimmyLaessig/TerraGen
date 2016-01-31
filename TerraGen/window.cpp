@@ -9,6 +9,13 @@ Window::Window(QWidget *parent) :
 {   
     ui->setupUi(this);
     ui->fpsLabel->setStyleSheet("QLabel { color:rgb(0, 255, 0); }");
+
+    ui->biasSpinner->setValue(HeightmapGenerator::Bias);
+    ui->frequency1Spinner->setValue(HeightmapGenerator::Frequency1);
+    ui->frequency2Spinner->setValue(HeightmapGenerator::Frequency2);
+
+    ui->persistenceSpinner->setValue(HeightmapGenerator::Persistence);
+    ui->scaleSpinner->setValue(HeightmapGenerator::Scale);
 }
 
 Window::~Window()
