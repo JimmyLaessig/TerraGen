@@ -41,15 +41,16 @@ vec3 calculateNormal(vec2 texcoords)
 {
     vec2 texelSize = 1.0 / textureSize(heightmapTexture, 0);
 
-    float nc = texture2D(heightmapTexture, texcoords).x * maxHeight;
-    float nr = texture2D(heightmapTexture, texcoords + texelSize * vec2(1, 0)).x * maxHeight;
-    float nu = texture2D(heightmapTexture, texcoords + texelSize * vec2(0, 1)).x * maxHeight;
+    float x_min = texture2D(heightmapTexture, texcoords + texelSize * vec2(-1, 0)).x * maxHeight;
+    float x_pos = texture2D(heightmapTexture, texcoords + texelSize * vec2( 1, 0)).x * maxHeight;
+    float z_min = texture2D(heightmapTexture, texcoords + texelSize * vec2( 0,-1)).x * maxHeight;
+    float z_pos = texture2D(heightmapTexture, texcoords + texelSize * vec2( 0, 1)).x * maxHeight;
 
     vec3 normal;
-    normal.x = nc - nr;
-    normal.y = 1.0;
-    normal.z = nc - nu;
-    normal = normal;
+    normal.x = x_min - x_pos;
+    normal.y = 2.0;
+    normal.z = z_min - z_pos;
+
 
     return normalize(normal);
 }

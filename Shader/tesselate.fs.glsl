@@ -31,13 +31,36 @@ float diffuseComponent(vec3 L, vec3 N)
     return clamp(dot(L, N), 0.0, 1.0);
 }
 
-
 float specularComponent(vec3 lightDirection, vec3 viewDirection, vec3 normal, float shininess)
 {
     if(dot(normal, lightDirection) < 0.0)
         return 0.0;
-
     return pow(max(0.0, dot(reflect(-lightDirection, normal), viewDirection)), shininess);
+}
+
+// Determines the color of the fragment based on the gradient
+vec4 calculateColor(float slope)
+{
+    float gradient_rock = 0.03;
+    float gradient_mixed = 0.02;
+
+    // Rock
+    if(slope > gradient_rock)
+    {
+        return texture2D(rockTexture,color_texcoords_FS);
+    }
+    // Blend rock and grass
+    if(slope > gradient_mixed)
+    {
+        vec4 rock = texture2D(rockTexture,color_texcoords_FS);
+        vec4 grass = texture2D(grasTexture,color_texcoords_FS);
+
+        float i = (slope - gradient_mixed) / (gradient_rock - gradient_mixed) ;
+
+        return mix(grass, rock, i);
+    }
+    // Grass
+    return texture2D(grasTexture,color_texcoords_FS);
 }
 
 void main()
@@ -48,15 +71,12 @@ void main()
         fragColor = vec4(0,0,0,1);
         return;
     }
-    vec4 diffuseColor = texture2D(rockTexture,color_texcoords_FS);
-    float gradient = dot(worldNormal_FS, vec3(0.0, 1.0, 0.0));
+    float slope = 1 - worldNormal_FS.y;
+    vec4 diffuseColor = calculateColor(slope);
 
-    diffuseColor.xyz  *= diffuseComponent(-lightDirection_World, normalize(worldNormal_FS));
-    diffuseColor.a = 1.0;
+    // diffuseColor.xyz  *= diffuseComponent(-lightDirection_World, normalize(worldNormal_FS));
 
     fragColor = diffuseColor;
-    //fragColor = vec4(color_texcoords_FS, 0, 1);
-    //vec4 fragColor = diffuseColor;
     //fragColor = vec4(normalize(worldNormal_FS), 1);
     //fragColor = vec4(gradient_FS, gradient_FS, gradient_FS, 1);
 }
