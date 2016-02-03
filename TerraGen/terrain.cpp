@@ -28,18 +28,18 @@ Terrain::~Terrain()
 
 void Terrain::drawTesselate()
 {
-    functions->glPatchParameteri(GL_PATCH_VERTICES, 3);
-    functions->glBindVertexArray(grid.terrainVAO);
-    functions->glDrawElements(GL_PATCHES, grid.numIndices, GL_UNSIGNED_INT, 0);
-    functions->glBindVertexArray(0);
+     functions->glPatchParameteri(GL_PATCH_VERTICES, 3);
+     functions->glBindVertexArray(grid.terrainVAO);
+     functions->glDrawElements(GL_PATCHES, grid.numIndices, GL_UNSIGNED_INT, 0);
+     functions->glBindVertexArray(0);
 }
 
 
 void Terrain::drawSimple()
 {
-    functions->glBindVertexArray(grid.terrainVAO);
-    functions->glDrawElements(GL_TRIANGLES, grid.numIndices, GL_UNSIGNED_INT, 0);
-    functions->glBindVertexArray(0);
+     functions->glBindVertexArray(grid.terrainVAO);
+     functions->glDrawElements(GL_TRIANGLES, grid.numIndices, GL_UNSIGNED_INT, 0);
+     functions->glBindVertexArray(0);
 }
 
 
@@ -116,10 +116,10 @@ void Terrain::destroyGrid()
 {
     if(functions)
     {
-        if (grid.indexBuffer)  functions->glDeleteBuffers(1, &grid.indexBuffer);
-        if (grid.vertexBuffer) functions->glDeleteBuffers(1, &grid.vertexBuffer);
-        if (grid.uvBuffer)     functions->glDeleteBuffers(1, &grid.uvBuffer);
-        if (grid.terrainVAO)   functions->glDeleteVertexArrays(1, &grid.terrainVAO);
+        if (grid.indexBuffer)   functions->glDeleteBuffers(1, &grid.indexBuffer);
+        if (grid.vertexBuffer)  functions->glDeleteBuffers(1, &grid.vertexBuffer);
+        if (grid.uvBuffer)      functions->glDeleteBuffers(1, &grid.uvBuffer);
+        if (grid.terrainVAO)    functions->glDeleteVertexArrays(1, &grid.terrainVAO);
     }
 }
 
@@ -127,34 +127,34 @@ void Terrain::destroyGrid()
 void Terrain::createVAO()
 {
     // Bind VAO
-    functions->glGenVertexArrays(1, &grid.terrainVAO);
-    functions->glBindVertexArray(grid.terrainVAO);
+     functions->glGenVertexArrays(1, &grid.terrainVAO);
+     functions->glBindVertexArray(grid.terrainVAO);
 
     // Buffer for the indices
-    functions->glGenBuffers(1, &grid.indexBuffer);
-    functions->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, grid.indexBuffer);
-    functions->glBufferData(GL_ELEMENT_ARRAY_BUFFER, grid.numIndices * sizeof(unsigned int), grid.indices, GL_STATIC_DRAW);
+     functions->glGenBuffers(1, &grid.indexBuffer);
+     functions->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, grid.indexBuffer);
+     functions->glBufferData(GL_ELEMENT_ARRAY_BUFFER, grid.numIndices * sizeof(unsigned int), grid.indices, GL_STATIC_DRAW);
     qDebug("Created IndexBuffer");
 
     // Buffer for the vertices
-    functions->glGenBuffers(1, &grid.vertexBuffer);
-    functions->glBindBuffer(GL_ARRAY_BUFFER, grid.vertexBuffer);
-    functions->glBufferData(GL_ARRAY_BUFFER, grid.numVertices * 3 * sizeof(float), grid.vertices, GL_STATIC_DRAW);
+     functions->glGenBuffers(1, &grid.vertexBuffer);
+     functions->glBindBuffer(GL_ARRAY_BUFFER, grid.vertexBuffer);
+     functions->glBufferData(GL_ARRAY_BUFFER, grid.numVertices * 3 * sizeof(float), grid.vertices, GL_STATIC_DRAW);
 
-    functions->glEnableVertexAttribArray(0);
+     functions->glEnableVertexAttribArray(0);
     functions->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     qDebug("Created vertexbuffer");
 
     // Buffer for the uvs
-    functions->glGenBuffers(1, &grid.uvBuffer);
-    functions->glBindBuffer(GL_ARRAY_BUFFER, grid.uvBuffer);
-    functions->glBufferData(GL_ARRAY_BUFFER, grid.numVertices * 2 * sizeof(float), grid.uvs, GL_STATIC_DRAW);
+     functions->glGenBuffers(1, &grid.uvBuffer);
+     functions->glBindBuffer(GL_ARRAY_BUFFER, grid.uvBuffer);
+     functions->glBufferData(GL_ARRAY_BUFFER, grid.numVertices * 2 * sizeof(float), grid.uvs, GL_STATIC_DRAW);
 
-    functions->glEnableVertexAttribArray(1);
-    functions->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
+     functions->glEnableVertexAttribArray(1);
+     functions->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
     qDebug("Created uvBuffer");
 
     // Release VAO
-    functions->glBindVertexArray(0);
+     functions->glBindVertexArray(0);
 }
 

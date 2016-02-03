@@ -7,11 +7,8 @@ uniform vec2 tileSize = vec2(10.0);
 uniform vec2 tileIndex = vec2(0.0);
 uniform vec2 numTiles = vec2(1.0);
 
-
 out vec3 position_CS;
 out vec2 heightmap_texcoords_CS;
-
-
 
 vec2 calculateHeightmapTexcoords(vec3 position)
 {

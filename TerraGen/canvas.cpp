@@ -5,20 +5,32 @@
 #include "glm/gtc/type_ptr.hpp"
 #include <iostream>
 #include "gridgenerator.h"
-
+#include <algorithm>
 
 
 Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
 {
     this->window = static_cast<Window*>(parent);
+
 }
 
 Canvas::~Canvas()
 {
     delete terrain;
     delete camera;
+    delete cameraController;
+    delete noiseImage;
+    delete shadowMapTechnique;
+    delete light;
+
     Shaders::DeleteAll();
 }
+
+//---------------------------------------------------------------------------//
+
+//----------------------- QT OpenGL Callback Functions ----------------------//
+
+//---------------------------------------------------------------------------//
 
 void Canvas::initializeGL()
 {
@@ -42,11 +54,15 @@ void Canvas::initializeGL()
     camera->rotate(glm::vec3(0, 1, 0), 45);
     camera->rotate(glm::vec3(1, 0, 0), 45);
 
-    renderer = new Renderer(this, this->size().width(), this->size().height());
-    renderer->camera = camera;
-
     cameraController = new CameraController();
     cameraController->setCamera(camera);
+
+    light = new DirectionalLight(glm::vec3(-1,-1, 0), glm::vec3(1, 1, 1));
+    shadowMapTechnique = new ShadowMapTechnique(this, 1024, 1024);
+    shadowMapTechnique->light = light;
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
 
 }
 
@@ -72,25 +88,133 @@ void Canvas::paintGL()
     }
     QTime time = QTime::currentTime();
 
-    // Clear the Canvas
-    glViewport(0,0,size().width(), size().height());
-    glDepthMask(GL_TRUE);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
-
-    // Render terrain
-    renderer->paintGL(terrain);
+    // Draw Scene
+    draw();
 
     // Display last frametime
     double ms = (double)time.msecsTo(QTime::currentTime());
     window->setFPSLabel(1000.0 / ms);
-    // qDebug("Camera Forward: %f, %f, %f", camera->forward().x, camera->forward().y, camera->forward().z);
+
 }
 
 void Canvas::resizeGL()
 {
 }
+
+//---------------------------------------------------------------------------//
+
+//-------------------------- Private Draw Functions -------------------------//
+
+//---------------------------------------------------------------------------//
+
+void Canvas::draw()
+{
+        // Clear the Canvas
+    glViewport(0,0,size().width(), size().height());
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+    // Render tesselated terrain
+    drawTesselate(terrain);
+
+    GLenum error = glGetError();
+    if(error != GL_NO_ERROR)
+    {
+        qDebug()<< error;
+    }
+}
+
+void Canvas::drawTesselate(Terrain* terrain)
+{
+    glCullFace(GL_BACK);
+
+    //glBindFramebuffer(GL_FRAMEBUFFER, context->defaultFramebufferObject());
+
+    QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
+    shader->bind();
+    int unit = 1;
+
+    // Max height of the terrain
+    GLuint location =  glGetUniformLocation(shader->programId(), "maxHeight");
+    glUniform1f(location, terrain->maxHeight);
+
+    // Heightmap texture
+    location = glGetUniformLocation(shader->programId(), "heightmapTexture");
+    glUniform1i(location, unit);
+    terrain->heightmapTexture->bind(unit++);
+
+    // Grass Texture
+    location = glGetUniformLocation(shader->programId(), "grasTexture");
+    glUniform1i(location, unit);
+    terrain->grassTexture->bind(unit++);
+
+    // Rock Texture
+    location = glGetUniformLocation(shader->programId(), "rockTexture");
+    glUniform1i(location, unit);
+    terrain->rockTexture->bind(unit++);
+
+    // Position of the camera in world space
+    location =  glGetUniformLocation(shader->programId(), "eyePosWorld");
+     glUniform3fv(location, 1, glm::value_ptr(camera->getPosition()));
+
+    // Number of tiles in the grid
+    location =  glGetUniformLocation(shader->programId(), "numTiles");
+     glUniform2f(location, terrain->getGridRepetitionX(), terrain->getGridRepetitionY());
+
+    // Direction of the light in world space
+    location =  glGetUniformLocation(shader->programId(), "lightDirection_World");
+     glUniform3fv(location, 1, glm::value_ptr(light->direction));
+
+    // ViewProjectionMatrix of the camera
+    glm::mat4 viewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix();
+
+    // Render all tiles
+    for (unsigned int i = 0; i < terrain->tiles.size(); i++)
+    {
+        Transform tile = terrain->tiles.at(i);
+
+        // Coordinates of the current tile in the grid
+        location =  glGetUniformLocation(shader->programId(), "tileIndex");
+         glUniform2fv(location,1, glm::value_ptr(terrain->tileCoordinates.at(i)));
+
+        // MVP matrix of the current tile
+        location =  glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
+         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix * tile.modelMatrix));
+
+        // Model matrix of the current tile
+        location =  glGetUniformLocation(shader->programId(), "modelMatrix");
+         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(tile.modelMatrix));
+
+        // Normal matrix of the current tile
+        location =  glGetUniformLocation(shader->programId(), "normalMatrix");
+         glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(tile.getNormalMatrix()));
+
+        if(shadingEnabled)
+        {
+            location =  glGetUniformLocation(shader->programId(), "wireframeEnabled");
+             glUniform1i(location, false);
+             glPolygonMode(GL_FRONT, GL_FILL);
+            terrain->drawTesselate();
+        }
+
+        if(wireframeEnabled)
+        {
+            location =  glGetUniformLocation(shader->programId(), "wireframeEnabled");
+             glUniform1i(location, true);
+
+             glPolygonMode(GL_FRONT, GL_LINE);
+            terrain->drawTesselate();
+        }
+    }
+    shader->release();
+}
+
+
+//---------------------------------------------------------------------------//
+
+//-------------------------- KEY AND MOUSE EVENTS ---------------------------//
+
+//---------------------------------------------------------------------------//
 
 void Canvas::mouseMoveEvent(QMouseEvent * event)
 {
@@ -107,7 +231,7 @@ void Canvas::mouseMoveEvent(QMouseEvent * event)
 
 void Canvas::wheelEvent(QWheelEvent * event)
 {
-    float factor = 0.01f * event->angleDelta().y() * 0.1f;
+    float factor = 0.001f * event->angleDelta().y() * mouseWheelFactor;
     camera->translate( camera->forward()* factor);
     update();
 }
@@ -131,21 +255,14 @@ void Canvas::keyReleaseEvent(QKeyEvent *event)
         Shaders::InitializeShaders();
     }
     update();
-
 }
 
-void Canvas::gridRepetitionXChanged(int value)
-{
-    terrain->setGridRepetitionX(value);
-    update();
-}
 
-void Canvas::gridRepetitionYChanged(int value)
-{
-    terrain->setGridRepetitionY(value);
-    update();
-}
+//---------------------------------------------------------------------------//
 
+//-------------------------- PUBLIC SLOT FUNCTIONS --------------------------//
+
+//---------------------------------------------------------------------------//
 
 void Canvas::generateTerrainButtonClicked()
 {
@@ -158,68 +275,48 @@ void Canvas::openNoiseTextureButtonClicked()
     update();
 }
 
-void Canvas::noiseTypeChanged(QString type)
-{
-    update();
-}
-
 void Canvas::generateNoiseTextureButtonClicked()
 {
     generateNoise = true;
     update();
 }
 
-void Canvas::heightValueChanged(double value)
+void Canvas::setGridRepetitionX(int value)
+{
+    terrain->setGridRepetitionX(value);
+    mouseWheelFactor = std::max(terrain->getGridRepetitionX(), terrain->getGridRepetitionY());
+    update();
+}
+
+void Canvas::setGridRepetitionY(int value)
+{
+    terrain->setGridRepetitionY(value);
+    mouseWheelFactor = std::max(terrain->getGridRepetitionX(), terrain->getGridRepetitionY());
+
+    update();
+}
+
+void Canvas::setHeight(double value)
 {
     terrain->maxHeight = value;
     update();
 }
 
-void Canvas::wireframeEnabled(bool enabled)
+void Canvas::setWireframeEnabled(bool enabled)
 {
-    renderer->wireframeEnabled = enabled;
+    wireframeEnabled = enabled;
     update();
 }
 
-void Canvas::shadingEnabled(bool enabled)
+void Canvas::setShadingEnabled(bool enabled)
 {
-    renderer->shadingEnabled = enabled;
+    shadingEnabled = enabled;
     update();
 }
 
-void Canvas::dynamicLoDEnabled(bool enabled)
+void Canvas::setShadowsEnabled(bool enabled)
 {
-    qDebug("bla");
-    renderer->dynamicLoDEnabled = enabled;
-    update();
-}
-
-void Canvas::textureRepeatValueChanged(double value)
-{
-    update();
-}
-
-void Canvas::dynamicTexturingEnabled(bool enabled)
-{
-    renderer->dynamicTexturingEnabled = enabled;
-    update();
-}
-
-void Canvas::normalMappingEnabled(bool enabled)
-{
-    renderer->normalMappingEnabled = enabled;
-    update();
-}
-
-void Canvas::shadowsEnabled(bool enabled)
-{
-    renderer->shadowsEnabled = enabled;
-    update();
-}
-
-void Canvas::distanceFogEnabled(bool enabled)
-{
-    renderer->distanceFogEnabled = enabled;
+    shadowsEnabled = enabled;
     update();
 }
 
@@ -247,5 +344,3 @@ void Canvas::noiseScaleChanged(double value)
 {
     HeightmapGenerator::Scale = value;
 }
-
-

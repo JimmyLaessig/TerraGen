@@ -15,7 +15,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
     camera.cpp \
     canvas.cpp \
-    renderer.cpp \
     shaders.cpp \
     terrain.cpp \
     window.cpp \
@@ -24,7 +23,8 @@ SOURCES += main.cpp\
     cameracontroller.cpp \
     noiseutils.cpp \
     heightmapgenerator.cpp \
-    directionallight.cpp
+    directionallight.cpp \
+    shadowmaptechnique.cpp
 
 
 FORMS    += window.ui
@@ -32,7 +32,6 @@ FORMS    += window.ui
 HEADERS += \
     camera.h \
     canvas.h \
-    renderer.h \
     shaders.h \
     terrain.h \
     window.h \
@@ -41,7 +40,8 @@ HEADERS += \
     cameracontroller.h \
     noiseutils.h \
     heightmapgenerator.h \
-    directionallight.h
+    directionallight.h \
+    shadowmaptechnique.h
 
 DISTFILES +=\
     ../Shader/*

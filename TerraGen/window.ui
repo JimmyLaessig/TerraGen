@@ -539,13 +539,13 @@
          <property name="spacing">
           <number>5</number>
          </property>
-         <item row="2" column="1">
-          <widget class="QCheckBox" name="checkBox_6">
+         <item row="15" column="0">
+          <widget class="QLabel" name="label_3">
            <property name="text">
-            <string/>
+            <string>Distance Fog</string>
            </property>
-           <property name="checked">
-            <bool>true</bool>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
@@ -559,8 +559,8 @@
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
-          <widget class="QCheckBox" name="checkBox_5">
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="checkBox_6">
            <property name="text">
             <string/>
            </property>
@@ -569,13 +569,13 @@
            </property>
           </widget>
          </item>
-         <item row="15" column="0">
-          <widget class="QLabel" name="label_3">
+         <item row="4" column="1">
+          <widget class="QCheckBox" name="checkBox_5">
            <property name="text">
-            <string>Distance Fog</string>
+            <string/>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -592,16 +592,6 @@
            </property>
           </widget>
          </item>
-         <item row="15" column="1">
-          <widget class="QCheckBox" name="checkBox_3">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item row="6" column="1">
           <widget class="QCheckBox" name="checkBox_4">
            <property name="text">
@@ -612,8 +602,8 @@
            </property>
           </widget>
          </item>
-         <item row="13" column="1">
-          <widget class="QCheckBox" name="checkBox">
+         <item row="15" column="1">
+          <widget class="QCheckBox" name="checkBox_3">
            <property name="text">
             <string/>
            </property>
@@ -662,6 +652,16 @@
            </property>
           </widget>
          </item>
+         <item row="13" column="1">
+          <widget class="QCheckBox" name="checkBox">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
@@ -694,26 +694,20 @@
     <slot>setRed(int)</slot>
     <slot>setBlue(int)</slot>
     <slot>setGreen(int)</slot>
-    <slot>gridRepetitionXChanged(int)</slot>
-    <slot>gridRepetitionYChanged(int)</slot>
+    <slot>setGridRepetitionX(int)</slot>
+    <slot>setGridRepetitionY(int)</slot>
     <slot>generateTerrainButtonClicked()</slot>
     <slot>openNoiseTextureButtonClicked()</slot>
-    <slot>noiseTypeChanged(QString)</slot>
     <slot>generateNoiseTextureButtonClicked()</slot>
-    <slot>heightValueChanged(double)</slot>
-    <slot>wireframeEnabled(bool)</slot>
-    <slot>shadingEnabled(bool)</slot>
-    <slot>dynamicLoDEnabled(bool)</slot>
-    <slot>textureRepeatValueChanged(double)</slot>
-    <slot>dynamicTexturingEnabled(bool)</slot>
-    <slot>shadowsEnabled(bool)</slot>
-    <slot>distanceFogEnabled(bool)</slot>
+    <slot>setHeight(double)</slot>
+    <slot>setWireframeEnabled(bool)</slot>
+    <slot>setShadingEnabled(bool)</slot>
+    <slot>setShadowsEnabled(bool)</slot>
     <slot>noisePersistenceChanged(double)</slot>
     <slot>noiseScaleChanged(double)</slot>
     <slot>noiseFrequency1Changed(double)</slot>
     <slot>noiseFrequency2Changed(double)</slot>
     <slot>noiseBiasChanged(double)</slot>
-    <slot>slot2()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -752,150 +746,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>doubleSpinBox</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>canvas</receiver>
-   <slot>heightValueChanged(double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1002</x>
-     <y>496</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>770</x>
-     <y>451</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_6</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>canvas</receiver>
-   <slot>wireframeEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1002</x>
-     <y>549</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>771</x>
-     <y>463</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_5</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>canvas</receiver>
-   <slot>shadingEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1002</x>
-     <y>567</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>738</x>
-     <y>493</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_4</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>canvas</receiver>
-   <slot>dynamicLoDEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1002</x>
-     <y>585</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>763</x>
-     <y>510</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>canvas</receiver>
-   <slot>dynamicTexturingEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1002</x>
-     <y>603</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>778</x>
-     <y>548</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>canvas</receiver>
-   <slot>shadowsEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1002</x>
-     <y>621</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>778</x>
-     <y>569</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_3</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>canvas</receiver>
-   <slot>distanceFogEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1002</x>
-     <y>639</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>737</x>
-     <y>588</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gridRepetitionX</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>canvas</receiver>
-   <slot>gridRepetitionXChanged(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>949</x>
-     <y>471</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>731</x>
-     <y>431</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gridRepetitionY</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>canvas</receiver>
-   <slot>gridRepetitionYChanged(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1002</x>
-     <y>471</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>735</x>
-     <y>444</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>frequency1Spinner</sender>
    <signal>valueChanged(double)</signal>
    <receiver>canvas</receiver>
@@ -908,22 +758,6 @@
     <hint type="destinationlabel">
      <x>786</x>
      <y>275</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>biasSpinner</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>canvas</receiver>
-   <slot>noiseBiasChanged(double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>934</x>
-     <y>298</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>764</x>
-     <y>304</y>
     </hint>
    </hints>
   </connection>
@@ -972,6 +806,118 @@
     <hint type="destinationlabel">
      <x>764</x>
      <y>373</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_5</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>canvas</receiver>
+   <slot>setShadingEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>915</x>
+     <y>564</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>719</x>
+     <y>568</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_6</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>canvas</receiver>
+   <slot>setWireframeEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>916</x>
+     <y>544</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>765</x>
+     <y>541</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gridRepetitionX</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>canvas</receiver>
+   <slot>setGridRepetitionX(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>917</x>
+     <y>466</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>749</x>
+     <y>468</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gridRepetitionY</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>canvas</receiver>
+   <slot>setGridRepetitionY(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>965</x>
+     <y>462</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>756</x>
+     <y>480</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>doubleSpinBox</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>canvas</receiver>
+   <slot>setHeight(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>923</x>
+     <y>486</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>768</x>
+     <y>490</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>biasSpinner</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>canvas</receiver>
+   <slot>noiseBiasChanged(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>922</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>759</x>
+     <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>canvas</receiver>
+   <slot>setShadowsEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>917</x>
+     <y>616</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>748</x>
+     <y>622</y>
     </hint>
    </hints>
   </connection>

@@ -16,11 +16,20 @@
 #include "camera.h"
 #include "cameracontroller.h"
 
+#include <shaders.h>
+#include "shadowmaptechnique.h"
+#include "directionallight.h"
+
 
 class Canvas : public QOpenGLWidget, public QOpenGLFunctions_4_4_Core
 {
     Q_OBJECT
 public:
+
+    bool wireframeEnabled = true;
+    bool shadingEnabled = true;
+    bool shadowsEnabled = true;
+
     Canvas(QWidget* parent);
     ~Canvas();
 
@@ -40,36 +49,21 @@ public:
 
 public slots:
 
-    void gridRepetitionXChanged(int value);
-
-    void gridRepetitionYChanged(int value);
-
+    // Button Functions
     void generateTerrainButtonClicked();
 
     void openNoiseTextureButtonClicked();
 
-    void noiseTypeChanged(QString type);
-
     void generateNoiseTextureButtonClicked();
 
-    void heightValueChanged(double value);
+    // Terrain specific parameter
+    void setGridRepetitionX(int value);
 
-    void wireframeEnabled(bool enabled);
+    void setGridRepetitionY(int value);
 
-    void shadingEnabled(bool enabled);
+    void setHeight(double value);
 
-    void dynamicLoDEnabled(bool enabled);
-
-    void textureRepeatValueChanged(double value);
-
-    void dynamicTexturingEnabled(bool enabled);
-
-    void normalMappingEnabled(bool enabled);
-
-    void shadowsEnabled(bool enabled);
-
-    void distanceFogEnabled(bool enabled);
-
+    // Noise specific parameter
     void noiseFrequency1Changed(double value);
 
     void noiseFrequency2Changed(double value);
@@ -80,13 +74,28 @@ public slots:
 
     void noiseScaleChanged(double value);
 
+    // Render specific parameter
+    void setWireframeEnabled(bool enabled);
+
+    void setShadingEnabled(bool enabled);
+
+    void setShadowsEnabled(bool enabled);
+
+
 private:
+
+    double mouseWheelFactor = 1.0;
+
+    void draw();
+    void drawTesselate(Terrain* terrain);
+
+    ShadowMapTechnique* shadowMapTechnique;
+    DirectionalLight* light;
 
     QTime time;
 
     Window* window;
 
-    Renderer* renderer;
 
     QPoint lastMousePos;
     bool generateTerrain = false;
@@ -99,6 +108,9 @@ private:
     Terrain* terrain;
     Camera* camera;
     CameraController* cameraController;
+
+    int width;
+    int height;
 
 };
 

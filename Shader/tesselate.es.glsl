@@ -39,7 +39,7 @@ vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2)
 
 vec3 calculateNormal(vec2 texcoords)
 {
-    vec2 texelSize = 1.0 / textureSize(heightmapTexture, 0);
+    vec2 texelSize = (1.0 / textureSize(heightmapTexture, 0));
 
     float x_min = texture2D(heightmapTexture, texcoords + texelSize * vec2(-1, 0)).x * maxHeight;
     float x_pos = texture2D(heightmapTexture, texcoords + texelSize * vec2( 1, 0)).x * maxHeight;
