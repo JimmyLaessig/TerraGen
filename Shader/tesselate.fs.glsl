@@ -12,7 +12,6 @@ uniform float maxHeight;
 
 uniform bool wireframeEnabled = false;
 
-uniform float texcoordScale = 1;
 uniform sampler2D grasTexture;
 uniform sampler2D rockTexture;
 
@@ -30,7 +29,7 @@ float diffuseComponent(vec3 L, vec3 N)
 {
     return clamp(dot(L, N), 0.0, 1.0);
 }
-
+//
 float specularComponent(vec3 lightDirection, vec3 viewDirection, vec3 normal, float shininess)
 {
     if(dot(normal, lightDirection) < 0.0)
@@ -63,20 +62,21 @@ vec4 calculateColor(float slope)
     return texture2D(grasTexture,color_texcoords_FS);
 }
 
+
 void main()
 {
-
     if(wireframeEnabled)
     {
         fragColor = vec4(0,0,0,1);
         return;
     }
     float slope = 1 - worldNormal_FS.y;
-    vec4 diffuseColor = calculateColor(slope);
+    vec4 color = calculateColor(slope);
 
-    // diffuseColor.xyz  *= diffuseComponent(-lightDirection_World, normalize(worldNormal_FS));
+    float diffuseFactor = diffuseComponent(-lightDirection_World, normalize(worldNormal_FS));
 
-    fragColor = diffuseColor;
+    fragColor.xyz = color.xyz * diffuseFactor;
+    fragColor.a = color.a;
     //fragColor = vec4(normalize(worldNormal_FS), 1);
     //fragColor = vec4(gradient_FS, gradient_FS, gradient_FS, 1);
 }

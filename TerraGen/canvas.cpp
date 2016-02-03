@@ -196,7 +196,6 @@ void Canvas::dynamicLoDEnabled(bool enabled)
 
 void Canvas::textureRepeatValueChanged(double value)
 {
-    terrain->texcoordScale = (float) value;
     update();
 }
 

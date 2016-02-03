@@ -4,11 +4,11 @@
 #include <shaders.h>
 #include "terrain.h"
 #include "camera.h"
+#include "directionallight.h"
 
 class Renderer
 {
 public:
-    float texcoordScale = 1.0f;
 
     bool wireframeEnabled = true;
     bool shadingEnabled = true;
@@ -31,6 +31,8 @@ public:
     QOpenGLFunctions_4_4_Core* functions;
 
 private:
+
+    DirectionalLight* light;
 
     int width;
     int height;

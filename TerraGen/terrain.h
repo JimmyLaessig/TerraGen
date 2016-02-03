@@ -34,7 +34,6 @@ public:
     virtual ~Terrain();
 
     float maxHeight = 1.0f;
-    float texcoordScale = 1.0f;
 
     QOpenGLTexture* heightmapTexture;
     QOpenGLTexture* grassTexture;

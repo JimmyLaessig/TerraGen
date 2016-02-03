@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     gridgenerator.cpp \
     cameracontroller.cpp \
     noiseutils.cpp \
-    heightmapgenerator.cpp
+    heightmapgenerator.cpp \
+    directionallight.cpp
 
 
 FORMS    += window.ui
@@ -39,15 +40,11 @@ HEADERS += \
     gridgenerator.h \
     cameracontroller.h \
     noiseutils.h \
-    heightmapgenerator.h
+    heightmapgenerator.h \
+    directionallight.h
 
 DISTFILES +=\
-    ../Shader/tesselate.vs.glsl \
-    ../Shader/tesselate.cs.glsl \
-    ../Shader/tesselate.es.glsl \
-    ../Shader/tesselate.fs.glsl \
-    ../Shader/diffuse.vs.glsl \
-    ../Shader/diffuse.fs.glsl
+    ../Shader/*
 
 
 

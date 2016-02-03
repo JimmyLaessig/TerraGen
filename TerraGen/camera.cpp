@@ -2,6 +2,7 @@
 #include <cmath>
 #define GLM_FORCE_RADIANS
 
+Camera* Camera::Main = nullptr;
 
 static const float MaxVerticalAngle = 85.0f; //must be less than 90 to avoid gimbal lock
 
@@ -9,6 +10,7 @@ Camera::Camera()
 {
     rotation = glm::vec3(0);
     position = glm::vec3(0);
+    Camera::Main = this;
 }
 
 
