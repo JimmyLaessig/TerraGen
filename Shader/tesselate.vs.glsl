@@ -27,7 +27,9 @@ vec2 calculateHeightmapTexcoords(vec3 position)
     // Scales the given texcoords (in domain [0,1]) to the dimensions of the grid at the given coordinates
     vec2 min = tileIndex / numTiles;
     vec2 max = (tileIndex +1) / numTiles;
-    return (max - min) * texcoords + min;
+    texcoords =  (max - min) * texcoords + min;
+    texcoords.y = 1 - texcoords.y;
+    return texcoords;
 }
 
 vec2 calculateColorTexcoords(vec3 position)

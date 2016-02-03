@@ -6,6 +6,7 @@
 #include <iostream>
 #include "gridgenerator.h"
 #include <algorithm>
+#include <QFileDialog>
 
 
 Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
@@ -272,7 +273,16 @@ void Canvas::generateTerrainButtonClicked()
 
 void Canvas::openNoiseTextureButtonClicked()
 {
-    update();
+    QString filename = QFileDialog::getOpenFileName(this, tr("Open Heightmap"),tr(""),tr("Image Files (*.png *.jpg *.bmp)"));
+
+    if(!filename.isEmpty()){
+        if(noiseImage != nullptr)
+            delete noiseImage;
+        noiseImage = new QImage(filename);
+        terrain->setHeightmapTexture(noiseImage);
+        window->setNoiseImage(noiseImage);
+        update();
+    }
 }
 
 void Canvas::generateNoiseTextureButtonClicked()
