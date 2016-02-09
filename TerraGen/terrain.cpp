@@ -8,8 +8,8 @@ Terrain::Terrain(QOpenGLFunctions_4_4_Core* functions)
     heightmapTexture = nullptr;
     maxHeight = 1.0;
 
-    grassTexture = new QOpenGLTexture(QImage("Assets/GrassGreenTexture0003.jpg"));
-    rockTexture = new QOpenGLTexture(QImage("Assets/rock.jpg"));
+    grassTexture = new QOpenGLTexture(QImage("Assets/textures/GrassGreenTexture0003.jpg"));
+    rockTexture = new QOpenGLTexture(QImage("Assets/textures/rock.jpg"));
 
     setGridRepetitions(gridRepetitionX, gridRepetitionY);
 }
@@ -94,7 +94,7 @@ void Terrain::setGridRepetitions(int x, int y)
             Transform t;
             t.translate(glm::vec3(translateX, 0, translateZ));
             tiles.push_back(t);
-            glm::vec2 tileCoords = glm::vec2(i,j);
+           glm::vec2 tileCoords = glm::vec2(i,j);
             tileCoordinates.push_back(tileCoords);
         }
     }
@@ -122,7 +122,6 @@ void Terrain::destroyGrid()
         if (grid.terrainVAO)    functions->glDeleteVertexArrays(1, &grid.terrainVAO);
     }
 }
-
 
 void Terrain::createVAO()
 {

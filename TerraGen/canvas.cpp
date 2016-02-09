@@ -8,11 +8,9 @@
 #include <algorithm>
 #include <QFileDialog>
 
-
 Canvas::Canvas(QWidget* parent) : QOpenGLWidget(parent)
 {
     this->window = static_cast<Window*>(parent);
-
 }
 
 Canvas::~Canvas()
@@ -28,9 +26,7 @@ Canvas::~Canvas()
 }
 
 //---------------------------------------------------------------------------//
-
 //----------------------- QT OpenGL Callback Functions ----------------------//
-
 //---------------------------------------------------------------------------//
 
 void Canvas::initializeGL()
@@ -39,7 +35,10 @@ void Canvas::initializeGL()
 
     lastMousePos = QCursor::pos();
 
-    Shaders::InitializeShaders();
+    if(!Shaders::InitializeShaders())
+    {
+        exit(-1);
+    }
 
     noiseImage = new QImage(512, 512, QImage::Format_RGB16);
     noiseImage->fill(qRgb(255, 255, 255));
@@ -58,10 +57,13 @@ void Canvas::initializeGL()
     cameraController = new CameraController();
     cameraController->setCamera(camera);
 
-    light = new DirectionalLight(glm::vec3(-1,-1, 0), glm::vec3(1, 1, 1));
+    light = new DirectionalLight(glm::vec3(-1.0,-1.0, 0.0), glm::vec3(1.0, 1.0, 1.0));
     shadowMapTechnique = new ShadowMapTechnique(this, 1024, 1024);
     shadowMapTechnique->light = light;
 
+    skyboxTechnique = new SkyboxTechnique(this);
+
+    glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
 
@@ -103,18 +105,25 @@ void Canvas::resizeGL()
 }
 
 //---------------------------------------------------------------------------//
-
 //-------------------------- Private Draw Functions -------------------------//
-
 //---------------------------------------------------------------------------//
 
 void Canvas::draw()
 {
-        // Clear the Canvas
+    // Render Shadow Map
+    shadowMapTechnique->drawShadowMap(terrain);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebufferObject());
     glViewport(0,0,size().width(), size().height());
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
+    // Render Skybox
+    if(skyBoxEnabled)
+    {
+        skyboxTechnique->draw();
+        glClear(GL_DEPTH_BUFFER_BIT);
+    }
     // Render tesselated terrain
     drawTesselate(terrain);
 
@@ -129,14 +138,12 @@ void Canvas::drawTesselate(Terrain* terrain)
 {
     glCullFace(GL_BACK);
 
-    //glBindFramebuffer(GL_FRAMEBUFFER, context->defaultFramebufferObject());
-
     QOpenGLShaderProgram* shader = Shaders::Find("tesselate");
     shader->bind();
     int unit = 1;
 
     // Max height of the terrain
-    GLuint location =  glGetUniformLocation(shader->programId(), "maxHeight");
+    GLuint location = glGetUniformLocation(shader->programId(), "maxHeight");
     glUniform1f(location, terrain->maxHeight);
 
     // Heightmap texture
@@ -155,19 +162,29 @@ void Canvas::drawTesselate(Terrain* terrain)
     terrain->rockTexture->bind(unit++);
 
     // Position of the camera in world space
-    location =  glGetUniformLocation(shader->programId(), "eyePosWorld");
-     glUniform3fv(location, 1, glm::value_ptr(camera->getPosition()));
+    location = glGetUniformLocation(shader->programId(), "eyePosWorld");
+    glUniform3fv(location, 1, glm::value_ptr(camera->getPosition()));
 
     // Number of tiles in the grid
-    location =  glGetUniformLocation(shader->programId(), "numTiles");
-     glUniform2f(location, terrain->getGridRepetitionX(), terrain->getGridRepetitionY());
+    location = glGetUniformLocation(shader->programId(), "numTiles");
+    glUniform2f(location, terrain->getGridRepetitionX(), terrain->getGridRepetitionY());
 
     // Direction of the light in world space
-    location =  glGetUniformLocation(shader->programId(), "lightDirection_World");
-     glUniform3fv(location, 1, glm::value_ptr(light->direction));
+    location = glGetUniformLocation(shader->programId(), "lightDirection_World");
+    glUniform3fv(location, 1, glm::value_ptr(light->direction));
 
     // ViewProjectionMatrix of the camera
     glm::mat4 viewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix();
+
+    // Bias Depth MVP Matrix for Shadow Mapping
+    glm::mat4 biasMatrix = glm::mat4(
+                0.5, 0.0, 0.0, 0.0,
+                0.0, 0.5, 0.0, 0.0,
+                0.0, 0.0, 0.5, 0.0,
+                0.5, 0.5, 0.5, 1.0
+                );
+
+    glm::mat4 depthViewProjectionMatrix = biasMatrix * light->getProjectionMatrix() * light->getViewMatrix();
 
     // Render all tiles
     for (unsigned int i = 0; i < terrain->tiles.size(); i++)
@@ -175,46 +192,47 @@ void Canvas::drawTesselate(Terrain* terrain)
         Transform tile = terrain->tiles.at(i);
 
         // Coordinates of the current tile in the grid
-        location =  glGetUniformLocation(shader->programId(), "tileIndex");
-         glUniform2fv(location,1, glm::value_ptr(terrain->tileCoordinates.at(i)));
+        location = glGetUniformLocation(shader->programId(), "tileIndex");
+        glUniform2fv(location,1, glm::value_ptr(terrain->tileCoordinates.at(i)));
 
         // MVP matrix of the current tile
-        location =  glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
-         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix * tile.modelMatrix));
+        location = glGetUniformLocation(shader->programId(), "modelViewProjectionMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(viewProjectionMatrix * tile.modelMatrix));
 
         // Model matrix of the current tile
-        location =  glGetUniformLocation(shader->programId(), "modelMatrix");
-         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(tile.modelMatrix));
+        location = glGetUniformLocation(shader->programId(), "modelMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(tile.modelMatrix));
 
         // Normal matrix of the current tile
-        location =  glGetUniformLocation(shader->programId(), "normalMatrix");
-         glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(tile.getNormalMatrix()));
+        location = glGetUniformLocation(shader->programId(), "normalMatrix");
+        glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(tile.getNormalMatrix()));
+
+        // Depth MVP Matrix for Shadow Mapping
+        location = glGetUniformLocation(shader->programId(), "depthMVPMatrix");
+        glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(depthViewProjectionMatrix * tile.modelMatrix));
 
         if(shadingEnabled)
         {
-            location =  glGetUniformLocation(shader->programId(), "wireframeEnabled");
-             glUniform1i(location, false);
-             glPolygonMode(GL_FRONT, GL_FILL);
+            location = glGetUniformLocation(shader->programId(), "wireframeEnabled");
+            glUniform1i(location, false);
+            glPolygonMode(GL_FRONT, GL_FILL);
             terrain->drawTesselate();
         }
 
         if(wireframeEnabled)
         {
-            location =  glGetUniformLocation(shader->programId(), "wireframeEnabled");
-             glUniform1i(location, true);
+            location = glGetUniformLocation(shader->programId(), "wireframeEnabled");
+            glUniform1i(location, true);
 
-             glPolygonMode(GL_FRONT, GL_LINE);
+            glPolygonMode(GL_FRONT, GL_LINE);
             terrain->drawTesselate();
         }
     }
     shader->release();
 }
 
-
 //---------------------------------------------------------------------------//
-
 //-------------------------- KEY AND MOUSE EVENTS ---------------------------//
-
 //---------------------------------------------------------------------------//
 
 void Canvas::mouseMoveEvent(QMouseEvent * event)
@@ -258,11 +276,8 @@ void Canvas::keyReleaseEvent(QKeyEvent *event)
     update();
 }
 
-
 //---------------------------------------------------------------------------//
-
 //-------------------------- PUBLIC SLOT FUNCTIONS --------------------------//
-
 //---------------------------------------------------------------------------//
 
 void Canvas::generateTerrainButtonClicked()
@@ -353,4 +368,10 @@ void Canvas::noiseBiasChanged(double value)
 void Canvas::noiseScaleChanged(double value)
 {
     HeightmapGenerator::Scale = value;
+}
+
+void Canvas::setSkyBoxEnabled(bool enabled)
+{
+    Canvas::skyBoxEnabled = enabled;
+    update();
 }

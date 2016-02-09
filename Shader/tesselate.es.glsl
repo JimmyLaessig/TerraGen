@@ -9,6 +9,8 @@ in vec2 color_texcoords_ES[];
 uniform mat4 modelViewProjectionMatrix;
 uniform mat3 normalMatrix;
 
+uniform mat4 depthMVPMatrix;
+
 uniform sampler2D heightmapTexture;
 uniform float maxHeight = 1.0f;
 uniform vec2 numTiles;
@@ -16,7 +18,7 @@ uniform vec2 numTiles;
 out vec2 heightmap_texcoords_FS;
 out vec2 color_texcoords_FS;
 out vec3 worldNormal_FS;
-out float gradient_FS;
+out vec4 shadowMap_texcoords_FS;
 
 // Interpolate values v0-v2 based on the barycentric coordinates
 // of the current vertex within the triangle
@@ -51,7 +53,6 @@ vec3 calculateNormal(vec2 texcoords)
     normal.y = 2.0;
     normal.z = z_min - z_pos;
 
-
     return normalize(normal);
 }
 
@@ -69,12 +70,11 @@ void main(void)
     vec3 normal = calculateNormal(heightmap_texcoords);
 
     // transform to NDC
-    gl_Position = modelViewProjectionMatrix * vec4(position, 1.0);
+   gl_Position = modelViewProjectionMatrix * vec4(position, 1.0);
+
     heightmap_texcoords_FS = heightmap_texcoords;
     color_texcoords_FS = color_texcoords;
     worldNormal_FS =  normalize(normalMatrix * normal);
-
-    // Slope of the normal as the dot product
-    gradient_FS = clamp(dot(normal, vec3(0.0, 1.0, 0.0)), 0.0, 1.0);
+    shadowMap_texcoords_FS = depthMVPMatrix * vec4(position, 1.0);
 }
 

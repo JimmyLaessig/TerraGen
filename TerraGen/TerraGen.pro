@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     noiseutils.cpp \
     heightmapgenerator.cpp \
     directionallight.cpp \
-    shadowmaptechnique.cpp
+    shadowmaptechnique.cpp \
+    skyboxtechnique.cpp
 
 
 FORMS    += window.ui
@@ -41,7 +42,8 @@ HEADERS += \
     noiseutils.h \
     heightmapgenerator.h \
     directionallight.h \
-    shadowmaptechnique.h
+    shadowmaptechnique.h \
+    skyboxtechnique.h
 
 DISTFILES +=\
     ../Shader/*

@@ -15,6 +15,7 @@
 #include "heightmapgenerator.h"
 #include "camera.h"
 #include "cameracontroller.h"
+#include "skyboxtechnique.h"
 
 #include <shaders.h>
 #include "shadowmaptechnique.h"
@@ -29,6 +30,7 @@ public:
     bool wireframeEnabled = true;
     bool shadingEnabled = true;
     bool shadowsEnabled = true;
+    bool skyBoxEnabled = true;
 
     Canvas(QWidget* parent);
     ~Canvas();
@@ -81,6 +83,8 @@ public slots:
 
     void setShadowsEnabled(bool enabled);
 
+    void setSkyBoxEnabled(bool enabled);
+
 
 private:
 
@@ -92,6 +96,7 @@ private:
     ShadowMapTechnique* shadowMapTechnique;
     DirectionalLight* light;
 
+    SkyboxTechnique* skyboxTechnique;
     QTime time;
 
     Window* window;

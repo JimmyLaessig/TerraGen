@@ -5,8 +5,7 @@ layout(triangles, equal_spacing, ccw) in;
 in vec3 position_ES[];
 in vec2 heightmap_texcoords_ES[];
 
-uniform mat4 modelViewProjectionMatrix;
-uniform mat3 normalMatrix;
+uniform mat4 depthMVPMatrix;
 
 uniform sampler2D heightmapTexture;
 uniform float maxHeight = 1.0f;
@@ -39,6 +38,5 @@ void main(void)
     position.y = displacement * maxHeight;
 
     // transform to NDC
-    gl_Position = modelViewProjectionMatrix * vec4(position, 1.0);
+   gl_Position = depthMVPMatrix * vec4(position, 1.0);
 }
-

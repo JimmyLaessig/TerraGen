@@ -40,18 +40,18 @@ public:
     /// <summary>
     /// Returns the matrix used to transform an object into view space
     /// </summary>
-    glm::mat4 getViewMatrix();
+   glm::mat4 getViewMatrix();
 
     /// <summary>
     /// Returns the matrix used to transform an object into screen space
     /// </summary>
     /// <returns></returns>
-    glm::mat4 getProjectionMatrix();
+   glm::mat4 getProjectionMatrix();
 
     /// <summary>
     /// Gets the position of the camera
     /// </summary>
-    glm::vec3 getPosition();
+   glm::vec3 getPosition();
 
     /// <summary>
     /// Sets the position to the given value
@@ -82,25 +82,25 @@ public:
     /// Per default forward is pointing in the +z-direction in model space.
     /// </summary>
     /// <returns></returns>
-    glm::vec3 forward();
+   glm::vec3 forward();
 
     /// <summary>
     /// Returns a vector pointing in the up direction of this object in world space
     /// </summary>
     /// <returns></returns>
-    glm::vec3 up();
+   glm::vec3 up();
 
     /// <summary>
     /// Returns a vector pointing in the up direction of this object in world space
     /// </summary>
     /// <returns></returns>
-    glm::vec3 right();
+   glm::vec3 right();
 
 private:
 
-    glm::mat4 projectionMatrix;
-    glm::vec3 position;
-    glm::vec3 rotation;
+   glm::mat4 projectionMatrix;
+   glm::vec3 position;
+   glm::vec3 rotation;
 
 
     /// <summary>
@@ -112,6 +112,6 @@ private:
     /// Calculates a matrix storing the rotation of the camera
     /// </summary>
     /// <returns></returns>
-    glm::mat4 orientation();
+   glm::mat4 orientation();
 };
 

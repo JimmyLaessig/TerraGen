@@ -13,13 +13,18 @@ Shaders::~Shaders()
 {
 }
 
-void Shaders::InitializeShaders()
+bool Shaders::InitializeShaders()
 {
-    qDebug("Loading Shaders!");
 
-    // TODO Load all shaders here at once
+    bool error = false;
+    qDebug("Initializing Shaders!");
+
+    //----------------------------------------//
+    //---------- Tesselation Shader ----------//
+    //----------------------------------------//
 
     QOpenGLShaderProgram* tesselate = new QOpenGLShaderProgram();
+
     tesselate->addShaderFromSourceFile(QOpenGLShader::Vertex, "Shader/tesselate.vs.glsl");
     tesselate->addShaderFromSourceFile(QOpenGLShader::TessellationControl, "Shader/tesselate.cs.glsl");
     tesselate->addShaderFromSourceFile(QOpenGLShader::TessellationEvaluation, "Shader/tesselate.es.glsl");
@@ -27,13 +32,19 @@ void Shaders::InitializeShaders()
 
     if (tesselate->link())
     {
+        // Remove old instance
+        Shaders::deleteShader("tesselate");
         Shaders::ShaderMap["tesselate"] = tesselate;
     }
     else
     {
         qDebug("Failed to load Terrain Tesselation Shader");
-        exit(-1);
+        error = true;
     }
+
+    //----------------------------------------//
+    //---------- Shadow Map Shader -----------//
+    //----------------------------------------//
 
     QOpenGLShaderProgram* shadowMap = new QOpenGLShaderProgram();
     shadowMap->addShaderFromSourceFile(QOpenGLShader::Vertex, "Shader/shadowmap_tesselate.vs.glsl");
@@ -43,13 +54,37 @@ void Shaders::InitializeShaders()
 
     if (shadowMap->link())
     {
+        Shaders::deleteShader("shadowMap");
         Shaders::ShaderMap["shadowMap"] = shadowMap;
     }
     else
     {
         qDebug("Failed to load Terrain ShadowMap Tesselation Shader");
-        exit(-1);
+        error = true;
     }
+
+    //-----------------------------------//
+    //---------- Skybox Shader ---------//
+    //-----------------------------------//
+
+    QOpenGLShaderProgram* skybox = new QOpenGLShaderProgram();
+    skybox->addShaderFromSourceFile(QOpenGLShader::Vertex, "Shader/skybox.vs.glsl");
+    skybox->addShaderFromSourceFile(QOpenGLShader::Fragment, "Shader/skybox.fs.glsl");
+
+    if (skybox->link())
+    {
+        Shaders::deleteShader("skybox");
+        Shaders::ShaderMap["skybox"] = skybox;
+    }
+    else
+    {
+        qDebug("Failed to load skybox Shader");
+        error = true;
+    }
+
+    //-----------------------------------//
+    //---------- Diffuse Shader ---------//
+    //-----------------------------------//
 
     QOpenGLShaderProgram* diffuse = new QOpenGLShaderProgram();
     diffuse->addShaderFromSourceFile(QOpenGLShader::Vertex, "Shader/diffuse.vs.glsl");
@@ -57,25 +92,38 @@ void Shaders::InitializeShaders()
 
     if (diffuse->link())
     {
+        Shaders::deleteShader("diffuse");
         Shaders::ShaderMap["diffuse"] = diffuse;
     }
     else
     {
         qDebug("Failed to load diffuse Shader");
-        exit(-1);
+        error = true;
     }
+
+    return !error;
 }
 
 QOpenGLShaderProgram* Shaders::Find(std::string name)
 {
-    return Shaders::ShaderMap.at(name);
+    return ShaderMap[name];
+}
+
+void Shaders::deleteShader(std::string key)
+{
+    auto it = ShaderMap.find(key);
+    if(it !=ShaderMap.end())
+    {
+        delete it->second;
+        ShaderMap.erase(it);
+    }
 }
 
 void Shaders::DeleteAll()
 {
-        for (auto &it : ShaderMap)
-        {
-            delete it.second;
-        }
-        ShaderMap.clear();
+    for (auto &it : ShaderMap)
+    {
+        delete it.second;
+    }
+    ShaderMap.clear();
 }

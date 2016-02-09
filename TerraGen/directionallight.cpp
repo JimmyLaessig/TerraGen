@@ -15,5 +15,6 @@ glm::mat4 DirectionalLight::getViewMatrix()
 
 glm::mat4 DirectionalLight::getProjectionMatrix()
 {
-    return glm::ortho<float>(-200.f, 200.f, -100.f, 200.f,-250.f,150.f);
+    return glm::ortho<float>(-10,10,-10,10,-10,20);
+    //return glm::ortho<float>(-200.f, 200.f, -100.f, 200.f,-250.f,150.f);
 }

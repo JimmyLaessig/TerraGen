@@ -29,15 +29,15 @@ public:
 
     void setScale(glm::vec3 scale);
 
-    glm::vec3 getPosition();
+   glm::vec3 getPosition();
 
-    glm::vec3 getRotation();
+   glm::vec3 getRotation();
 
-    glm::mat3 getNormalMatrix();
+   glm::mat3 getNormalMatrix();
 
-    glm::mat4 getInverseModelMatrix();
+   glm::mat4 getInverseModelMatrix();
 
-    glm::mat4 modelMatrix;
+   glm::mat4 modelMatrix;
 
     // Todo add Material??
 };

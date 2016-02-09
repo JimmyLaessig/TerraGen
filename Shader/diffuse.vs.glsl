@@ -11,6 +11,6 @@ out vec2 texcoords_FS;
 
 void main(void)
 {
-    gl_Position = modelViewProjectionMatrix * vec4(positions_VS, 1);
+   gl_Position = modelViewProjectionMatrix * vec4(positions_VS, 1);
     texcoords_FS =  texcoords_VS;
 }

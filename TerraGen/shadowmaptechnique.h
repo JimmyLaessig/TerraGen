@@ -16,8 +16,8 @@ public:
 private:
     QOpenGLFunctions_4_4_Core* functions;
 
-    GLuint fbo;
-    GLuint depthTexture;
+   GLuint fbo;
+   GLuint depthTexture;
 
     int width;
     int height;

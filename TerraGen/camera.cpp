@@ -68,7 +68,7 @@ void Camera::rotate(glm::vec3 axis, float angle)
 
 glm::vec3 Camera::forward()
 {
-    glm::vec4 fw = glm::inverse(orientation()) * glm::vec4(0, 0, -1, 1);
+   glm::vec4 fw = glm::inverse(orientation()) * glm::vec4(0, 0, -1, 1);
 
     return glm::normalize(glm::vec3(fw));
 }
@@ -76,7 +76,7 @@ glm::vec3 Camera::forward()
 
 glm::vec3 Camera::up()
 {
-    glm::vec4 fw = glm::inverse(orientation()) * glm::vec4(0, 1, 0, 1);
+   glm::vec4 fw = glm::inverse(orientation()) * glm::vec4(0, 1, 0, 1);
 
     return glm::normalize(glm::vec3(fw));
 }
@@ -84,7 +84,7 @@ glm::vec3 Camera::up()
 
 glm::vec3 Camera::right()
 {
-    glm::vec4 fw = glm::inverse(orientation()) * glm::vec4(1, 0, 0, 1);
+   glm::vec4 fw = glm::inverse(orientation()) * glm::vec4(1, 0, 0, 1);
 
     return glm::normalize(glm::vec3(fw));
 }
@@ -92,7 +92,7 @@ glm::vec3 Camera::right()
 
 void Camera::lookAt(glm::vec3 position)
 {
-    glm::vec3 direction = glm::normalize(this->position - position);
+   glm::vec3 direction = glm::normalize(this->position - position);
     rotation.x = glm::degrees(asinf(-direction.y));
     rotation.y = -glm::degrees(atan2f(-direction.x, -direction.z));
     normalizeAngles();
@@ -101,7 +101,7 @@ void Camera::lookAt(glm::vec3 position)
 
 glm::mat4 Camera::orientation()
 {
-    glm::mat4 orientation;
+   glm::mat4 orientation;
     orientation = glm::rotate(orientation, glm::radians(rotation.x), glm::vec3(1, 0, 0));
     orientation = glm::rotate(orientation, glm::radians(rotation.y), glm::vec3(0, 1, 0));
     orientation = glm::rotate(orientation, glm::radians(rotation.z), glm::vec3(0, 0, 1));

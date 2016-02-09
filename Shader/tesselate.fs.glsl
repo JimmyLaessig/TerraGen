@@ -3,9 +3,8 @@
 
 in vec2 heightmap_texcoords_FS;
 in vec2 color_texcoords_FS;
-
+in vec4 shadowMap_texcoords_FS;
 in vec3 worldNormal_FS;
-in float gradient_FS;
 
 uniform sampler2D heightmapTexture;
 uniform float maxHeight;
@@ -15,15 +14,25 @@ uniform bool wireframeEnabled = false;
 uniform sampler2D grasTexture;
 uniform sampler2D rockTexture;
 
+uniform sampler2D shadowMap;
+
 uniform vec3 lightDirection_World = vec3(-1, -1, 0);
 
 layout(location = 0) out vec4 fragColor;
+
+bool inShadow()
+{
+vec2 uv = shadowMap_texcoords_FS.xy / shadowMap_texcoords_FS.w;
+float depth_p = shadowMap_texcoords_FS.z / shadowMap_texcoords_FS.w;
+float depth_c = texture2D(shadowMap, uv).r;
+
+return (depth_c < depth_p);
+}
 
 vec3 ambientComponent()
 {
     return vec3(0.3f);
 }
-
 
 float diffuseComponent(vec3 L, vec3 N)
 {
@@ -75,8 +84,8 @@ void main()
 
     float diffuseFactor = diffuseComponent(-lightDirection_World, normalize(worldNormal_FS));
 
+    //diffuseFactor *= inShadow() ? 0.0 : 1.0;
+
     fragColor.xyz = color.xyz * diffuseFactor;
     fragColor.a = color.a;
-    //fragColor = vec4(normalize(worldNormal_FS), 1);
-    //fragColor = vec4(gradient_FS, gradient_FS, gradient_FS, 1);
 }

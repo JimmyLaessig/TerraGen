@@ -19,11 +19,11 @@ struct Grid
     unsigned int numVertices;
     unsigned int numIndices;
 
-    GLuint terrainVAO;
-    GLuint indexBuffer;
-    GLuint vertexBuffer;
-    GLuint barycentricCoordinatesBuffer;
-    GLuint uvBuffer;
+   GLuint terrainVAO;
+   GLuint indexBuffer;
+   GLuint vertexBuffer;
+   GLuint barycentricCoordinatesBuffer;
+   GLuint uvBuffer;
 };
 
 class Terrain

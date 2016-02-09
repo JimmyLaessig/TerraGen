@@ -11,7 +11,7 @@ public:
     /// <summary>
     /// Initializes all shaders
     /// </summary>
-    static void InitializeShaders();
+    static bool InitializeShaders();
 
 	/// <summary>
 	/// Finds the shader for the given key. 
@@ -23,6 +23,11 @@ public:
 	/// </param>
 	/// <returns>Returns a pointer to the Shader object if found</returns>
     static QOpenGLShaderProgram* Find(std::string key);
+
+    /// <summary>
+    /// Removes the shader with the key from the collection and deletes the program
+    /// </summary>
+    static void deleteShader(std::string key);
 
 	/// <summary>
 	/// Deletes all shaders and frees the memory.

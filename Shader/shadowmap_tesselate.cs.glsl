@@ -34,10 +34,10 @@ void main(void)
     float distance1 = distance(eyePosWorld , (modelMatrix * vec4(position_CS[1], 1)).xyz);
     float distance2 = distance(eyePosWorld , (modelMatrix * vec4(position_CS[2], 1)).xyz);
 
-    gl_TessLevelOuter[0] = getTessLevel(distance1, distance2);
-    gl_TessLevelOuter[1] = getTessLevel(distance2, distance0);
-    gl_TessLevelOuter[2] = getTessLevel(distance0, distance1);
-    gl_TessLevelInner[0] = gl_TessLevelOuter[2];
+   gl_TessLevelOuter[0] = getTessLevel(distance1, distance2);
+   gl_TessLevelOuter[1] = getTessLevel(distance2, distance0);
+   gl_TessLevelOuter[2] = getTessLevel(distance0, distance1);
+   gl_TessLevelInner[0] = gl_TessLevelOuter[2];
 
 
     // TODO TESSELATE HERE
