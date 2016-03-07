@@ -1,0 +1,12 @@
+\begin{thebibliography}{1}
+
+\bibitem{libnoise}
+libnoise.
+\newblock \url{http://libnoise.sourceforge.net/}.
+
+\bibitem{frostbite}
+Johan Andersson.
+\newblock Terrain rendering in frostbite using procedural shader splatting.
+\newblock {\em ACM SIGGRAPH courses}, pages 42--43, 2007.
+
+\end{thebibliography}
