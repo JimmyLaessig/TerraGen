@@ -86,7 +86,7 @@ void main()
     float ambientFactor = ambientComponent();
     float diffuseFactor = diffuseComponent(-lightDirection_World, normalize(worldNormal_FS));
 
-    diffuseFactor = diffuseFactor * (inShadow() ? 0.0 : 1.0);
+    //diffuseFactor = diffuseFactor * (inShadow() ? 0.0 : 1.0);
 
     fragColor.xyz = color.xyz * (ambientFactor + diffuseFactor);
     fragColor.a = color.a;

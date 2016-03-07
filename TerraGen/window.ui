@@ -712,6 +712,7 @@
     <slot>noiseFrequency2Changed(double)</slot>
     <slot>noiseBiasChanged(double)</slot>
     <slot>setSkyBoxEnabled(bool)</slot>
+    <slot>setDynamicLodEnabled(bool)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -756,8 +757,8 @@
    <slot>noiseFrequency1Changed(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>931</x>
-     <y>270</y>
+     <x>1000</x>
+     <y>308</y>
     </hint>
     <hint type="destinationlabel">
      <x>786</x>
@@ -772,8 +773,8 @@
    <slot>noiseFrequency2Changed(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>926</x>
-     <y>322</y>
+     <x>1000</x>
+     <y>283</y>
     </hint>
     <hint type="destinationlabel">
      <x>765</x>
@@ -900,8 +901,8 @@
    <slot>noiseBiasChanged(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>922</x>
-     <y>299</y>
+     <x>1000</x>
+     <y>333</y>
     </hint>
     <hint type="destinationlabel">
      <x>759</x>
@@ -938,6 +939,22 @@
     <hint type="destinationlabel">
      <x>751</x>
      <y>603</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_4</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>canvas</receiver>
+   <slot>setDynamicLodEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>912</x>
+     <y>577</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>760</x>
+     <y>580</y>
     </hint>
    </hints>
   </connection>

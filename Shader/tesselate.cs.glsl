@@ -10,6 +10,8 @@ in vec2 color_texcoords_CS[];
 uniform mat4 modelMatrix;
 uniform vec3 eyePosWorld;
 
+uniform bool dynamicLodEnabled;
+
 out vec3 position_ES[];
 out vec2 heightmap_texcoords_ES[];
 out vec2 color_texcoords_ES[];
@@ -37,12 +39,20 @@ void main(void)
     float distance1 = distance(eyePosWorld , (modelMatrix * vec4(position_CS[1], 1)).xyz);
     float distance2 = distance(eyePosWorld , (modelMatrix * vec4(position_CS[2], 1)).xyz);
 
-   gl_TessLevelOuter[0] = getTessLevel(distance1, distance2);
-   gl_TessLevelOuter[1] = getTessLevel(distance2, distance0);
-   gl_TessLevelOuter[2] = getTessLevel(distance0, distance1);
-   gl_TessLevelInner[0] = gl_TessLevelOuter[2];
-
-
+    if(dynamicLodEnabled)
+    {
+        gl_TessLevelOuter[0] = getTessLevel(distance1, distance2);
+        gl_TessLevelOuter[1] = getTessLevel(distance2, distance0);
+        gl_TessLevelOuter[2] = getTessLevel(distance0, distance1);
+        gl_TessLevelInner[0] = gl_TessLevelOuter[2];
+    }
+    else
+    {
+        gl_TessLevelOuter[0] = 1;
+        gl_TessLevelOuter[1] = 1;
+        gl_TessLevelOuter[2] = 1;
+        gl_TessLevelInner[0] = 1;
+    }
     // TODO TESSELATE HERE
 }
 

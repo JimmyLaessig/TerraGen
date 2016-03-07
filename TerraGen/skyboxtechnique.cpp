@@ -97,6 +97,7 @@ void SkyboxTechnique::draw()
 {
     Camera* camera = Camera::Main;
     functions->glDisable(GL_CULL_FACE);
+    functions->glDepthMask(GL_FALSE);
     QOpenGLShaderProgram* shader = Shaders::Find("skybox");
     shader->bind();
 
@@ -114,4 +115,5 @@ void SkyboxTechnique::draw()
     functions->glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
     functions->glBindVertexArray(0);
     shader->release();
+    functions->glDepthMask(GL_TRUE);
 }

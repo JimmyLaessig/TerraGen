@@ -98,6 +98,7 @@ void Canvas::paintGL()
     double ms = (double)time.msecsTo(QTime::currentTime());
     window->setFPSLabel(1000.0 / ms);
 
+
 }
 
 void Canvas::resizeGL()
@@ -111,7 +112,7 @@ void Canvas::resizeGL()
 void Canvas::draw()
 {
     // Render Shadow Map
-    shadowMapTechnique->drawShadowMap(terrain);
+    //shadowMapTechnique->drawShadowMap(terrain);
 
     glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebufferObject());
     glViewport(0,0,size().width(), size().height());
@@ -122,7 +123,6 @@ void Canvas::draw()
     if(skyBoxEnabled)
     {
         skyboxTechnique->draw();
-        glClear(GL_DEPTH_BUFFER_BIT);
     }
     // Render tesselated terrain
     drawTesselate(terrain);
@@ -165,9 +165,9 @@ void Canvas::drawTesselate(Terrain* terrain)
     terrain->rockTexture->bind(unit++);
 
     // Shadow Map
-    location = glGetUniformLocation(shader->programId(), "shadowMap");
-    glUniform1i(location, unit);
-    shadowMapTechnique->bindShadowTexture(unit++);
+    // location = glGetUniformLocation(shader->programId(), "shadowMap");
+    // glUniform1i(location, unit);
+    // shadowMapTechnique->bindShadowTexture(unit++);
 
     // Position of the camera in world space
     location = glGetUniformLocation(shader->programId(), "eyePosWorld");
@@ -180,6 +180,9 @@ void Canvas::drawTesselate(Terrain* terrain)
     // Direction of the light in world space
     location = glGetUniformLocation(shader->programId(), "lightDirection_World");
     glUniform3fv(location, 1, glm::value_ptr(light->direction));
+
+    location = glGetUniformLocation(shader->programId(), "dynamicLodEnabled");
+    glUniform1i(location, dynamicLodEnabled);
 
     // ViewProjectionMatrix of the camera
     glm::mat4 viewProjectionMatrix = camera->getProjectionMatrix() * camera->getViewMatrix();
@@ -350,6 +353,12 @@ void Canvas::setShadingEnabled(bool enabled)
 void Canvas::setShadowsEnabled(bool enabled)
 {
     shadowsEnabled = enabled;
+    update();
+}
+
+void Canvas::setDynamicLodEnabled(bool enabled)
+{
+    dynamicLodEnabled = enabled;
     update();
 }
 

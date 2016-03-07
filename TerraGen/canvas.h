@@ -31,6 +31,7 @@ public:
     bool shadingEnabled = true;
     bool shadowsEnabled = true;
     bool skyBoxEnabled = true;
+    bool dynamicLodEnabled = true;
 
     Canvas(QWidget* parent);
     ~Canvas();
@@ -85,6 +86,7 @@ public slots:
 
     void setSkyBoxEnabled(bool enabled);
 
+    void setDynamicLodEnabled(bool enabled);
 
 private:
 
