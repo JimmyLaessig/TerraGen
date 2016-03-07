@@ -70,11 +70,12 @@ void main(void)
     vec3 normal = calculateNormal(heightmap_texcoords);
 
     // transform to NDC
-   gl_Position = modelViewProjectionMatrix * vec4(position, 1.0);
+    gl_Position = modelViewProjectionMatrix * vec4(position, 1.0);
 
     heightmap_texcoords_FS = heightmap_texcoords;
     color_texcoords_FS = color_texcoords;
     worldNormal_FS =  normalize(normalMatrix * normal);
+
     shadowMap_texcoords_FS = depthMVPMatrix * vec4(position, 1.0);
 }
 

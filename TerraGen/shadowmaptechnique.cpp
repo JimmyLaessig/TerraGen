@@ -17,29 +17,27 @@ ShadowMapTechnique::ShadowMapTechnique(QOpenGLFunctions_4_4_Core *functions, int
     functions->glGenTextures(1, &depthTexture);
     functions->glBindTexture(GL_TEXTURE_2D, depthTexture);
 
-    functions->glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, 0);
+    functions->glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
 
     functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-   // functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-   // functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-   // functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
-
-    //functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+    functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE,GL_COMPARE_REF_TO_TEXTURE);
+    functions->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 
     functions->glBindFramebuffer(GL_FRAMEBUFFER, fbo);
     functions->glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
 
     // Disable writing to the color buffer
     functions->glDrawBuffer(GL_NONE);
-   // functions->glReadBuffer(GL_NONE);
+    functions->glReadBuffer(GL_NONE);
 
    GLenum Status =  functions->glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
     if (Status != GL_FRAMEBUFFER_COMPLETE) {
-        qDebug("ooasch");
     }
 
     functions->glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -61,8 +59,8 @@ void ShadowMapTechnique::drawShadowMap(Terrain *terrain)
     // functions->glCullFace(GL_FRONT);
     functions->glPolygonMode(GL_FRONT, GL_FILL);
 
-    functions->glEnable(GL_POLYGON_OFFSET_FILL);
-    functions->glPolygonOffset(4.f, 0.f);
+    //functions->glEnable(GL_POLYGON_OFFSET_FILL);
+   // functions->glPolygonOffset(4.f, 0.f);
 
 
     functions->glClearDepth(1.0);

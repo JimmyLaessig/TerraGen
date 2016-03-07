@@ -22,22 +22,23 @@ layout(location = 0) out vec4 fragColor;
 
 bool inShadow()
 {
-vec2 uv = shadowMap_texcoords_FS.xy / shadowMap_texcoords_FS.w;
-float depth_p = shadowMap_texcoords_FS.z / shadowMap_texcoords_FS.w;
-float depth_c = texture2D(shadowMap, uv).r;
+    vec3 tex_coords = shadowMap_texcoords_FS.xyz / shadowMap_texcoords_FS.w;
 
-return (depth_c < depth_p);
+    float depth = texture(shadowMap, tex_coords.xy).x;
+
+    return (depth < tex_coords.z);
 }
 
-vec3 ambientComponent()
+float ambientComponent()
 {
-    return vec3(0.3f);
+    return 0.4;
 }
 
 float diffuseComponent(vec3 L, vec3 N)
 {
     return clamp(dot(L, N), 0.0, 1.0);
 }
+
 //
 float specularComponent(vec3 lightDirection, vec3 viewDirection, vec3 normal, float shininess)
 {
@@ -82,10 +83,11 @@ void main()
     float slope = 1 - worldNormal_FS.y;
     vec4 color = calculateColor(slope);
 
+    float ambientFactor = ambientComponent();
     float diffuseFactor = diffuseComponent(-lightDirection_World, normalize(worldNormal_FS));
 
-    //diffuseFactor *= inShadow() ? 0.0 : 1.0;
+    diffuseFactor = diffuseFactor * (inShadow() ? 0.0 : 1.0);
 
-    fragColor.xyz = color.xyz * diffuseFactor;
+    fragColor.xyz = color.xyz * (ambientFactor + diffuseFactor);
     fragColor.a = color.a;
 }

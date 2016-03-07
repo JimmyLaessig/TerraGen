@@ -57,7 +57,7 @@ void Canvas::initializeGL()
     cameraController = new CameraController();
     cameraController->setCamera(camera);
 
-    light = new DirectionalLight(glm::vec3(-1.0,-1.0, 0.0), glm::vec3(1.0, 1.0, 1.0));
+    light = new DirectionalLight(glm::vec3(0, 0,0 ), glm::normalize(glm::vec3(0,-0.5, 1.0)), glm::vec3(1.0, 1.0, 1.0));
     shadowMapTechnique = new ShadowMapTechnique(this, 1024, 1024);
     shadowMapTechnique->light = light;
 
@@ -149,17 +149,25 @@ void Canvas::drawTesselate(Terrain* terrain)
     // Heightmap texture
     location = glGetUniformLocation(shader->programId(), "heightmapTexture");
     glUniform1i(location, unit);
+    glActiveTexture(GL_TEXTURE0 + unit);
     terrain->heightmapTexture->bind(unit++);
 
     // Grass Texture
     location = glGetUniformLocation(shader->programId(), "grasTexture");
     glUniform1i(location, unit);
+    glActiveTexture(GL_TEXTURE0 + unit);
     terrain->grassTexture->bind(unit++);
 
     // Rock Texture
     location = glGetUniformLocation(shader->programId(), "rockTexture");
     glUniform1i(location, unit);
+    glActiveTexture(GL_TEXTURE0 + unit);
     terrain->rockTexture->bind(unit++);
+
+    // Shadow Map
+    location = glGetUniformLocation(shader->programId(), "shadowMap");
+    glUniform1i(location, unit);
+    shadowMapTechnique->bindShadowTexture(unit++);
 
     // Position of the camera in world space
     location = glGetUniformLocation(shader->programId(), "eyePosWorld");

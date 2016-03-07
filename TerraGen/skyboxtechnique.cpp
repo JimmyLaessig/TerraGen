@@ -22,6 +22,7 @@ SkyboxTechnique::SkyboxTechnique(QOpenGLFunctions_4_4_Core *functions) :
     cubeMapTexture->setFormat(QOpenGLTexture::RGBAFormat);
     cubeMapTexture->allocateStorage();
     cubeMapTexture->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
+    cubeMapTexture->setWrapMode(QOpenGLTexture::ClampToEdge);
 
     cubeMapTexture->setData(0, 0, QOpenGLTexture::CubeMapPositiveX, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8, posX.bits());
     cubeMapTexture->setData(0, 0, QOpenGLTexture::CubeMapPositiveY, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8, posY.bits());

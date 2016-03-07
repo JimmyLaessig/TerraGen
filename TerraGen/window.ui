@@ -225,23 +225,17 @@
             <property name="verticalSpacing">
              <number>5</number>
             </property>
-            <item row="5" column="2">
-             <widget class="QDoubleSpinBox" name="scaleSpinner">
-              <property name="decimals">
-               <number>3</number>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Scale</string>
               </property>
-              <property name="minimum">
-               <double>-99.000000000000000</double>
-              </property>
-              <property name="singleStep">
-               <double>0.001000000000000</double>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
-            <item row="6" column="0">
+            <item row="7" column="0">
              <widget class="QLabel" name="spacer2">
               <property name="minimumSize">
                <size>
@@ -264,6 +258,35 @@
              </widget>
             </item>
             <item row="6" column="2">
+             <widget class="QDoubleSpinBox" name="scaleSpinner">
+              <property name="decimals">
+               <number>3</number>
+              </property>
+              <property name="minimum">
+               <double>-99.000000000000000</double>
+              </property>
+              <property name="singleStep">
+               <double>0.001000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="2">
+             <widget class="QDoubleSpinBox" name="persistenceSpinner">
+              <property name="decimals">
+               <number>3</number>
+              </property>
+              <property name="singleStep">
+               <double>0.001000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="2">
              <widget class="QPushButton" name="generateNoiseButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -288,53 +311,7 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="2">
-             <widget class="QDoubleSpinBox" name="frequency2Spinner">
-              <property name="decimals">
-               <number>3</number>
-              </property>
-              <property name="singleStep">
-               <double>0.001000000000000</double>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="2">
-             <widget class="QDoubleSpinBox" name="persistenceSpinner">
-              <property name="decimals">
-               <number>3</number>
-              </property>
-              <property name="singleStep">
-               <double>0.001000000000000</double>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="5" column="0">
-             <widget class="QLabel" name="label_9">
-              <property name="text">
-               <string>Scale</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_7">
-              <property name="text">
-               <string>Frequency2</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
              <widget class="QLabel" name="label_8">
               <property name="text">
                <string>Persistence</string>
@@ -344,7 +321,17 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
+            <item row="1" column="2">
+             <widget class="QDoubleSpinBox" name="frequency1Spinner">
+              <property name="decimals">
+               <number>3</number>
+              </property>
+              <property name="singleStep">
+               <double>0.001000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
              <widget class="QLabel" name="label_11">
               <property name="text">
                <string>Bias</string>
@@ -354,14 +341,17 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
+            <item row="1" column="0">
              <widget class="QLabel" name="label_10">
               <property name="text">
-               <string>Terrain Frequency</string>
+               <string>Bump Frequency</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
-            <item row="1" column="2">
+            <item row="2" column="2">
              <widget class="QDoubleSpinBox" name="biasSpinner">
               <property name="decimals">
                <number>3</number>
@@ -375,12 +365,25 @@
              </widget>
             </item>
             <item row="0" column="2">
-             <widget class="QDoubleSpinBox" name="frequency1Spinner">
+             <widget class="QDoubleSpinBox" name="frequency2Spinner">
               <property name="decimals">
                <number>3</number>
               </property>
               <property name="singleStep">
                <double>0.001000000000000</double>
+              </property>
+              <property name="value">
+               <double>0.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Terrain Frequency</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>
