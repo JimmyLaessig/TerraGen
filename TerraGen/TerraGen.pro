@@ -50,8 +50,6 @@ DISTFILES +=\
 
 
 
-INCLUDEPATH += $$PWD/../External/Include
-
 win32: LIBS += -L$$PWD/../External/Lib/ -llibnoise
 
 INCLUDEPATH += $$PWD/../External/Include
