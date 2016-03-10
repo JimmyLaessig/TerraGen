@@ -21,8 +21,6 @@
 Ziel dieser Aufgabe ist es, eine interaktive Rendering-Engine zu programmieren, die es dem User ermöglicht selbst Geometrie zu erstellen und aktiv verändern. In diesem Beispiel ist ein interaktiver Terrain-Renderer implementiert, mit dem der User zur Laufzeit verschiedene Terrains, basierend auf einer Heightmap, generieren und verändern kann. 
 Da es sich bei Terrains zumeist um großflächige Areale handelt werden hier einige Techniken angewendet, die die Skalierung und Detaillierung der Geometrie unterstützen. 
 
-\section*{Framework}
-
 \section*{Geometrie}
 Das Basis-Geometrie-Objekt ist ein simples 10x10 Grid mit 200 Triangles, eine Einheit einspricht einem Meter. Wird das Terrain skaliert, wird dieses Grid wiederholt an nebeneinander liegenden Positionen gezeichnet, sodass eine homogene Fläche entsteht. Anhand der Vertex-Position im Grid, sowie der relativen Position der Grids zueinander, können Texturkoordinaten einfach berechnet und skaliert werden. 
 
@@ -47,7 +45,7 @@ Zusätzlich kann eine beliebige Textur als Heightmap eingelesen werden.
 
 \section*{Texturierung und Schattierung}
 
-Für eine realistische Darstellung sind Texturierung und Schattierung unabdingbar. Hierzu ist es notwendig, den Normalvektor pro Vertex, basierend auf den Höhendaten, zu berechnen. Wie in ~\cite{frostbite} beschrieben, wird hierzu ein 4-Sample-Cross-Filter verwendet. Die Differenzen der Höhenwerte in x- bzw. in z-Richtung der jeweiligen Vor-und Nachfolger ergeben die einzelnen Werte der Normalen. 
+Für eine realistische Darstellung sind Texturierung und Schattierung unabdingbar. Hierzu ist es notwendig, den Normalvektor pro Vertex, basierend auf den Höhendaten, zu berechnen. Wie in ~\cite{frostbite} beschrieben, wird hierzu ein 4-Sample-Cross-Filter verwendet. Die Differenzen der Höhenwerte in x- bzw. z-Richtung der jeweiligen Vor-und Nachfolger ergeben die einzelnen Werte der Normalen. 
 Diese Normale wird für die Schattierung benutzt. 
 
 In diesem einfachen Programm wird zwischen einer Stein-Textur für steile Abhänge, sowie einer Gras-Textur für flache Ebenen unterschieden. Basierend auf der Neigung der Normalen wird zwischen den zwei Texturen unterschieden, oder interpoliert. Die Neigung berechnet sich aus Eins minus y-Komponente der Normalen. 
