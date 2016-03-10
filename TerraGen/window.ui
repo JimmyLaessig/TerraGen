@@ -542,96 +542,6 @@
          <property name="spacing">
           <number>5</number>
          </property>
-         <item row="2" column="1">
-          <widget class="QCheckBox" name="wireframeCheckBox">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QCheckBox" name="checkBox_5">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="15" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Distance Fog</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_6">
-           <property name="text">
-            <string>Shading</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="13" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>Shadows</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Dynamic LoD</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QCheckBox" name="checkBox_4">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="15" column="1">
-          <widget class="QCheckBox" name="checkBox_3">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="13" column="1">
-          <widget class="QCheckBox" name="checkBox">
-           <property name="text">
-            <string/>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_5">
            <property name="text">
@@ -655,10 +565,60 @@
            </property>
           </widget>
          </item>
+         <item row="6" column="1">
+          <widget class="QCheckBox" name="checkBox_4">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
          <item row="8" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
             <string>Skybox</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QCheckBox" name="wireframeCheckBox">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QCheckBox" name="checkBox_5">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Shading</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Dynamic LoD</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -907,22 +867,6 @@
     <hint type="destinationlabel">
      <x>759</x>
      <y>300</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>canvas</receiver>
-   <slot>setShadowsEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>917</x>
-     <y>616</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>748</x>
-     <y>622</y>
     </hint>
    </hints>
   </connection>

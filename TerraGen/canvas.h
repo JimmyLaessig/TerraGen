@@ -18,7 +18,6 @@
 #include "skyboxtechnique.h"
 
 #include <shaders.h>
-#include "shadowmaptechnique.h"
 #include "directionallight.h"
 
 
@@ -29,7 +28,6 @@ public:
 
     bool wireframeEnabled = true;
     bool shadingEnabled = true;
-    bool shadowsEnabled = true;
     bool skyBoxEnabled = true;
     bool dynamicLodEnabled = true;
 
@@ -82,8 +80,6 @@ public slots:
 
     void setShadingEnabled(bool enabled);
 
-    void setShadowsEnabled(bool enabled);
-
     void setSkyBoxEnabled(bool enabled);
 
     void setDynamicLodEnabled(bool enabled);
@@ -95,14 +91,12 @@ private:
     void draw();
     void drawTesselate(Terrain* terrain);
 
-    ShadowMapTechnique* shadowMapTechnique;
     DirectionalLight* light;
 
     SkyboxTechnique* skyboxTechnique;
     QTime time;
 
     Window* window;
-
 
     QPoint lastMousePos;
     bool generateTerrain = false;

@@ -19,7 +19,6 @@ Canvas::~Canvas()
     delete camera;
     delete cameraController;
     delete noiseImage;
-    delete shadowMapTechnique;
     delete light;
 
     Shaders::DeleteAll();
@@ -58,8 +57,8 @@ void Canvas::initializeGL()
     cameraController->setCamera(camera);
 
     light = new DirectionalLight(glm::vec3(0, 0,0 ), glm::normalize(glm::vec3(0,-0.5, 1.0)), glm::vec3(1.0, 1.0, 1.0));
-    shadowMapTechnique = new ShadowMapTechnique(this, 1024, 1024);
-    shadowMapTechnique->light = light;
+   // shadowMapTechnique = new ShadowMapTechnique(this, 1024, 1024);
+   // shadowMapTechnique->light = light;
 
     skyboxTechnique = new SkyboxTechnique(this);
 
@@ -347,12 +346,6 @@ void Canvas::setWireframeEnabled(bool enabled)
 void Canvas::setShadingEnabled(bool enabled)
 {
     shadingEnabled = enabled;
-    update();
-}
-
-void Canvas::setShadowsEnabled(bool enabled)
-{
-    shadowsEnabled = enabled;
     update();
 }
 
