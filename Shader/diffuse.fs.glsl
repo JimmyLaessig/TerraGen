@@ -1,21 +1,21 @@
 #version 440 core
 
+in vec3 position;
 in vec2 texcoords_FS;
+in vec3 PositionWS;
 
-uniform bool wireframeEnabled = false;
-uniform sampler2D colorTexture;
-
-layout(location = 0) out vec4 fragColor;
+uniform vec3 color = vec3(1, 1, 0);
+uniform int bWireframeEnabled = 1;
+out vec4 fragColor;
 
 void main()
 {
-
-    if(wireframeEnabled)
+    if(bWireframeEnabled == 1)
     {
-        fragColor = vec4(0,0,0,1);
-        return;
+        fragColor = vec4(PositionWS, 1);
     }
-
-    // TODO Lighting
-    fragColor = vec4(texture2D(colorTexture, texcoords_FS).rgb,1);
+    else
+    {
+        fragColor = vec4(0, 0, 0, 1);
+    }
 }

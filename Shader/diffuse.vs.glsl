@@ -1,16 +1,15 @@
 #version 440 core
 
-layout (location = 0) in vec3 positions_VS;
-layout (location = 1) in vec2 texcoords_VS;
+layout (location = 0) in vec3 Position;
+layout (location = 1) in vec2 TexCoord0;
 
+uniform mat4 worldMatrix;
+uniform mat4 worldViewProjectionMatrix;
 
-uniform mat4 modelViewProjectionMatrix;
-
-out vec2 texcoords_FS;
-
+out vec3 PositionWS;
 
 void main(void)
 {
-   gl_Position = modelViewProjectionMatrix * vec4(positions_VS, 1);
-    texcoords_FS =  texcoords_VS;
+    PositionWS = (worldMatrix * vec4(Position,1.0f)).xyz;
+    gl_Position = worldViewProjectionMatrix * vec4(Position, 1);
 }
